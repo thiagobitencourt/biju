@@ -1,3 +1,3 @@
 //Starting point
 
-//Test of integration between bitbucket and redmine
+//Test of integration between bitbucket and redmine. New test
