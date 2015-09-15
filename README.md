@@ -10,7 +10,7 @@ Equipe
 -------------
 
 **Fron-end:** 
-> Mohamad Abu Ali <arabian@brasnet.org.br>
+> Mohamad Abu Ali <arabian@brasnet.org>
 
 **Back-end:** 
 > Gustavo R. Valiati <gustavovaliati@gmail.com>
