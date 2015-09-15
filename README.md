@@ -9,13 +9,13 @@ Projeto de software para administração de rede de distribuição/revenda de ac
 Equipe
 -------------
 
-**Fron-end:** 
-> Mohamad Abu Ali <arabian@brasnet.org>
-
 **Back-end:** 
 > Gustavo R. Valiati <gustavovaliati@gmail.com>
 
 > Thiago R. M. Bitencourt <thiago.mbitencourt@gmail.com> 
+
+**Fron-end:** 
+> Mohamad Abu Ali <arabian@brasnet.org>
 
 
 Estrutura de diretórios
