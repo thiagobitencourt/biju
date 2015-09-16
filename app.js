@@ -4,24 +4,31 @@ var https = require('https');
 var fs = require('fs');
 var app = express();
 
-mongoose.connect('mongodb://localhost/validate_server');
+var LoadRouter = require('./server/routes/loadRoutes');
 
-var kittySchema = mongoose.Schema({
-    name: String
-});
-
-var Kitten = mongoose.model('Kitten', kittySchema);
+// mongoose.connect('mongodb://localhost/validate_server');
 
 var httpPort = 8180;
 var httpsPort = 8143;
 
-app.get('/', function (req, res) {
-	var fluffy = new Kitten({ name: 'fluffy' });
-	fluffy.save(function (err, fluffy) {
-	  if (err) return console.error(err);
-	  res.send("Hello World OK! ID do obj salvo no banco: " + fluffy._id);
-	});
+app.all('*', function(req, res, next){
+
+	res.response = function(error, responseStatus, message){
+
+		var sendMessage = {message: message, status: responseStatus};
+		if(error){
+			sendMessage.error = error;
+		}
+
+		return res.status(responseStatus).send(sendMessage);
+	};
+
+	next();
 });
+
+app.use(express.static('web/'));
+
+app.use('/api', new LoadRouter());
 
 var server = app.listen(httpPort, function () {
   console.log('Example app listening at %s', httpPort);
@@ -35,5 +42,4 @@ var options = {
 https.createServer(options, app).listen(httpsPort, function(){
 	console.log('Example app listening at port %s', httpsPort);
 });
-
 
