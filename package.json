@@ -13,6 +13,7 @@
   "author": "Gustavo R. Valiai; Mohamad A. Ali; Thiago R. M. Bitencourt",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "mongoose": "^4.1.7"
   }
 }
