@@ -1,5 +1,5 @@
 {
-  "name": "Projeto Biju",
+  "name": "ProjetoBiju",
   "version": "0.0.1",
   "description": "Projeto de software para administração de rede de distribuição/revenda de acessórios femininos. O projeto conta com funcionalidades como, cadastrar pessoas, peças/produtos e kits com as peças cadastradas. Inclui também a possibilidade de administração de rendimentos, através de relatórios de vendas mensais e/ou personalizados.",
   "main": "app.js",
@@ -11,5 +11,9 @@
     "url": "https://bitbucket.org/equipebiju/biju"
   },
   "author": "Gustavo R. Valiai; Mohamad A. Ali; Thiago R. M. Bitencourt",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "express": "^4.13.3",
+    "mongoose": "^4.1.7"
+  }
 }
