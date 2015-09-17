@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;
 
-mongoose.connect('mongodb://localhost/biju');
+
 
 var Schema = mongoose.Schema;
 
