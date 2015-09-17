@@ -78,6 +78,25 @@ var UserControler = function(){
 		}
 	}
 
+	/*
+		Same function called on createUser and updateUser operation.
+		Analise the err and user parameters end call the callback with well appropriate response
+	*/
+	var _onCreateOrUpdate = function(err, user, operation, cb){
+		if(err){
+			var errObj = {error: err, code: 500, message: "Error on " + operation + " user"};
+			if(err.code == 11000){
+				errObj.code = 400;
+				errObj.message = "Username already in use";
+				errObj.error = null;
+			}
+
+			return cb(errObj, null);
+		}
+
+		return cb(null, user.clean());
+	}
+
 	var _newUser = function(newUser, callback){
 
 		if(!newUser.username || !newUser.password){
@@ -85,25 +104,29 @@ var UserControler = function(){
 			return callback(errObj, null);
 		}
 
+		/*
+			If the new user has the pessoa field it must to be a valid ObjectID.
+			So, before go on to update user, it will validate the pessoa field
+		*/
+		if(newUser.pessoa){
+			if(!_validateId.isIdValid(newUser.pessoa)){
+				var errObj = {code: 400, message: "Incorrect ID for pessoal field"};
+				return callback(errObj, null);
+			}
+		}
+		//TODO: descomentar o else se o campo pessoa for obrigatório.
+		// else{
+		// 	var errObj = {code: 400, message: "Missing field pessoa"};
+		// 	return callback(errObj, null);
+		// }
+
 		var user = new _User();
 
 		user.username = newUser.username;
 		user.password = newUser.password;
 
 		user.save(function(err, userCreated){
-
-			if(err){
-				var errObj = {error: err, code: 500, message: "Error on create user"};
-				if(err.code == 11000){
-					errObj.code = 400;
-					errObj.message = "Username already in use";
-					errObj.error = null;
-				}
-
-				return callback(errObj, null);
-			}
-
-			return callback(null, userCreated.clean());
+			return _onCreateOrUpdate(err, userCreated, "create", callback);
 		});
 	}
 
@@ -114,8 +137,20 @@ var UserControler = function(){
 			return callback(errObj, null);
 		}
 
-		var errObj = {code: 501, message: "Not implemented yet"};
-		return callback(errObj, null);
+		/*
+			If the new user has the pessoa field it must to be a valid ObjectID.
+			So, before go on to update user, it will validate the pessoa field
+		*/
+		if(newUser.pessoa){
+			if(!_validateId.isIdValid(newUser.pessoa)){
+				var errObj = {code: 400, message: "Incorrect ID for pessoal field"};
+				return callback(errObj, null);
+			}
+		}
+
+		_User.secureUpdate(userId, newUser, function(err, userUpdated){
+			return _onCreateOrUpdate(err, userUpdated, "update", callback);
+		});
 	}
 
 	var _removeUser = function(userId, callback){
@@ -133,9 +168,6 @@ var UserControler = function(){
 
 			return callback(null, removedUser);
 		});
-
-		// var errObj = {code: 501, message: "Not implemented yet"};
-		// return callback(errObj, null);
 	}
 
 	return {

@@ -15,6 +15,7 @@ userSchema = new Schema({
   	deletedAt: { type: Date, default: null}
 });
 /*
+  TODO: Pessoa como require:true
 	OBS.: O campo pessoa, poderá ser obrigatório em versões futuras.
 	Neste caso adicione o atributo required: true no campo pessoa
 */
@@ -49,7 +50,12 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 };
 
 userSchema.methods.clean = function() {
-	return {_id: this._id, username: this.username};
+  var resObj = {};
+  resObj._id = this._id;
+  resObj.username = this.username;
+  resObj.pessoa = this.pessoa;
+
+	return resObj;
 };
 
 userSchema.statics.secureFind = function(userId, cb) {
@@ -71,9 +77,6 @@ userSchema.statics.secureDelete = function(userId, cb) {
   this.findOne({_id: userId}, {password:0}, function(err, user){
     if(err) return cb(err, null);
 
-    // console.log(">>>>>  " + dateFormat.timeStamp());
-    // user.deletedAt = dateFormat.timeStamp();
-    // cb(null, user);
       if(user){
         user.deletedAt = dateFormat.timeStamp();
         user.save();
@@ -84,17 +87,53 @@ userSchema.statics.secureDelete = function(userId, cb) {
   });
 };
 
+userSchema.statics.secureUpdate = function(userId, newUser, cb) {
+
+  this.findOne({_id: userId, deletedAt: { $eq: null }}, function(err, user){
+    if(err) return cb(err, null);
+
+      if(user){
+
+        if(newUser.password){
+          user.password = newUser.password;
+        }
+
+        if(newUser.pessoa && user.pessoa != newUser.pessoa || newUser.pessoa == null){
+          user.pessoa = newUser.pessoa;
+        }
+
+        if(newUser.username && user.username != newUser.username){
+
+          this.findOne({username: newUser.username}, function(err, hasUser){
+            if(err) return cd(err, null);
+
+            if(!hasUser){
+              user.username = newUser.username;
+
+              user.save(function(err, us){
+                if(err) return cb(err, null);
+
+                return cb(null, us);
+              });
+            }else{
+              //Return with mongo duplicate key error code
+              var errObj = {code: 11000, message:"Username already in use"};
+              return cd(errObj, null);
+            }
+          });
+        }else{
+          user.save();
+          return cb(null, user);
+        }
+
+      }else{
+        return cb({message: "User Not Found", code:400}, null);
+      }
+  });
+};
+
+
 User = mongoose.model('User', userSchema);
 
 // make this available to our users in our Node applications
 module.exports = User;
-
-
-/*
-EXEMPLOS: 
-
-  valorEspecial: { type : Array , "default" : [] },
-  criadoEm: Date,
-  categoria: { type:Schema.ObjectId, required: true, ref:"Categoria"}
-
-*/
