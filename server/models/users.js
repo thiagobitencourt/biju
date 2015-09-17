@@ -51,10 +51,18 @@ userSchema.methods.clean = function() {
 };
 
 userSchema.statics.secureFind = function(userId, cb) {
-	this.findOne({_id: userId}, {password:0}, function(err, user){
-		if(err) return cb(err, null);
-    	cb(null, user);
+
+  if(userId){
+  	this.findOne({_id: userId}, {password:0}, function(err, user){
+  		if(err) return cb(err, null);
+      	cb(null, user);
     });
+  }else{
+    this.find({}, {password:0}, function(err, users){
+      if(err) return cb(err, null);
+        cb(null, users);
+    });
+  }
 };
 
 User = mongoose.model('User', userSchema);

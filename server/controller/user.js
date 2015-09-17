@@ -60,24 +60,23 @@ var UserControler = function(){
 		}
 
 		if(id){
-			//TODO. PAREI AQUI. ID supostamente valido, mas não valida.
+			//TODO. PAREI AQUI. ID supostamente válido, mas não valida.
 			if(!_validateId.isIdValid(id)){
 				var errObj = {code: 400, message: "Incorrect ID"};
 				return callback(errObj, null);
 			}
 
 			//Find by id
-			_User.findOne({_id: id}, function(err, user){
+			_User.secureFind(id, function(err, user){
 				afterFind(err, user);
 			});
 		}else{
 			//Find all
-			_User.find({}, function(err, user){
+			_User.secureFind(null, function(err, user){
 				afterFind(err, user);
 			});
 		}
 	}
-
 
 	var _newUser = function(newUser, callback){
 
@@ -115,17 +114,19 @@ var UserControler = function(){
 			return callback(errObj, null);
 		}
 
-		callback(null, []);
+		var errObj = {code: 501, message: "Not implemented yet"};
+		return callback(errObj, null);
 	}
 
-	var _removeUser = function(userId, newUser, callback){
+	var _removeUser = function(userId, callback){
 
 		if(!_validateId.isIdValid(userId)){
 			var errObj = {code: 400, message: "Incorrect ID"};
 			return callback(errObj, null);
 		}
 
-		callback(null, []);
+		var errObj = {code: 501, message: "Not implemented yet"};
+		return callback(errObj, null);
 	}
 
 	return {

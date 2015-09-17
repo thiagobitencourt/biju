@@ -57,21 +57,11 @@ var setUserRoutes = function(){
 	});
 
 	this.router.get(_userId, function(req, res){
-
 		UserCtrl.getUser(req.params.id, function(err, user){
 			if(err) return res.response(err.error, err.code, err.message);
 
 			res.send(user);
 		});
-		// if(!mongoose.Types.ObjectId.isValid(req.params.id)){
-		// 	return res.response(400, "Incorrect ID");
-		// }
-
-		// User.secureFind(req.params.id, function(err, users){
-		// 	if(err) return res.response(err, 500, "Error on find user");
-
-		// 	return res.send(users);
-		// });
 	});
 
 	this.router.post(_user, function(req, res){
@@ -89,9 +79,10 @@ var setUserRoutes = function(){
 	});
 
 	this.router.delete(_userId, function(req, res){
-		var message = 'DELETE in ' + _userId + ' route';
-		console.log(message);
-		return res.response(null, 200, message);
+		UserCtrl.removeUser(req.params.id, function(err, removedUser){
+			if(err) return res.response(err.error, err.code, err.message);
+			res.send(removedUser);
+		});
 	});
 }
 
