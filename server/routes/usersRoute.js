@@ -81,6 +81,7 @@ var setUserRoutes = function(){
 	this.router.delete(_userId, function(req, res){
 		UserCtrl.removeUser(req.params.id, function(err, removedUser){
 			if(err) return res.response(err.error, err.code, err.message);
+			
 			res.send(removedUser);
 		});
 	});

@@ -10,7 +10,7 @@ var UserControler = function(){
 			return callback(errObj, null);
 		}
 
-		_User.findOne({username: username}, function(err, user){
+		_User.findOne({username: username, deletedAt: { $eq: null }}, function(err, user){
 
 			if(err){
 				var errObj = {error: err, code: 500, message: "Error on find user"};
@@ -125,8 +125,17 @@ var UserControler = function(){
 			return callback(errObj, null);
 		}
 
-		var errObj = {code: 501, message: "Not implemented yet"};
-		return callback(errObj, null);
+		_User.secureDelete(userId, function(err, removedUser){
+			if(err){
+				var errObj = {error: err, code: err.code || 500, message: (err.code == 400? err.message : "Error on remove user")};
+				return callback(errObj, null);
+			}
+
+			return callback(null, removedUser);
+		});
+
+		// var errObj = {code: 501, message: "Not implemented yet"};
+		// return callback(errObj, null);
 	}
 
 	return {
