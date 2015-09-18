@@ -68,6 +68,7 @@ var kitController = function(){
 	var _saveKit = function(body, callback){
 
 		try{
+			body.deletedAt = null; //TODO - limpeza manual do campo para evitar que o usuário altere.
 
 			_recalculateKit(body, function(err, newBody){
 				if(err)
