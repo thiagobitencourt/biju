@@ -41,6 +41,8 @@ var produtoController = function(){
 	var _saveProduto = function(body, callback){
 
 		try{
+			body.deletedAt = null; //TODO - limpeza manual do campo para evitar que o usuário altere.
+
 			if(body._id){
 				//update
 
