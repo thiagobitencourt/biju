@@ -19,14 +19,14 @@
 
   </head>
  
-  <body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper">
+  <body class="hold-transition skin-blue sidebar-mini" ng-app="bijuApp">
+    <div class="wrapper" ng-controller="bijuCtrl">
 
       <!-- Main Header -->
       <header class="main-header">
 
         <!-- Logo -->
-        <a href="index.html" class="logo">
+        <a href="#/" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>Biju</b></span>
           <!-- logo for regular state and mobile devices -->
@@ -91,23 +91,19 @@
       <aside class="main-sidebar">
         <section class="sidebar">
           <ul class="sidebar-menu">
-            <li class="active"><a href="#"><i class="fa fa-bar-chart"></i> <span>Dashboard</span></a></li>
+            <li ng-class="{ active: isActive('/')}"><a href="#/"><i class="fa fa-bar-chart"></i> <span>Dashboard</span></a></li>
             <li class="header">Cadastro</li>
-            <li><a href="#"><i class="fa fa-user"></i> <span>Pessoa</span></a></li>
-            <li><a href="#"><i class="fa fa-cube"></i> <span>Produto</span></a></li>
+            
+            <li ng-class="{ active: isActive('/pessoas')}"><a href="#/pessoas"><i class="fa fa-user"></i> <span>Pessoa</span></a></li>
+
+            <li ng-class="{ active: isActive('/produtos')}"><a href="#/produtos"><i class="fa fa-user"></i> <span>Produtos</span></a></li>
+
           </ul>
         </section>
       </aside>
 
       <div class="content-wrapper">
-        <section class="content-header">
-          <h1>
-            Dashboard
-          </h1>
-        </section>
-        <section class="content">       
-          Conteúdo Dashboard
-        </section>
+        <ng-view/>
       </div>
       <div class="control-sidebar-bg"></div>
     </div>
@@ -117,8 +113,22 @@
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!-- Angular -->
+      <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+      <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
+      <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-touch.js"></script>
+      <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.js"></script>
+
     <!-- AdminLTE App -->
-    <script src="lib/AdminLTE/app.min.js"></script>
+    <script type="text/javascript" src="lib/AdminLTE/app.min.js"></script>
+
+    <!-- Biju App -->
+     <script type="text/javascript" src="js/bijuApp.js"></script>
+     <script type="text/javascript" src="js/controller/bijuCtrl.js"></script>
+    <script type="text/javascript" src="js/controller/pessoasCtrl.js"></script>
+   
+
 
   </body>
 </html>
