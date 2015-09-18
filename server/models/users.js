@@ -4,7 +4,7 @@ var bcrypt = require('bcrypt'),
 
 var dateFormat = require(__base + 'utils/dateFormat');
 
-mongoose.connect('mongodb://localhost/biju');
+// mongoose.connect('mongodb://localhost/biju');
 
 var Schema = mongoose.Schema;
 

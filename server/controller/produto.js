@@ -14,11 +14,11 @@ var produtoController = function(){
 			if(id){
 				//find by id
 
-				_Produto.secureFind(id, null, function(err, user){
+				_Produto.secureFind(id, null, function(err, produto){
 					if(err)
 						return callback({error: err, code: 500, message : "Erro ao procurar produto."});
 
-					return callback(null, user);
+					return callback(null, produto);
 				});
 
 			}else{
