@@ -38,6 +38,10 @@ var UserControler = function(){
 		});
 	}
 
+	/*
+		This function are used to get all Users and also to get only one user by its ID.
+		If the id is received by parameter, it will try to find one user. Find and retur all users otherwise.
+	*/
 	var _getUser = function(id, callback){
 
 		var afterFind = function(err, user){
@@ -60,7 +64,6 @@ var UserControler = function(){
 		}
 
 		if(id){
-			//TODO. PAREI AQUI. ID supostamente válido, mas não valida.
 			if(!_validateId.isIdValid(id)){
 				var errObj = {code: 400, message: "Incorrect ID"};
 				return callback(errObj, null);

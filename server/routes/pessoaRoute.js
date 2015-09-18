@@ -2,6 +2,8 @@ var express = require('express');
 
 var router;
 
+var PessoaController = require(__base + 'controller/pessoa');
+
 var PessoaRoute = function(router){
 
 	this.router = router;
@@ -17,33 +19,49 @@ var setPessoaRoutes = function(){
 	var _pessoaId = _pessoa + '/:id';
 	
 	this.router.get(_pessoa, function(req, res){
-		var message = 'GET in ' + _pessoa + ' route';
-		console.log(message);
-		return res.response(null, 200, message);
+		PessoaController.findPessoa(null, req.query, function(err, pessoa){
+			if(err) return res.response(err.error, err.code, err.message);
+
+			res.send(pessoa);
+		});
 	});
 
 	this.router.get(_pessoaId, function(req, res){
-		var message = 'GET in ' + _pessoaId + ' route';
-		console.log(message);
-		return res.response(null, 200, message);
+		PessoaController.findPessoa(req.params.id, null, function(err, pessoas){
+			if(err) return res.response(err.error, err.code, err.message);
+
+			res.send(pessoas);
+		});
 	});
 
 	this.router.post(_pessoa, function(req, res){
-		var message = 'POST in ' + _pessoa + ' route';
-		console.log(message);
-		return res.response(null, 200, message);
+		if(req.body._id)
+			return res.response(null, 400, "Anti-pattern POST: body contains _id");
+
+		PessoaController.savePessoa(req.body, function(err, pessoa){
+			if(err) return res.response(err.error, err.code, err.message);
+
+			res.send(pessoa);
+		});
 	});
 
 	this.router.put(_pessoaId, function(req, res){
-		var message = 'PUT in ' + _pessoaId + ' route';
-		console.log(message);
-		return res.response(null, 200, message);
+		if(req.params.id != req.body._id)
+			return res.response(null, 400, "Anti-pattern PUT: params id is different of body id.");
+
+		PessoaController.savePessoa(req.body, function(err, pessoa){
+			if(err) return res.response(err.error, err.code, err.message);
+
+			res.send(pessoa);
+		});
 	});
 
 	this.router.delete(_pessoaId, function(req, res){
-		var message = 'DELETE in ' + _pessoaId + ' route';
-		console.log(message);
-		return res.response(null, 200, message);
+		PessoaController.removePessoa(req.params.id, function(err, pessoa){
+			if(err) return res.response(err.error, err.code, err.message);
+
+			res.send(pessoa);
+		});
 	});
 }
 
