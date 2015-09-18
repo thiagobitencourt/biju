@@ -18,9 +18,17 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 	app.use(bodyParser.urlencoded({extended: true}));
 	app.use(bodyParser.json());
 
-
 	var httpPort = 8180;
 	var httpsPort = 8143;
+
+	//Necessary headers to clients access.
+	app.all('*', function(req, res, next) {
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Credentials', 'true');
+		res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+		res.header('Access-Control-Allow-Headers', 'Content-Type');
+		next();
+	});
 
 	app.all('*', function(req, res, next){
 		res.response = function(error, responseStatus, message){
