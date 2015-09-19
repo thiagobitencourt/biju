@@ -19,7 +19,7 @@ MODELO: Produto
 * Tamanho
 * Valor de custo
 * Valor de venda
-* Observação
+* Observação 
 */
 
 produtoSchema = new Schema({

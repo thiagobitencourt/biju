@@ -3,6 +3,8 @@ var express = require('express');
 var UserRoute = require('./usersRoute');
 var PessoaRoute = require('./pessoaRoute');
 var ProdutoRoute = require(__base + 'routes/produto');
+var KitRoute = require(__base + 'routes/kit');
+var EstoqueRoute = require(__base + 'routes/estoque');
 
 var BlankRoute = require('./blankRoute');
 
@@ -16,6 +18,8 @@ var LoadRoutes = function(){
 	new UserRoute(router);
 	new PessoaRoute(router);
 	new ProdutoRoute(router);
+	new KitRoute(router);
+	new EstoqueRoute(router);
 
 	return router;
 }

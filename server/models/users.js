@@ -4,14 +4,12 @@ var bcrypt = require('bcrypt'),
 
 var dateFormat = require(__base + 'utils/dateFormat');
 
-mongoose.connect('mongodb://localhost/biju');
-
 var Schema = mongoose.Schema;
 
 userSchema = new Schema({
   	username: { type: String, required: true, index: { unique: true }},
   	password: { type: String, required: true, unique: true},
-  	pessoa: {type:Schema.ObjectId, ref:"Categoria"},
+  	pessoa: {type:Schema.ObjectId, ref:"Pessoa"},
   	deletedAt: { type: Date, default: null}
 });
 /*
