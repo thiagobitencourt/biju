@@ -36,7 +36,11 @@ app.config(function($routeProvider, RestangularProvider) {
       when('/produtos', {
         templateUrl: 'view/produtos.html',
         controller: 'produtosCtrl'
-      }).      
+      }).   
+      when('/users', {
+        templateUrl: 'view/users.html',
+        controller: 'usersCtrl'
+      }).          
       otherwise({
         redirectTo: '/'
       });

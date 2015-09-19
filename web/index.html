@@ -95,11 +95,9 @@
           <ul class="sidebar-menu">
             <li ng-class="{ active: isActive('/')}"><a href="#/"><i class="fa fa-bar-chart"></i> <span>Dashboard</span></a></li>
             <li class="header">Cadastro</li>
-            
-            <li ng-class="{ active: isActive('/pessoas')}"><a href="#/pessoas"><i class="fa fa-user"></i> <span>Pessoa</span></a></li>
-
-            <li ng-class="{ active: isActive('/produtos')}"><a href="#/produtos"><i class="fa fa-user"></i> <span>Produtos</span></a></li>
-
+            <li ng-class="{ active: isActive('/users')}"><a href="#/users"><i class="fa fa-user"></i> <span>Usuários</span></a></li>
+            <li ng-class="{ active: isActive('/pessoas')}"><a href="#/pessoas"><i class="fa fa-users"></i> <span>Pessoas</span></a></li>
+            <li ng-class="{ active: isActive('/produtos')}"><a href="#/produtos"><i class="fa fa-cubes"></i> <span>Produtos</span></a></li>
           </ul>
         </section>
       </aside>
@@ -135,13 +133,9 @@
     <!-- Biju App -->
      <script type="text/javascript" src="js/bijuApp.js"></script>
      <script type="text/javascript" src="js/controller/bijuCtrl.js"></script>
-    
-    <!-- Pessoas -->
+    <script type="text/javascript" src="js/controller/usersCtrl.js"></script>
     <script type="text/javascript" src="js/controller/pessoasCtrl.js"></script>
-
-    <!-- Produtos -->
     <script type="text/javascript" src="js/controller/produtosCtrl.js"></script> 
-
 
   </body>
 </html>
