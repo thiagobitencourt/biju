@@ -1,8 +1,15 @@
-<section class="content-header">
-	<h1>
-		Lista de Pessoas
-	</h1>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Lista de Pessoas</h3>
+          <button class="btn btn-success pull-right" ng-click="newPessoa()"><i class="glyphicon glyphicon-plus"></i> Nova Pessoa</button>
+        </div>
+        <div class="box-body">
+           <div ui-grid="pessoasGridOptions" ui-grid-pagination class="grid"></div> 
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
-<section class="content">       
-	<pre>{{pessoa | json}}</pre>
-</section>	
