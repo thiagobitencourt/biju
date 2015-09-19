@@ -1,0 +1,119 @@
+<div class="modal-header">
+  <button type="button" class="close" aria-label="Close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title"><span class="glyphicon glyphicon-search"></span> {{title}}</h4>
+</div>
+
+<div class="modal-body form-horizontal">
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Nome:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.nome}}</p>
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Data Nasc.:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.nascimento}}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">CPF:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.cpf}}</p>
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">RG:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.rg}}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Rua:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.endereco[0].rua}}</p>
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Bairro:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.endereco[0].bairro}}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Cidade:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.endereco[0].cidade}}</p>
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Pais:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.endereco[0].pais}}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">T. Fixo:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.telefoneFixo}}</p>
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">T. Celular:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.telefoneFixo}}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">E-mail:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.email}}</p>
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Referencia:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.pessoaReferencia}}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Observação:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.observacao}}</p>
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Status:</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{entity.status}}</p>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-default pull-left" ng-click="close()">Fechar</button>
+	<button type="button" class="btn btn-warning" ng-click=" editFromDetail(entity)">Editar</button>
+	<button type="button" class="btn btn-danger" ng-click=" removeFromDetail(entity)">Excluir</button>
+</div>

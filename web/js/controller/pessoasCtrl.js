@@ -1,12 +1,12 @@
 var app = angular.module('bijuApp');
 
-app.controller('pessoasCtrl', function($scope, Restangular){
+app.controller('pessoasCtrl', function($rootScope, $scope, Restangular){
 
 	//@TODO corregir o service RESTANGULAR
 
 	$scope.pessoasScopeProvider = {
 		details: function(row){
-			console.log(row.entity);
+			$rootScope.openModal('view/modalDetailPessoa.html', row.entity, 'Pessoa', 'Detalhe de Pessoa', _loadPessoas);
 		}
 	};
 
@@ -33,6 +33,10 @@ app.controller('pessoasCtrl', function($scope, Restangular){
 	      { name: 'pessoaReferencia', displayName: 'P. Ref.'},
 	      { name: 'status', displayName: 'Status'}
 	];
+
+	$scope.newPessoa = function(){
+		$rootScope.openModal('view/modalFormPessoa.html', {}, 'Pessoa', 'Nova Pessoa', _loadPessoas);
+	};
 
 	var _loadPessoas = function(){
 		$scope.pessoasGridOptions.data = Restangular.all('pessoa').getList().$object;

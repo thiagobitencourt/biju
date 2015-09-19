@@ -3,6 +3,7 @@ var app = angular.module('bijuApp',
   'ngTouch', 
   'ngAnimate',
   'restangular',
+  'ui.bootstrap',
   'ui.grid', 
   'ui.grid.pagination']);
 

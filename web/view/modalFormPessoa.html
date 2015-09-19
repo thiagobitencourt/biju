@@ -1,0 +1,126 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title"><span class="glyphicon" ng-class="entity._id ? 'glyphicon-edit' : 'glyphicon-plus'"></span> {{title}}</h4>
+</div>
+
+<div class="modal-body form-horizontal">
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Nome:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.nome">
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Data Nasc.:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.nascimento">
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">CPF:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.cpf">
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">RG:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.rg">
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Rua:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.endereco[0].rua">
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Bairro:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.endereco[0].bairro">
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Cidade:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.endereco[0].cidade">
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Pais:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.endereco[0].pais">
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">T. Fixo:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.telefoneFixo">
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">T. Celular:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.telefoneFixo">
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">E-mail:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.email">
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Referencia:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.pessoaReferencia">
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Observação:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.observacao">
+			</div>
+		</div>
+		<div class="col-lg-6 form-group">
+			<label class="col-sm-3 control-label">Status:</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="entity.status">
+			</div>
+		</div>
+	</div>
+
+  <div class="callout callout-danger" ng-if="errorMessage">
+    <h4>Erro!</h4>
+    <p>{{ errorMessage }}</p>
+ 	</div>
+
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-default pull-left" ng-click="close()">Fechar</button>
+
+	<button ng-if="entity._id" type="button" class="btn btn-warning" ng-click="save(entity)">Editar</button>
+	<button ng-if="!entity._id" type="button" class="btn btn-success" ng-click="save(entity)">Salvar</button>
+
+</div>
