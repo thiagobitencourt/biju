@@ -15,7 +15,7 @@
 		<div class="col-lg-6 form-group">
 			<label class="col-sm-3 control-label">Data Nasc.:</label>
 			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.nascimento}}</p>
+				<p class="form-control-static">{{entity.nascimento | date:"dd/MM/yyyy"}}</p>
 			</div>
 		</div>
 	</div>
@@ -24,7 +24,7 @@
 		<div class="col-lg-6 form-group">
 			<label class="col-sm-3 control-label">CPF:</label>
 			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.cpf}}</p>
+				<p class="form-control-static">{{entity.cpf | cpf}}</p>
 			</div>
 		</div>
 		<div class="col-lg-6 form-group">
@@ -69,13 +69,13 @@
 		<div class="col-lg-6 form-group">
 			<label class="col-sm-3 control-label">T. Fixo:</label>
 			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.telefoneFixo}}</p>
+				<p class="form-control-static">{{entity.telefoneFixo | tel}}</p>
 			</div>
 		</div>
 		<div class="col-lg-6 form-group">
 			<label class="col-sm-3 control-label">T. Celular:</label>
 			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.telefoneFixo}}</p>
+				<p class="form-control-static">{{entity.telefoneCelular | tel}}</p>
 			</div>
 		</div>
 	</div>

@@ -15,7 +15,7 @@
 		<div class="col-lg-6 form-group">
 			<label class="col-sm-3 control-label">Data Nasc.:</label>
 			<div class="col-sm-9">
-				<input type="text" class="form-control" ng-model="entity.nascimento">
+				<input type="text" class="form-control" ng-model="entity.nascimento" ui-date-mask>
 			</div>
 		</div>
 	</div>
@@ -24,7 +24,7 @@
 		<div class="col-lg-6 form-group">
 			<label class="col-sm-3 control-label">CPF:</label>
 			<div class="col-sm-9">
-				<input type="text" class="form-control" ng-model="entity.cpf">
+				<input type="text" class="form-control" ng-model="entity.cpf" ui-br-cpf-mask>
 			</div>
 		</div>
 		<div class="col-lg-6 form-group">
@@ -69,13 +69,13 @@
 		<div class="col-lg-6 form-group">
 			<label class="col-sm-3 control-label">T. Fixo:</label>
 			<div class="col-sm-9">
-				<input type="text" class="form-control" ng-model="entity.telefoneFixo">
+				<input type="text" class="form-control" ng-model="entity.telefoneFixo" ui-br-phone-number>
 			</div>
 		</div>
 		<div class="col-lg-6 form-group">
 			<label class="col-sm-3 control-label">T. Celular:</label>
 			<div class="col-sm-9">
-				<input type="text" class="form-control" ng-model="entity.telefoneFixo">
+				<input type="text" class="form-control" ng-model="entity.telefoneCelular" ui-br-phone-number>
 			</div>
 		</div>
 	</div>
