@@ -27,6 +27,7 @@ var Schema = mongoose.Schema;
 var enderecoSchema = new Schema({ 
 	pais: {type: String, default: "Brasil"},
 	cidade: String,
+	cep: String,
 	bairro: String,
 	rua: String
 });
