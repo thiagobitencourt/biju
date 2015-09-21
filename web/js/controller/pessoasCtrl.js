@@ -27,8 +27,8 @@ app.controller('pessoasCtrl', function($rootScope, $scope, Restangular){
 
 	$scope.pessoasGridOptions.columnDefs = [
 	      { name: 'nome', displayName: 'Nome'},
-	      { name: 'telefoneFixo', displayName: 'Fixo'},
-	      { name: 'telefoneCelular', displayName: 'Celular'},
+	      { name: 'telefoneFixo', cellFilter:'tel', displayName: 'Fixo'},
+	      { name: 'telefoneCelular', cellFilter:'tel', displayName: 'Celular'},
 	      { name: 'email', displayName: 'E-mail'},
 	      { name: 'pessoaReferencia', displayName: 'P. Ref.'},
 	      { name: 'status', displayName: 'Status'}

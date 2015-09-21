@@ -30,8 +30,8 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular){
 	      { name: 'descricao', displayName: 'Descrição'},
 	      { name: 'tipo', displayName: 'Tipo'},
 	      { name: 'tamanho', displayName: 'Tamanho'},
-	      { name: 'vlrCusto', displayName: 'Valor Custo'},
-	      { name: 'vlrVenda', displayName: 'Valor Venda'}
+	      { name: 'vlrCusto', cellFilter:'currency', displayName: 'Valor Custo'},
+	      { name: 'vlrVenda', cellFilter:'currency', displayName: 'Valor Venda'}
 	];
 
 	$scope.newProduto = function(){

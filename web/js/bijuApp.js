@@ -2,10 +2,13 @@ var app = angular.module('bijuApp',
   ['ngRoute', 
   'ngTouch', 
   'ngAnimate',
+  'ngSanitize',
   'restangular',
   'ui.bootstrap',
   'ui.grid', 
-  'ui.grid.pagination']);
+  'ui.grid.pagination',
+  'ui.utils.masks',
+  'brasil.filters']);
 
 app.config(function($routeProvider, RestangularProvider) {
   //set the base url for api calls on our RESTful services
