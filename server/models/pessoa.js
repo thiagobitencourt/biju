@@ -24,13 +24,13 @@ var Schema = mongoose.Schema;
 // 	"status": "Ativo"
 // }
 
-var enderecoSchema = new Schema({ 
-	pais: {type: String, default: "Brasil"},
-	cidade: String,
-	cep: String,
-	bairro: String,
-	rua: String
-});
+// var enderecoSchema = new Schema({ 
+// 	pais: {type: String, default: "Brasil"},
+// 	cidade: String,
+// 	cep: String,
+// 	bairro: String,
+// 	rua: String
+// });
 
 pessoaSchema = new Schema({
 	nome: { type: String, required: true, index: { unique: true }},
@@ -39,7 +39,14 @@ pessoaSchema = new Schema({
 	rg: { type: String, required: true, unique: true},
 	telefoneFixo: {type: String},
 	telefoneCelular: {type: String},
-	endereco: [enderecoSchema],
+	endereco: {
+		pais: {type: String, default: "Brasil"},
+		cidade: String,
+		estado: String,
+		cep: String,
+		bairro: String,
+		rua: String
+	},
 	email: {type: String},
 	pessoaReferencia: {type:Schema.ObjectId, ref:"Pessoa"},
 	observacao: {type: String},
@@ -54,7 +61,7 @@ pessoaSchema.statics.secureFind = function(pessoaId, query, cb) {
 			return cb("Incorrect ID", null);
 		}
 
-		this.findOne({_id: pessoaId, deletedAt: { $eq: null }}, {deletedAt:0}, function(err, pessoa){
+		this.findOne({_id: pessoaId, deletedAt: { $eq: null }}, {deletedAt:0}).populate('pessoaReferencia').exec( function(err, pessoa){
 			if(err) return cb(err, null);
 
 			if(!pessoa)
@@ -68,7 +75,7 @@ pessoaSchema.statics.secureFind = function(pessoaId, query, cb) {
 
 		query.deletedAt = { $eq: null };
 
-		this.find(query, {deletedAt:0}, function(err, pessoa){
+		this.find(query, {deletedAt:0}).populate('pessoaReferencia').exec(function(err, pessoa){
 			if(err) return cb(err, null);
 			cb(null, pessoa);
 		});

@@ -127,6 +127,7 @@ var UserControler = function(){
 
 		user.username = newUser.username;
 		user.password = newUser.password;
+		user.pessoa = newUser.pessoa;
 
 		user.save(function(err, userCreated){
 			return _onCreateOrUpdate(err, userCreated, "create", callback);

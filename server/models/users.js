@@ -59,12 +59,12 @@ userSchema.methods.clean = function() {
 userSchema.statics.secureFind = function(userId, cb) {
 
   if(userId){
-  	this.findOne({_id: userId, deletedAt: { $eq: null }}, {password:0, deletedAt:0}, function(err, user){
+  	this.findOne({_id: userId, deletedAt: { $eq: null }}, {password:0, deletedAt:0}).populate('pessoa').exec(function(err, user){
   		if(err) return cb(err, null);
       	cb(null, user);
     });
   }else{
-    this.find({deletedAt: { $eq: null }}, {password:0, deletedAt:0}, function(err, users){
+    this.find({deletedAt: { $eq: null }}, {password:0, deletedAt:0}).populate('pessoa').exec(function(err, users){
       if(err) return cb(err, null);
         cb(null, users);
     });

@@ -22,15 +22,18 @@ MODELO: KIT
       * Referência
       * Descrição
       * Valor unit
-   * Quantidade
+   * Quantidade Entregue
+   * Quantidade Devolvida
    * Valor total produto
 * Valor total kit
+* Valor total da dívida
 * Pagamentos [array]
    * Forma Pagamento
    * Data venc.
    * Data receb.
    * Valor
 * Valor total pagamento
+* Estado
 * Observação
 */
 
@@ -45,11 +48,13 @@ kitSchema = new Schema({
 				descricao : {type : String, required : true}, //valores locais (nao afetam a entidade produto)
 				vlrUnit : {type : Number, required : true} //valores locais (nao afetam a entidade produto)
 			},
-			quantidade : {type : Number, required : true},
+			qtdeEntregue : {type : Number, required : true},
+			qtdeDevolvida : {type : Number, required : true},
 			vlrTotal : {type : Number, required : true},
 		}
 	],
-	vlrTotalKit : {type : Number, required : true}, //somente o sistema pode manipular.
+	vlrTotalKit : {type : Number, required : true},
+	vlrTotalDivida : {type : Number, required : true},
 	pagamentos : [
 		{
 			formaPgto : {type : String, required : true},
@@ -59,6 +64,7 @@ kitSchema = new Schema({
 		}
 	],
 	vlrTotalPgto : {type : Number, required : true}, //somente o sistema pode manipular.
+	estado : {type : String, required : true},
 	observacao : {type : String},
 	deletedAt : { type: Date, default: null} //somente o sistema pode manipular.
 });
