@@ -68,7 +68,6 @@ pessoaSchema.statics.secureFind = function(pessoaId, query, cb) {
 
 		query.deletedAt = { $eq: null };
 
-		// this.find(query, function(err, pessoa){
 		this.find(query, {deletedAt:0}, function(err, pessoa){
 			if(err) return cb(err, null);
 			cb(null, pessoa);
@@ -82,26 +81,15 @@ pessoaSchema.statics.secureDelete = function(pessoaId, cb) {
 		return cb("Incorrect ID", null);
 	}
 
-	//Real Remove
-	this.remove(function(err, p){
-			if(err)
-				return cb({error: err, code: 500, message : "Erro ao atualizar pessoa."}, null);
+	this.findOneAndUpdate({_id : pessoaId,  deletedAt: { $eq: null } }, {deletedAt : dateFormat.timeStamp()}, {new : true} ,function(err, p){
+		if(err)
+			return cb({error: err, code: 500, message : "Erro ao atualizar pessoa."}, null);
 
-			if(!p)
-				return cb({message: "Pessoa não encontrada.", code:400}, null);
+		if(!p)
+			return cb({message: "Pessoa não encontrada.", code:400}, null);
 
-			return cb(null, p);
+		return cb(null, p);
 	});
-
-	// this.findOneAndUpdate({_id : pessoaId,  deletedAt: { $eq: null } }, {deletedAt : dateFormat.timeStamp()}, {new : true} ,function(err, p){
-	// 	if(err)
-	// 		return cb({error: err, code: 500, message : "Erro ao atualizar pessoa."}, null);
-
-	// 	if(!p)
-	// 		return cb({message: "Pessoa não encontrada.", code:400}, null);
-
-	// 	return cb(null, p);
-	// });
 };
 
 pessoaSchema.statics.secureUpdate = function(pessoaId, newPessoa, cb) {
