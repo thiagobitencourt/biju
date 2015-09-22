@@ -22,6 +22,15 @@ Observação
 
 */
 
+/*
+{
+  "tipo":"Pulseiras",
+  "quantidade":10,
+  "valor": "16,90",
+  "observacao":"Primeira pulseira"
+}
+*/
+
 estoqueSchema = new Schema({
   tipo: { type: String, required : true} ,
   quantidade: { type: Number, required : true} ,
