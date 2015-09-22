@@ -1,6 +1,6 @@
 var app = angular.module('bijuApp');
 
-app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restangular, entity, type, title, loadDataTableGrid) {
+app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restangular, entity, type, title, loadDataTableGrid, serviceEntity) {
 	
 	$scope.entity = entity;
 	$scope.type = type;
@@ -12,12 +12,12 @@ app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restang
 
 	$scope.editFromDetail = function(entity){
 		$modalInstance.close();
-		$rootScope.openModal('view/modalForm'+type+'.html', Restangular.copy(entity), null, 'Editar '+type, loadDataTableGrid);
+		$rootScope.openModal('view/modalForm'+type+'.html', Restangular.copy(entity), null, 'Editar '+type, loadDataTableGrid, serviceEntity);
 	};
 
 	$scope.removeFromDetail = function(entity){
 		$modalInstance.close();
-		$rootScope.openModal('view/modalDelete'+type+'.html', entity, null, 'Excluir '+type, loadDataTableGrid);
+		$rootScope.openModal('view/modalDelete'+type+'.html', entity, null, 'Excluir '+type, loadDataTableGrid, serviceEntity);
 	};
 
 	$scope.remove = function(entity){
@@ -31,8 +31,7 @@ app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restang
 
 	$scope.save = function(entity){
 		if (_isUndefinedOrNull(entity._id) ){
-			//@TODO service restangular
-			Restangular.all('produto').post(entity).then(function(response){
+			serviceEntity.post(entity).then(function(response){
 				$modalInstance.dismiss();
 				loadDataTableGrid();
 	  	}, function(response) {

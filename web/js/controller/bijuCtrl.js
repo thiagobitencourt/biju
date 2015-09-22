@@ -5,7 +5,7 @@ app.controller('bijuCtrl', function($rootScope, $scope, $location, $modal){
     return viewLocation === $location.path();
   };
 
-  $rootScope.openModal = function(template, entity, type, title, loadDataTableGrid){
+  $rootScope.openModal = function(template, entity, type, title, loadDataTableGrid, serviceEntity){
 
 		$modal.open({
 			animation: true, 
@@ -24,6 +24,9 @@ app.controller('bijuCtrl', function($rootScope, $scope, $location, $modal){
 				},
 				loadDataTableGrid: function(){
 					return loadDataTableGrid;
+				},
+				serviceEntity: function(){
+					return serviceEntity;
 				}
 			}
 		});

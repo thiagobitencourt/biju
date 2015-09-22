@@ -7,8 +7,9 @@ var app = angular.module('bijuApp',
   'ui.bootstrap',
   'ui.grid', 
   'ui.grid.pagination',
+  'ui.grid.selection', 
   'ui.utils.masks',
-  'brasil.filters']);
+  'idf.br-filters']);
 
 app.config(function($routeProvider, RestangularProvider) {
   //set the base url for api calls on our RESTful services
