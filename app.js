@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var https = require('https');
 var fs = require('fs');
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 mongoose.connect('mongodb://localhost/biju', null, function(err){
 
@@ -21,8 +22,9 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 
 	app.use(session({
 		secret: 'migué por polegada quadrada',
-		resave: false,
-		saveUninitialized: true,
+		saveUninitialized: true, // don't create session until something stored 
+    	resave: false, //don't save session if unmodified 
+		store: new MongoStore({ mongooseConnection: mongoose.connection }),
 		cookie: { 
 			secure: true,
 			maxAge: 60000 //60seg
