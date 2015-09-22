@@ -1,5 +1,6 @@
 global.__base = __dirname + '/server/';
 
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -7,12 +8,24 @@ var https = require('https');
 var fs = require('fs');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var LoggingSystem = require(__base + 'utils/log');
+var logger = require('winston');
+var args = process.argv;
 
 mongoose.connect('mongodb://localhost/biju', null, function(err){
 
 	if(err)
 		return console.error("DB error : " + err);
 
+	var logDebug = false;
+	if(args.indexOf('--debug') > -1)
+		logDebug = true;
+	var loggingErrors = LoggingSystem.configure(logDebug);
+	if(loggingErrors){
+		return console.error(loggingErrors);		
+	}
+	logger.info("Logger online.");
+	
 	var LoadRouter = require(__base + 'routes/loadRoutes');
 
 	var app = express();
