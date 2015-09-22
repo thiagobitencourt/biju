@@ -19,7 +19,20 @@ var setProdutoRoutes = function(){
 	var _produtoId = _produto + "/:id"; 
 
 	this.router.get(_produto, function(req, res){
-		ProdutoController.findProduto(null, req.query, function(err, produtos){
+
+		var query = null;
+		if(req.query && req.query.q){
+			query = req.query.q;			
+			try{
+				query = JSON.parse(query);
+			}catch(e){
+				return res.status(400).send("Query parse error: " +e);
+			}
+		}
+		if(!query)
+			query = {};
+
+		ProdutoController.findProduto(null, query, function(err, produtos){
 			if(err) return res.response(err.error, err.code, err.message);
 
 			res.send(produtos);

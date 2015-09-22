@@ -13,9 +13,10 @@
   "author": "Gustavo R. Valiai; Mohamad A. Ali; Thiago R. M. Bitencourt",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "express": "^4.13.3",
-    "mongoose": "^4.1.7",
+    "bcrypt": "~0.8.5",
     "body-parser": "~1.13.3",
-    "bcrypt": "~0.8.5"
+    "express": "^4.13.3",
+    "express-session": "^1.11.3",
+    "mongoose": "^4.1.8"
   }
 }

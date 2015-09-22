@@ -35,8 +35,8 @@ var Schema = mongoose.Schema;
 pessoaSchema = new Schema({
 	nome: { type: String, required: true, index: { unique: true }},
 	nascimento: Date,
-	cpf: { type: String, required: true, unique: true},
-	rg: { type: String, required: true, unique: true},
+	cpf: { type: String, unique: true},
+	rg: { type: String, unique: true},
 	telefoneFixo: {type: String},
 	telefoneCelular: {type: String},
 	endereco: {

@@ -13,13 +13,10 @@ var getTimezonedISODateString = function(){
 
 /*
 MODELO: Estoque
-
-Tipo
-Quantidade
-Valor
-Observação
-
-
+  Tipo
+  Quantidade
+  Valor
+  Observação
 */
 
 /*
@@ -32,10 +29,11 @@ Observação
 */
 
 estoqueSchema = new Schema({
-  tipo: { type: String, required : true} ,
-  quantidade: { type: Number, required : true} ,
-  valor: { type: Number, required : true} ,
-  observacao: { type: String, required : true} ,
+  tipo: { type: String, required : true}, //Corresponde ao campo Descrição, na planilha
+  produto: {type:Schema.ObjectId, ref:"Produto", required: true}, //Faz referencia a um produto existente
+  quantidade: { type: Number, required : true},
+  valor: { type: Number, required : true},
+  valorTotal: { type: Number, required : true}, //Definido pela multiplacação de valor por quantidade (valor * quantidade).
   deletedAt: { type: Date, default: null}
 });
 
@@ -48,7 +46,7 @@ estoqueSchema.statics.secureFind = function(estoqueId, query, cb) {
       return cb("Incorrect ID", null);
     }
 
-    this.findOne({_id: estoqueId, deletedAt: { $eq: null }}, {deletedAt:0}, function(err, estoque){
+    this.findOne({_id: estoqueId, deletedAt: { $eq: null }}, {deletedAt:0}).populate('produto').exec( function(err, estoque){
       if(err) return cb(err, null);
 
       if(!estoque)
@@ -62,7 +60,7 @@ estoqueSchema.statics.secureFind = function(estoqueId, query, cb) {
 
     query.deletedAt = { $eq: null };
 
-    this.find(query, {deletedAt:0}, function(err, estoques){
+    this.find(query, {deletedAt:0}).populate('produto').exec( function(err, estoques){
       if(err) return cb(err, null);
       cb(null, estoques);
     });
