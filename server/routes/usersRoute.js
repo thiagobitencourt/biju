@@ -19,19 +19,36 @@ var setLoginRoutes = function(){
 
 	this.router.post('/login', function(req, res){
 
-		UserCtrl.login(req.body.username, req.body.password, function(err, session){
-			if(err) return res.response(err.error, err.code, err.message);
+		if(!req.session.userData){
 
-			if(session){
-				req.appSession = session;
-				return res.send(session);
-			}else{
-				return res.response(err.error, err.code, err.message);
-			}
-		});
+			UserCtrl.login(req.body.username, req.body.password, function(err, userData){
+				if(err) return res.response(err.error, err.code, err.message);
+
+				if(userData){
+					req.session.userData = userData;
+					return res.send(userData);
+				}else{
+					return res.response(err.error, err.code, err.message);
+				}
+			});
+
+		}else{			
+			return res.send(req.session.userData);
+		}		
 	});
 
-	this.router.post('/logout', function(){
+	this.router.post('/logout', function(req, res){
+
+		try{
+			req.session.destroy(function(err){
+				if(err)
+					return res.response(err, 500, "Error while trying to destroy the session");
+
+				res.send("Bye");
+			});
+		}catch(e){
+			return res.response(e, 500, "Error on route /logout");
+		}	
 
 	});
 }

@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var https = require('https');
 var fs = require('fs');
+var session = require('express-session');
 
 mongoose.connect('mongodb://localhost/biju', null, function(err){
 
@@ -17,6 +18,16 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 
 	app.use(bodyParser.urlencoded({extended: true}));
 	app.use(bodyParser.json());
+
+	app.use(session({
+		secret: 'migué por polegada quadrada',
+		resave: false,
+		saveUninitialized: true,
+		cookie: { 
+			secure: true,
+			maxAge: 60000 //60seg
+		}
+	}))	
 
 	var httpPort = 8180;
 	var httpsPort = 8143;
@@ -40,6 +51,19 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 		};
 		next();
 	});
+
+	var isLoggedIn = function(req, res, next){
+
+		if(req.session && req.session.userData){
+			console.log("isLoggedIn");
+			return next();
+		}
+		console.log("NOT LoggedIn");
+		//return res.redirect('/login');
+		next();
+	}
+
+	app.get('/', isLoggedIn);
 
 	app.use(express.static('web/'));
 
