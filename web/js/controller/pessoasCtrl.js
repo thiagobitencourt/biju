@@ -40,7 +40,6 @@ app.controller('pessoasCtrl', function($rootScope, $scope, Restangular){
 	};
 
 	var _loadPessoas = function(){
-		pessoaService.getL
 		$scope.pessoasGridOptions.data = pessoaService.getList().$object;
 	};
 
