@@ -22,13 +22,26 @@ MODELO: Produto
 * Observação 
 */
 
+/*
+{
+	"referencia": "321",
+	"descricao": "Descricao 1 ",
+	"tipo": "Anel",
+	"tamanho": "GG ?",
+	"vlrCusto": 50.0,
+	"vlrVenda": 70.0,
+	"observacao": "Observei e nao vi nada",
+	"deletedAt": null
+}
+*/
+
 produtoSchema = new Schema({
   	referencia: { type: String, required: true},
   	descricao: { type: String, required: true},
   	tipo: { type: String, required: true},
   	tamanho: { type: String},
-  	vlrCusto: { type: String},
-  	vlrVenda: { type: String},
+  	vlrCusto: { type: String, required : true},
+  	vlrVenda: { type: String, required : true},
   	observacao: { type: String},
   	deletedAt: { type: Date, default: null}
 });
@@ -51,11 +64,6 @@ produtoSchema.statics.secureFind = function(produtoId, query, cb) {
 			cb(null, produto);
 		});
 	}else{
-		if(!query)
-			query = {};
-
-		query.deletedAt = { $eq: null };
-
 		this.find(query, {deletedAt:0}, function(err, produtos){
 			if(err) return cb(err, null);
 			cb(null, produtos);

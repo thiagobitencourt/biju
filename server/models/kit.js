@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+
 var Schema = mongoose.Schema;
 
 var _validateId = require(__base + 'utils/validateObjectId');
@@ -37,24 +38,76 @@ MODELO: KIT
 * Observação
 */
 
+/*
+{
+	"dataEntrega" : "09-22-2015",
+	"dataProxRetorno" : "10-22-2015",
+	"itens" : [
+		{
+			"produto": "56014f76721e4c2c146c4df8",
+			"vlrUnit" : 43.09,
+			"qtdeEntregue" : 20,
+			"qtdeDevolvida" : 0,
+			"vlrTotal" : 861.8
+		},
+		{
+			"produto": "56014f97721e4c2c146c4df9",
+			"vlrUnit" : 12.3,
+			"qtdeEntregue" : 25,
+			"qtdeDevolvida" : 10,
+			"vlrTotal" : 307.5
+		}
+	],
+	"vlrTotalKit" : 1169.3,
+	"vlrTotalDivida" : 123.0,
+	"pagamentos" : [
+		{
+			"formaPgto" : "Nota promissória",
+			"dataVencimento" : "11-22-2015",
+			"dataPgto" : "11-22-2015",
+			"vlrPgto" : 30.00
+		},
+		{
+			"formaPgto" : "Nota promissória",
+			"dataVencimento" : "09-22-2015",
+			"dataPgto" : "09-22-2015",
+			"vlrPgto" : 10.00
+		},
+		{
+			"formaPgto" : "Nota promissória",
+			"dataVencimento" : "09-22-2015",
+			"dataPgto" : null,
+			"vlrPgto" : 60.00
+		},
+		{
+			"formaPgto" : "Nota promissória",
+			"dataVencimento" : "09-22-2015",
+			"dataPgto" : null,
+			"vlrPgto" : 23.00
+		}
+	],
+	"vlrTotalPgto" : 40.00,
+	"estado" : "Dívida Pendente",
+	"observacao" : "Num sei",
+	"deletedAt" : null
+}
+*/
+
 kitSchema = new Schema({
+	codigo : {type : Number, required : true, unique : true},
 	dataEntrega : {type : Date, default: null},
 	dataProxRetorno : {type : Date, default: null},
 	itens : [
 		{
-			produto: {
-				_id : {type : Schema.ObjectId, ref:"Produto", required: true},
-				referencia : {type : String, required : true}, //valores locais (nao afetam a entidade produto)
-				descricao : {type : String, required : true}, //valores locais (nao afetam a entidade produto)
-				vlrUnit : {type : Number, required : true} //valores locais (nao afetam a entidade produto)
-			},
-			qtdeEntregue : {type : Number, required : true},
-			qtdeDevolvida : {type : Number, required : true},
-			vlrTotal : {type : Number, required : true},
+			produto: {type : Schema.ObjectId, ref:"Produto", required: true},
+			vlrUnit : {type : Number, required : true},
+			qtdeEntregue : {type : Number, required : true, default : 0.0},
+			qtdeDevolvida : {type : Number, required : true, default : 0.0},
+			vlrTotal : {type : Number, required : true, default : 0.0},
 		}
 	],
-	vlrTotalKit : {type : Number, required : true},
-	vlrTotalDivida : {type : Number, required : true},
+	vlrTotalKit : {type : Number, required : true, default : 0.0},
+	vlrTotalDivida : {type : Number, required : true, default : 0.0},
 	pagamentos : [
 		{
 			formaPgto : {type : String, required : true},
@@ -63,10 +116,10 @@ kitSchema = new Schema({
 			vlrPgto : {type : Number, required : true, default : 0.0},
 		}
 	],
-	vlrTotalPgto : {type : Number, required : true}, //somente o sistema pode manipular.
+	vlrTotalPgto : {type : Number, required : true, default : 0.0},
 	estado : {type : String, required : true},
 	observacao : {type : String},
-	deletedAt : { type: Date, default: null} //somente o sistema pode manipular.
+	deletedAt : { type: Date, default: null}
 });
 
 kitSchema.statics.secureFind = function(kitId, query, cb) {
@@ -76,7 +129,7 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 			return cb("Incorrect ID", null);
 		}
 
-		this.findOne({_id: kitId, deletedAt: { $eq: null }}, {deletedAt:0}, function(err, kit){
+		this.findOne({_id: kitId, deletedAt: { $eq: null }}, {deletedAt:0}).populate('itens.produto').exec( function(err, kit){
 			if(err) return cb(err, null);
 
 			if(!kit)
@@ -90,7 +143,7 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 
 		query.deletedAt = { $eq: null };
 
-		this.find(query, {deletedAt:0}, function(err, kits){
+		this.find(query, {deletedAt:0}).populate('itens.produto').exec( function(err, kits){
 			if(err) return cb(err, null);
 			cb(null, kits);
 		});

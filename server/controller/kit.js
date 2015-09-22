@@ -2,6 +2,7 @@ var kitController = function(){
 
 	var _Kit = require(__base + 'models/kit');
 	var _validateId = require(__base + 'utils/validateObjectId');
+	var _Counter = require(__base + 'models/counter');
 
 	//errObj = {error: {}, code: 000, message: '' }
 
@@ -38,71 +39,46 @@ var kitController = function(){
 
 	}
 
-	var _recalculateKit = function(kit, callback){
-		//callback(err, updatedKit);
-		try{
-			//itens - vlrTotal
-
-			kit.vlrTotalKit = 0.0;
-			for(var ivt in kit.itens){
-				var item = kit.itens[ivt];
-
-				kit.vlrTotalKit += item.vlrTotal;
-			}
-
-			kit.vlrTotalPgto = 0.0;
-			for(var ivp in kit.pagamentos){
-				var item = kit.pagamentos[ivp];
-
-				kit.vlrTotalPgto += item.vlrPgto;
-			}
-
-			return callback(null, kit);
-
-
-		}catch(e){
-			return callback("Error while _recalculateKit : " + e, null);
-		}
-	}
-
 	var _saveKit = function(body, callback){
 
 		try{
 			body.deletedAt = null; //TODO - limpeza manual do campo para evitar que o usuário altere.
-
-			_recalculateKit(body, function(err, newBody){
-				if(err)
-					return callback({error: err, code: 500, message : "Erro ao recalcular kit."});
 				
-				if(newBody._id){
-					//update
+			if(body._id){
+				//update
 
-					var id = newBody._id;
-					delete newBody._id;
+				var id = body._id;
+				delete body._id;
+				delete body.codigo;
 
-					_Kit.secureUpdate(id, newBody ,function(err, newKit){
-						if(err)
-							return callback({error: err, code: 500, message : "Erro ao atualizar kit."});
+				_Kit.secureUpdate(id, body ,function(err, newKit){
+					if(err)
+						return callback({error: err, code: 500, message : "Erro ao atualizar kit."});
 
-						return callback(null, newKit);
-					});
+					return callback(null, newKit);
+				});
 
-				}else{
-					//insert
-					var p = new _Kit(newBody);
+			}else{
+				//insert
+				delete body.codigo;
+				var p = new _Kit(body);
+
+				_Counter.increment('Kit', function (err, result) {
+					if (err)
+						return cb(err);
+
+					p.codigo = result.next;
 					p.save(function(err, newKit){
 						if(err)
 							return callback({error: err, code: 500, message : "Erro ao salvar kit."});
 
 						return callback(null, newKit);
-
-					});
-				}
-			});
-			
+					})					
+				});
+			}			
 
 		}catch(e){
-			return callback({error: e, code: 400, message : "Erro ao salvar kit."});
+			return callback({error: e.toString(), code: 400, message : "Erro ao salvar kit."});
 		}
 
 	}
