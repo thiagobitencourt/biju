@@ -4,7 +4,15 @@
 </div>
 
 <div class="modal-body form-horizontal">
-  <div class="form-group">
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">Referência:</label>
+		<div class="col-sm-9">
+			<p class="form-control-static">{{entity.produto.referencia}}</p>
+		</div>
+ 	</div>
+
+  	<div class="form-group">
 		<label class="col-sm-3 control-label">Tipo:</label>
 		<div class="col-sm-9">
 		  <p class="form-control-static">{{entity.produto.tipo}}</p>
@@ -21,14 +29,14 @@
  	<div class="form-group">
 		<label class="col-sm-3 control-label">Valor:</label>
 		<div class="col-sm-9">
-		  <p class="form-control-static">{{entity.produto.valor}}</p>
+		  <p class="form-control-static">{{entity.produto.vlrCusto | currency}}</p>
 		</div>
  	</div>
 
  	<div class="form-group">
 		<label class="col-sm-3 control-label">Valor Total:</label>
 		<div class="col-sm-9">
-		  <p class="form-control-static">{{entity.valorTotal}}</p>
+		  <p class="form-control-static">{{entity.valorTotal | currency}}</p>
 		</div>
  	</div>
 </div>

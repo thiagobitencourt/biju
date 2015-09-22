@@ -37,7 +37,7 @@ estoqueSchema = new Schema({
   deletedAt: { type: Date, default: null}
 });
 
-estoqueSchema.index({tipo: 1, deletedAt: 1}, {unique: true}); //composed unique.
+//estoqueSchema.index({tipo: 1, deletedAt: 1}, {unique: true}); //composed unique.
 
 estoqueSchema.statics.secureFind = function(estoqueId, query, cb) {
 

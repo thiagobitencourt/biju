@@ -5,9 +5,23 @@ app.controller('estoqueCtrl', function($rootScope, $scope, Restangular){
 	var estoqueService = Restangular.service('estoque');
 	var produtoService = Restangular.service('produto');
 
+	var hackerFunction = function(){
+
+		// console.log("hackerFunction");
+
+		var _put = function(entity){
+			entity.valorTotal = (entity.produto.vlrCusto * entity.quantidade);
+			return entity.put();
+		};
+
+		return {
+			myUpdate: _put
+		}
+	}();
+
 	$scope.estoqueScopeProvider = {
 		details: function(row){
-			$rootScope.openModal('view/modalDetailEstoque.html', row.entity, 'Estoque', 'Detalhes do Estoque', _loadEstoque, estoqueService);
+			$rootScope.openModal('view/modalDetailEstoque.html', row.entity, 'Estoque', 'Detalhes do Estoque', _loadEstoque, hackerFunction);
 		}
 	};
 
@@ -36,9 +50,7 @@ app.controller('estoqueCtrl', function($rootScope, $scope, Restangular){
 	];
 
 	$scope.newEstoque = function(estoque){
-		// $rootScope.openModal('view/modalFormEstoque.html', {}, 'Estoque', 'Estoque', _loadEstoque, estoqueService);
 
-		console.log(estoque.referencia);
 		Restangular.one('produto').get({"q":{"referencia":estoque.referencia}})
 		.then( function(response){
 
@@ -63,6 +75,7 @@ app.controller('estoqueCtrl', function($rootScope, $scope, Restangular){
 
 			}, function(response) {
 				delete $scope.estoque;
+	  			// $scope.estoqueError = response.data.message;
 	  			$scope.estoqueError = response.data;
 			});
 		});
@@ -81,20 +94,36 @@ app.controller('estoqueCtrl', function($rootScope, $scope, Restangular){
 		}, 0);
 	}
 
+	var _validaValorEstoque = function(estoque){
+
+		//TODO: Tirar esta lógica, deve estar no back-end
+		/*
+			Verifica se o valorTotal do estoque esta correto baseado no valor de um produto e quantidade.
+			Se o valor não estiver correto, atualiza e atualiza a base de dados.
+		*/
+		angular.forEach(estoque, function(estq){
+			var valorEsperado = (estq.produto.vlrCusto * estq.quantidade);
+			if(estq.valorTotal != valorEsperado){
+				console.log("Valores diferentes - Atualiza base de dados");
+				estq.valorTotal = valorEsperado;
+				estq.put().then(function(res){}, function(resErr){ console.log("error: " + resErr)});
+			}
+		});
+	}
+
 	var _loadEstoque = function(){
 
 		estoqueService.getList().then(function(response){
 
-		console.log(response);
-		_calcularTotal(response);
+			console.log(response);
+			_validaValorEstoque(response);
+			
+			_calcularTotal(response);
+
 
 		$scope.estoqueGridOptions.data = response;
 		});
-
-		// var estoque = estoqueService.getList().$object;
-
 	};
 
 	_loadEstoque();
-
 });
