@@ -20,7 +20,6 @@ MODELO: Estoque
 */
 
 estoqueSchema = new Schema({
-  tipo: { type: String, required : true}, //Corresponde ao campo Descrição, na planilha
   produto: {type:Schema.ObjectId, ref:"Produto", required: true}, //Faz referencia a um produto existente
   quantidade: { type: Number, required : true},
   valor: { type: Number, required : true},
