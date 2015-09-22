@@ -2,17 +2,18 @@ var app = angular.module('bijuApp');
 
 app.controller('pessoasCtrl', function($rootScope, $scope, Restangular){
 
-	//@TODO corregir o service RESTANGULAR
+	var pessoaService = Restangular.service('pessoa');
 
 	$scope.pessoasScopeProvider = {
 		details: function(row){
-			$rootScope.openModal('view/modalDetailPessoa.html', row.entity, 'Pessoa', 'Detalhe de Pessoa', _loadPessoas);
+			$rootScope.openModal('view/modalDetailPessoa.html', row.entity, 'Pessoa', 'Detalhe de Pessoa', _loadPessoas, pessoaService);
 		}
 	};
 
 	$scope.pessoasGridOptions = {
-	    paginationPageSizes: [5, 10, 25, 50, 100],
-    	paginationPageSize: 5,
+	    paginationPageSizes: [10, 10, 25, 50, 100],
+    	paginationPageSize: 10,
+    	minRowsToShow: 11,
 	    multiSelect: false,
 	    enableRowSelection: true, 
 	    enableSelectAll: false,
@@ -27,19 +28,20 @@ app.controller('pessoasCtrl', function($rootScope, $scope, Restangular){
 
 	$scope.pessoasGridOptions.columnDefs = [
 	      { name: 'nome', displayName: 'Nome'},
-	      { name: 'telefoneFixo', cellFilter:'tel', displayName: 'Fixo'},
-	      { name: 'telefoneCelular', cellFilter:'tel', displayName: 'Celular'},
+	      { name: 'telefoneFixo', cellFilter:'brPhoneNumber', displayName: 'Fixo'},
+	      { name: 'telefoneCelular', cellFilter:'brPhoneNumber', displayName: 'Celular'},
 	      { name: 'email', displayName: 'E-mail'},
-	      { name: 'pessoaReferencia', displayName: 'P. Ref.'},
+	      { name: 'pessoaReferencia.nome', displayName: 'P. Ref.'},
 	      { name: 'status', displayName: 'Status'}
 	];
 
 	$scope.newPessoa = function(){
-		$rootScope.openModal('view/modalFormPessoa.html', {}, 'Pessoa', 'Nova Pessoa', _loadPessoas);
+		$rootScope.openModal('view/modalFormPessoa.html', {}, 'Pessoa', 'Nova Pessoa', _loadPessoas, pessoaService);
 	};
 
 	var _loadPessoas = function(){
-		$scope.pessoasGridOptions.data = Restangular.all('pessoa').getList().$object;
+		pessoaService.getL
+		$scope.pessoasGridOptions.data = pessoaService.getList().$object;
 	};
 
 	_loadPessoas();

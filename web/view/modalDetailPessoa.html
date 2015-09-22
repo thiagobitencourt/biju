@@ -4,112 +4,136 @@
 </div>
 
 <div class="modal-body form-horizontal">
-
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">Nome:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.nome}}</p>
+	<pre>{{entity}}</pre>
+	<div class="panel panel-default">
+  	<div class="panel-heading">
+    	<h3 class="panel-title">Dados Pessoais</h3>
+  	</div>
+  	<div class="panel-body">
+			<div class="row">
+				<div class="col-lg-6 form-group">
+					<label class="col-sm-3 control-label">Nome:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.nome}}</p>
+					</div>
+				</div>
+				<div class="col-lg-6 form-group">
+					<label class="col-sm-3 control-label">Data Nasc.:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.nascimento | date:"dd/MM/yyyy"}}</p>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">Data Nasc.:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.nascimento | date:"dd/MM/yyyy"}}</p>
+			<div class="row">
+				<div class="col-lg-6 form-group">
+					<label class="col-sm-3 control-label">CPF:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.cpf | brCpf}}</p>
+					</div>
+				</div>
+				<div class="col-lg-6 form-group">
+					<label class="col-sm-3 control-label">RG:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.rg}}</p>
+					</div>
+				</div>
 			</div>
-		</div>
+  	</div>
+  </div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Dados Endereço</h3>
+	  </div>
+	  <div class="panel-body">
+  		<div class="row">
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-3 control-label">Rua:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.endereco.rua}}</p>
+					</div>
+				</div>
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-3 control-label">Bairro:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.endereco.bairro}}</p>
+					</div>
+				</div>
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-3 control-label">CEP:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.endereco.cep}}</p>
+					</div>
+				</div>				
+			</div>
+			<div class="row">
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-3 control-label">Cidade:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.endereco.cidade}}</p>
+					</div>
+				</div>
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-3 control-label">Estado:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.endereco.estado}}</p>
+					</div>
+				</div>
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-3 control-label">Pais:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.endereco.pais}}</p>
+					</div>
+				</div>
+			</div>
+	  </div>
 	</div>
-
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">CPF:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.cpf | cpf}}</p>
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Dados Contato</h3>
+	  </div>
+	  <div class="panel-body">
+			<div class="row">
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-3 control-label">Fixo:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.telefoneFixo | brPhoneNumber}}</p>
+					</div>
+				</div>
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-3 control-label">Celular:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.telefoneCelular | brPhoneNumber}}</p>
+					</div>
+				</div>
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-3 control-label">E-mail:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.email}}</p>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">RG:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.rg}}</p>
+			<div class="row">
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-3 control-label">Referencia:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.pessoaReferencia.nome}}</p>
+					</div>
+				</div>
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-3 control-label">Observação:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.observacao}}</p>
+					</div>
+				</div>
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-3 control-label">Status:</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">{{entity.status}}</p>
+					</div>
+				</div>
 			</div>
-		</div>
+	  </div>
 	</div>
-
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">Rua:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.endereco[0].rua}}</p>
-			</div>
-		</div>
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">Bairro:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.endereco[0].bairro}}</p>
-			</div>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">Cidade:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.endereco[0].cidade}}</p>
-			</div>
-		</div>
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">Pais:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.endereco[0].pais}}</p>
-			</div>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">T. Fixo:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.telefoneFixo | tel}}</p>
-			</div>
-		</div>
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">T. Celular:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.telefoneCelular | tel}}</p>
-			</div>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">E-mail:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.email}}</p>
-			</div>
-		</div>
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">Referencia:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.pessoaReferencia}}</p>
-			</div>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">Observação:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.observacao}}</p>
-			</div>
-		</div>
-		<div class="col-lg-6 form-group">
-			<label class="col-sm-3 control-label">Status:</label>
-			<div class="col-sm-9">
-				<p class="form-control-static">{{entity.status}}</p>
-			</div>
-		</div>
-	</div>
-
 </div>
 
 <div class="modal-footer">
