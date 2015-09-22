@@ -2,17 +2,18 @@ var app = angular.module('bijuApp');
 
 app.controller('produtosCtrl', function($rootScope, $scope, Restangular){
 
-	//@TODO corregir o service RESTANGULAR
+	var produtoService = Restangular.service('produto');
 
 	$scope.produtosScopeProvider = {
 		details: function(row){
-			$rootScope.openModal('view/modalDetailProduto.html', row.entity, 'Produto', 'Detalhe do Produto', _loadProdutos);
+			$rootScope.openModal('view/modalDetailProduto.html', row.entity, 'Produto', 'Detalhe do Produto', _loadProdutos, produtoService);
 		}
 	};
 
 	$scope.produtosGridOptions = {
-	    paginationPageSizes: [5, 10, 25, 50, 100],
-    	paginationPageSize: 5,
+	    paginationPageSizes: [10, 10, 25, 50, 100],
+    	paginationPageSize: 10,
+    	minRowsToShow: 11,
 	    multiSelect: false,
 	    enableRowSelection: true, 
 	    enableSelectAll: false,
@@ -35,11 +36,11 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular){
 	];
 
 	$scope.newProduto = function(){
-		$rootScope.openModal('view/modalFormProduto.html', {}, 'Produto', 'Novo Produto', _loadProdutos);
+		$rootScope.openModal('view/modalFormProduto.html', {}, 'Produto', 'Novo Produto', _loadProdutos, produtoService);
 	};
 
 	var _loadProdutos = function(){
-		$scope.produtosGridOptions.data = Restangular.all('produto').getList().$object;
+		$scope.produtosGridOptions.data = produtoService.getList().$object;
 	};
 
 	_loadProdutos();
