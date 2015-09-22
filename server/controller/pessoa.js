@@ -1,3 +1,5 @@
+var logger = require('winston');
+
 var pessoaControler = function(){
 
 	var _Pessoa = require(__base + 'models/pessoa');
@@ -31,7 +33,7 @@ var pessoaControler = function(){
 			}
 
 		}catch(e){
-			console.log(e);
+			logger.error(e);
 			return callback({error: e, code: 400, message : "Erro ao salvar pessoa."});
 		}
 
@@ -83,7 +85,7 @@ var pessoaControler = function(){
 			}
 
 		}catch(e){
-			console.log(e);
+			logger.error(e);
 			return callback({error: e, code: 500, message : errMessage});
 		}	
 	}
