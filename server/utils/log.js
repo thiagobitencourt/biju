@@ -54,6 +54,22 @@ var Log = function(){
 
 			winston.add(CustomLogger, { level: 'info'});
 
+			winston.add(
+				winston.transports.DailyRotateFile, 
+				{
+					name: 'dailyinfo',
+					filename: __base + 'logs/info.log',
+					level: 'info',
+					datePattern: '.dd',
+					maxsize: 1024 * 1024 * 5,
+					maxFiles: 10, 
+					handleExceptions: true,
+					json: false,
+					colorize: true,
+					timestamp : DateFormat.timeStamp
+				}
+			);
+
 			if(logDebug){
 				console.log("Debug logging enabled");
 				winston.add(
