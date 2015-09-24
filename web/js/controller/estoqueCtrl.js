@@ -61,7 +61,7 @@ app.controller('estoqueCtrl', function($rootScope, $scope, Restangular){
 
 			var produto = response[0];
 
-			estoque.tipo = produto.tipo; // TODO: Remover;
+			//estoque.tipo = produto.tipo; // TODO: Remover;
 			estoque.produto = produto._id;
 			estoque.valor = produto.vlrCusto;
 			estoque.valorTotal = (produto.vlrCusto * estoque.quantidade);
@@ -115,13 +115,10 @@ app.controller('estoqueCtrl', function($rootScope, $scope, Restangular){
 
 		estoqueService.getList().then(function(response){
 
-			console.log(response);
 			_validaValorEstoque(response);
-			
 			_calcularTotal(response);
 
-
-		$scope.estoqueGridOptions.data = response;
+			$scope.estoqueGridOptions.data = response;
 		});
 	};
 

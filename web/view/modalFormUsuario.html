@@ -1,0 +1,52 @@
+<form class="form-horizontal" name="form" novalidate>
+	<div class="modal-header">
+	    <button type="button" class="close" aria-label="Close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
+	    <h4 class="modal-title"><span class="glyphicon" ng-class="entity._id ? 'glyphicon-edit' : 'glyphicon-plus'"></span> {{title}}</h4>
+	</div>
+
+	<div class="modal-body">
+		
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Pessoa: *</label>
+			<div class="col-sm-9" ng-class="{'has-error': (form.pessoa.$error.required && form.$submitted)}">
+
+		       	<select class="form-control" ng-model="entity.pessoa" name="pessoa" ng-options="pessoa.nome for pessoa in entity.pessoas" required>
+	            	<option></option>
+	            </select>
+
+			</div>
+	 	</div>
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Nome de Usuário: *</label>
+			<div class="col-sm-9" ng-class="{'has-error': (form.usuario.$error.required && form.$submitted)}">
+			  <input type="text" name="usuario" class="form-control" ng-model="entity.username" required>
+			</div>
+	 	</div>
+	 	
+	 	<div class="form-group">
+			<label class="col-sm-3 control-label">Senha: *</label>
+			<div class="col-sm-9" ng-class="{'has-error': (form.senha.$error.required && form.$submitted)}">
+			  <input type="password" class="form-control" name="senha" rows="3" ng-model="entity.password"></input>
+			</div>
+	 	</div>
+
+	 	<div class="form-group">
+			<label class="col-sm-3 control-label">Repetir Senha: *</label>
+			<div class="col-sm-9" ng-class="{'has-error': (form.repSenha.$error.required && form.$submitted)}">
+			  <input type="password" class="form-control" name="repSenha" rows="3" ng-model="entity.repPassword"></input>
+			</div>
+	 	</div>
+
+	  <div class="callout callout-danger" ng-if="errorMessage">
+	    <h4>Erro!</h4>
+	    <p>{{ errorMessage }}</p>
+	 	</div>
+
+	</div>
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default pull-left" ng-click="close()">Fechar</button>
+		<button type="button" class="btn btn-success" ng-click="save(entity)" ng-disabled="form.$invalid">Salvar</button>
+	</div>
+</form>
