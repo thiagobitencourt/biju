@@ -41,6 +41,10 @@ app.config(function($routeProvider, RestangularProvider) {
       when('/produtos', {
         templateUrl: 'view/produtos.html',
         controller: 'produtosCtrl'
+      }).
+      when('/estoque', {
+        templateUrl: 'view/estoque.html',
+        controller: 'estoqueCtrl'
       }).   
       when('/users', {
         templateUrl: 'view/users.html',

@@ -1,0 +1,48 @@
+<form class="form-horizontal" name="form" novalidate>
+	<div class="modal-header">
+	    <button type="button" class="close" aria-label="Close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
+	    <h4 class="modal-title"><span class="glyphicon" ng-class="entity._id ? 'glyphicon-edit' : 'glyphicon-plus'"></span> {{title}}</h4>
+	</div>
+
+	<div class="modal-body">
+		
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Referência: *</label>
+			<div class="col-sm-9" ng-class="{'has-error': (form.tipo.$error.required && form.$submitted)}">
+			  <input type="text" name="tipo" disabled class="form-control" ng-model="entity.produto.referencia" required capitalize>
+			</div>
+	 	</div>
+	 	
+	 	<div class="form-group">
+			<label class="col-sm-3 control-label">Quantidade: *</label>
+			<div class="col-sm-9" ng-class="{'has-error': (form.quantidade.$error.required && form.$submitted)}">
+			  <input type="text" class="form-control" name="quantidade" rows="3" ng-model="entity.quantidade" required></input>
+			</div>
+	 	</div>
+
+<!-- 	 	<div class="form-group">
+			<label class="col-sm-3 control-label">Valor: *</label>
+			<div class="col-sm-9" class="col-sm-9" ng-class="{'has-error': (form.valor.$error.required && form.$submitted)}">
+			  <input type="text" class="form-control" name="valor" ng-model="entity.valor" required>
+			</div>
+	 	</div>
+
+	 	<div class="form-group">
+			<label class="col-sm-3 control-label">Observação: </label>
+			<div class="col-sm-9">
+			  <textarea class="form-control" ng-model="entity.observacao"> </textarea>
+			</div>
+	 	</div> -->
+
+	  <div class="callout callout-danger" ng-if="errorMessage">
+	    <h4>Erro!</h4>
+	    <p>{{ errorMessage }}</p>
+	 	</div>
+
+	</div>
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default pull-left" ng-click="close()">Fechar</button>
+		<button type="button" class="btn btn-success" ng-click="save(entity)" ng-disabled="form.$invalid">Salvar</button>
+	</div>
+</form>

@@ -38,12 +38,21 @@ app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restang
 			  $scope.errorMessage = response.data;
 			});
 		} else {
-			entity.put().then(function(response){
+
+			var successFunction = function(response){
 				$modalInstance.dismiss();
 				loadDataTableGrid();
-	  	}, function(response) {
-			  $scope.errorMessage = response.data;
-			});
+	  		};
+
+	  		var errorFunction = function(response) {
+				$scope.errorMessage = response.data;
+			};
+
+			if(serviceEntity.myUpdate){
+				serviceEntity.myUpdate(entity).then(successFunction, errorFunction);	
+			}else{
+				entity.put().then(successFunction, errorFunction);
+			}
 		}
 	};
 
