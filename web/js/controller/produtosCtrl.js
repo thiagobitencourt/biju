@@ -28,8 +28,8 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular){
 
 	$scope.produtosGridOptions.columnDefs = [
 	      { name: 'referencia', displayName: 'Ref'},
-	      { name: 'descricao', displayName: 'Descrição'},
 	      { name: 'tipo', displayName: 'Tipo'},
+	      { name: 'descricao', displayName: 'Descrição'},
 	      { name: 'tamanho', displayName: 'Tamanho'},
 	      { name: 'vlrCusto', cellFilter:'currency', displayName: 'Valor Custo'},
 	      { name: 'vlrVenda', cellFilter:'currency', displayName: 'Valor Venda'}

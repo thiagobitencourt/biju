@@ -12,18 +12,18 @@
 			  <input type="text" name="referencia" class="form-control" ng-model="entity.referencia" required>
 			</div>
 	 	</div>
-	 	
-	 	<div class="form-group">
-			<label class="col-sm-3 control-label">Descrição:</label>
-			<div class="col-sm-9">
-			  <textarea class="form-control" rows="3" ng-model="entity.descricao"></textarea>
-			</div>
-	 	</div>
 
 	 	<div class="form-group">
 			<label class="col-sm-3 control-label">Tipo: *</label>
-			<div class="col-sm-9">
-			  <input type="text" class="form-control" ng-model="entity.tipo" capitalize>
+			<div class="col-sm-9" ng-class="{'has-error': (form.tipo.$error.required && form.$submitted)}">
+			  <input type="text" name="tipo" class="form-control" ng-model="entity.tipo" capitalize required>
+			</div>
+	 	</div>
+	 	
+	 	<div class="form-group">
+			<label class="col-sm-3 control-label">Descrição: *</label>
+			<div class="col-sm-9" ng-class="{'has-error': (form.tipo.$error.required && form.$submitted)}">
+			<input type="text" name="descricao" class="form-control" ng-model="entity.descricao" required>
 			</div>
 	 	</div>
 
@@ -35,16 +35,16 @@
 	 	</div>
 
 	 	<div class="form-group">
-			<label class="col-sm-3 control-label">Valor Custo:</label>
-			<div class="col-sm-9">
-			  <input type="text" class="form-control" ng-model="entity.vlrCusto" ui-money-mask>
+			<label class="col-sm-3 control-label">Valor Custo: *</label>
+			<div class="col-sm-9" ng-class="{'has-error': (form.vlrCusto.$error.required && form.$submitted)}">
+			  <input type="text" name="vlrCusto" class="form-control" ng-model="entity.vlrCusto" ui-money-mask required>
 			</div>
 	 	</div>
 
 	 	<div class="form-group">
-			<label class="col-sm-3 control-label">Valor Venda:</label>
-			<div class="col-sm-9">
-			  <input type="text" class="form-control" ng-model="entity.vlrVenda" ui-money-mask>
+			<label class="col-sm-3 control-label">Valor Venda: *</label>
+			<div class="col-sm-9" ng-class="{'has-error': (form.vlrVenda.$error.required && form.$submitted)}">
+			  <input type="text" name="vlrVenda" class="form-control" ng-model="entity.vlrVenda" ui-money-mask required>
 			</div>
 	 	</div>
 

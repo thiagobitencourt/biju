@@ -1,0 +1,15 @@
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Lista de Kits</h3>
+          <button class="btn btn-success pull-right" ng-click="go('/novo-kit')"><i class="glyphicon glyphicon-plus"></i> Novo Kit</button>
+        </div>
+        <div class="box-body">
+           <div ui-grid="kitsGridOptions" ui-grid-pagination ui-grid-selection class="grid"></div> 
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

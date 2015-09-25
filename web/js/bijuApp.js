@@ -45,7 +45,23 @@ app.config(function($routeProvider, RestangularProvider) {
       when('/users', {
         templateUrl: 'view/users.html',
         controller: 'usersCtrl'
-      }).          
+      }).
+      when('/kits', {
+        templateUrl: 'view/kits.html',
+        controller: 'kitsCtrl'
+      }).
+      when('/novo-kit', {
+        templateUrl: 'view/kit-novo.html',
+        controller: 'kitsCtrl'
+      }).
+      when('/editar-kit', {
+        templateUrl: 'view/kit-editar.html',
+        controller: 'kitsCtrl'
+      }).
+      when('/detalhes-kit', {
+        templateUrl: 'view/kit-detalhes.html',
+        controller: 'kitsCtrl'
+      }).
       otherwise({
         redirectTo: '/'
       });

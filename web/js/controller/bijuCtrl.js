@@ -5,6 +5,10 @@ app.controller('bijuCtrl', function($rootScope, $scope, $location, $modal){
     return viewLocation === $location.path();
   };
 
+  $rootScope.go = function ( path ) {
+	  $location.path( path );
+	};
+
   $rootScope.openModal = function(template, entity, type, title, loadDataTableGrid, serviceEntity){
 
 		$modal.open({
