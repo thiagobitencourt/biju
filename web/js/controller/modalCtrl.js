@@ -25,7 +25,7 @@ app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restang
 			$modalInstance.close();
 			loadDataTableGrid();
   	}, function(response) {
-	  	$scope.errorMessage = response.data;
+	  	$scope.errorMessage = response.data.message;
 		});
 	};
 
@@ -35,7 +35,7 @@ app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restang
 				$modalInstance.dismiss();
 				loadDataTableGrid();
 	  	}, function(response) {
-			  $scope.errorMessage = response.data;
+			  $scope.errorMessage = response.data.message;
 			});
 		} else {
 
@@ -45,7 +45,7 @@ app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restang
 	  		};
 
 	  		var errorFunction = function(response) {
-				$scope.errorMessage = response.data;
+				$scope.errorMessage = response.data.message;
 			};
 
 			if(serviceEntity.myUpdate){
