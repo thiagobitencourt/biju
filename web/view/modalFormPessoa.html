@@ -116,7 +116,10 @@
 					<div class="col-lg-4 form-group">
 						<label class="col-sm-4 control-label">P.Ref.:</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" ng-model="entity.pessoaReferencia._id">
+
+						   	<select class="form-control" ng-model="entity.pessoaReferencia" name="pessoa" ng-options="pessoa.nome for pessoa in entity.pessoas">
+	            				<option></option>
+	            			</select>
 						</div>
 					</div>
 					<div class="col-lg-4 form-group">
@@ -136,10 +139,12 @@
 		  </div>
 		</div>
 
-	  <div class="callout callout-danger" ng-if="errorMessage">
-	    <h4>Erro!</h4>
-	    <p>{{ errorMessage }}</p>
+	  	<div class="callout callout-danger" ng-if="errorMessage">
+	   		<h4>Erro!</h4>
+	    	<p>{{ errorMessage }}</p>
 	 	</div>
+
+	 	<p class="text-yellow">* Campos obrigatórios</p>
 	</div>
 
 	<div class="modal-footer">

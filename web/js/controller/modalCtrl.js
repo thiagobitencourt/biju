@@ -25,7 +25,7 @@ app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restang
 			$modalInstance.close();
 			loadDataTableGrid();
   	}, function(response) {
-	  	$scope.errorMessage = response.data;
+	  	$scope.errorMessage = response.data.message;
 		});
 	};
 
@@ -35,15 +35,26 @@ app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restang
 				$modalInstance.dismiss();
 				loadDataTableGrid();
 	  	}, function(response) {
-			  $scope.errorMessage = response.data;
+	  			console.log(response.data);
+			  	$scope.errorMessage = response.data.message;
 			});
 		} else {
-			entity.put().then(function(response){
+
+			var successFunction = function(response){
 				$modalInstance.dismiss();
 				loadDataTableGrid();
-	  	}, function(response) {
-			  $scope.errorMessage = response.data;
-			});
+	  		};
+
+	  		var errorFunction = function(response) {
+	  			console.log(response.data);
+				$scope.errorMessage = response.data.message;
+			};
+
+			if(serviceEntity.myUpdate){
+				serviceEntity.myUpdate(entity).then(successFunction, errorFunction);	
+			}else{
+				entity.put().then(successFunction, errorFunction);
+			}
 		}
 	};
 

@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title"><span class="glyphicon glyphicon-trash"></span> {{title}}</h4>
+</div>
+<div class="modal-body">
+	<p class="lead">Deseja realmente excluir o usuário <b>{{entity.username}}</b> ?</p>
+
+    <div class="callout callout-danger" ng-if="errorMessage">
+	    <h4>Erro!</h4>
+	    <p>{{ errorMessage }}</p>
+  	</div>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-default pull-left" ng-click="close()">Fechar</button>
+	<button type="button" class="btn btn-danger" ng-click="remove(entity)">Excluir</button>
+</div>

@@ -1,17 +1,32 @@
 global.__base = __dirname + '/server/';
 
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var https = require('https');
+var http = require('http');
 var fs = require('fs');
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+var LoggingSystem = require(__base + 'utils/log');
+var logger = require('winston');
+var args = process.argv;
 
 mongoose.connect('mongodb://localhost/biju', null, function(err){
 
 	if(err)
 		return console.error("DB error : " + err);
 
+	var logDebug = false;
+	if(args.indexOf('--debug') > -1)
+		logDebug = true;
+	var loggingErrors = LoggingSystem.configure(logDebug);
+	if(loggingErrors){
+		return console.error(loggingErrors);		
+	}
+	logger.info("Logger online.");
+	
 	var LoadRouter = require(__base + 'routes/loadRoutes');
 
 	var app = express();
@@ -21,8 +36,9 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 
 	app.use(session({
 		secret: 'migué por polegada quadrada',
-		resave: false,
-		saveUninitialized: true,
+		saveUninitialized: true, // don't create session until something stored 
+    	resave: false, //don't save session if unmodified 
+		store: new MongoStore({ mongooseConnection: mongoose.connection }),
 		cookie: { 
 			secure: true,
 			maxAge: 60000 //60seg
@@ -55,10 +71,10 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 	var isLoggedIn = function(req, res, next){
 
 		if(req.session && req.session.userData){
-			console.log("isLoggedIn");
+			logger.debug("isLoggedIn");
 			return next();
 		}
-		console.log("NOT LoggedIn");
+		logger.debug("NOT LoggedIn");
 		//return res.redirect('/login');
 		next();
 	}
@@ -69,17 +85,26 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 
 	app.use('/api', new LoadRouter());
 
+//TODO - replace this
 	var server = app.listen(httpPort, function () {
-	  console.log('App listening at %s', httpPort);
+	  logger.info('App listening at %s', httpPort);
 	});
+//TODO - by this
+	// http.createServer(function(req, res){
+	// 	res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+ 	//	res.end();
+	// }).listen(httpPort, function(){
+	// 	logger.info("HTTP server listening on port %s", httpPort);
+	// });
+//TODO - end.
 
-	var options = {
+	var httpsOptions = {
 	  key: fs.readFileSync('config/ssl/biju-key.pem'),
 	  cert: fs.readFileSync('config/ssl/biju-cert.pem')
 	};
 
-	https.createServer(options, app).listen(httpsPort, function(){
-		console.log('App listening at port %s', httpsPort);
+	https.createServer(httpsOptions, app).listen(httpsPort, function(){
+		logger.info('HTTPS server listening on port %s', httpsPort);
 	});
 });
 

@@ -6,23 +6,25 @@ var _validateId = require(__base + 'utils/validateObjectId');
 var Schema = mongoose.Schema;
 
 //OBJECT EXAMPLE
-// {
-// 	"nome": "Pessoa Nome",
-// 	"cpf": "123.456.789-90",
-// 	"rg": "9.858.658-9",
-// 	"telefoneFixo": "4566-8595",
-// 	"telefoneCelular": "7895-5895",
-// 	"endereco": 
-// 		{
-// 			"pais": "Brasil",
-// 			"cidade": "Foz do Iguacu",
-// 			"bairro": "Centro",
-// 			"rua": "Av Brasil"
-// 		},
-// 	"email": "pessoa@email.com",
-// 	"observacao": "Pessoa teste",
-// 	"status": "Ativo"
-// }
+/*
+{
+	"nome": "Pessoa Nome",
+	"cpf": "123.456.789-90",
+	"rg": "9.858.658-9",
+	"telefoneFixo": "4566-8595",
+	"telefoneCelular": "7895-5895",
+	"endereco": 
+		{
+			"pais": "Brasil",
+			"cidade": "Foz do Iguacu",
+			"bairro": "Centro",
+			"rua": "Av Brasil"
+		},
+	"email": "pessoa@email.com",
+	"observacao": "Pessoa teste",
+	"status": "Ativo"
+}
+*/
 
 // var enderecoSchema = new Schema({ 
 // 	pais: {type: String, default: "Brasil"},

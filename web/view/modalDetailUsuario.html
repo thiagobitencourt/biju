@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <button type="button" class="close" aria-label="Close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title"><span class="glyphicon glyphicon-search"></span> {{title}}</h4>
+</div>
+
+<div class="modal-body form-horizontal">
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">Nome:</label>
+		<div class="col-sm-9">
+			<p class="form-control-static">{{entity.pessoa.nome}}</p>
+		</div>
+ 	</div>
+
+ 	<div class="form-group">
+		<label class="col-sm-3 control-label">E-mail:</label>
+		<div class="col-sm-9">
+			<p class="form-control-static">{{entity.pessoa.email}}</p>
+		</div>
+ 	</div>
+
+  	<div class="form-group">
+		<label class="col-sm-3 control-label">Node de Usuário:</label>
+		<div class="col-sm-9">
+		  <p class="form-control-static">{{entity.username}}</p>
+		</div>
+ 	</div>
+
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-default pull-left" ng-click="close()">Fechar</button>
+	<button type="button" class="btn btn-warning" ng-click=" editFromDetail(entity)">Editar</button>
+	<button type="button" class="btn btn-danger" ng-click=" removeFromDetail(entity)">Excluir</button>
+</div>

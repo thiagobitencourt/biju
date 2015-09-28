@@ -19,8 +19,16 @@ MODELO: Estoque
   Observação
 */
 
+/*
+{
+  "tipo":"Pulseiras",
+  "quantidade":10,
+  "valor": "16,90",
+  "observacao":"Primeira pulseira"
+}
+*/
+
 estoqueSchema = new Schema({
-  tipo: { type: String, required : true}, //Corresponde ao campo Descrição, na planilha
   produto: {type:Schema.ObjectId, ref:"Produto", required: true}, //Faz referencia a um produto existente
   quantidade: { type: Number, required : true},
   valor: { type: Number, required : true},
@@ -28,7 +36,7 @@ estoqueSchema = new Schema({
   deletedAt: { type: Date, default: null}
 });
 
-estoqueSchema.index({tipo: 1, deletedAt: 1}, {unique: true}); //composed unique.
+//estoqueSchema.index({tipo: 1, deletedAt: 1}, {unique: true}); //composed unique.
 
 estoqueSchema.statics.secureFind = function(estoqueId, query, cb) {
 

@@ -36,7 +36,7 @@ MODELO: Produto
 */
 
 produtoSchema = new Schema({
-  	referencia: { type: String, required: true},
+  	referencia: { type: String, required: true, unique: true},
   	descricao: { type: String, required: true},
   	tipo: { type: String, required: true},
   	tamanho: { type: String},

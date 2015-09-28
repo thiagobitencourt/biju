@@ -5,6 +5,19 @@
         <div class="box-header">
           <h3 class="box-title">Lista de Pessoas</h3>
           <button class="btn btn-success pull-right" ng-click="newPessoa()"><i class="glyphicon glyphicon-plus"></i> Nova Pessoa</button>
+
+          <!-- Espaço entre o campo e o botão-->
+          <div class="pull-right">
+              &nbsp
+              &nbsp
+          </div>
+          <div class="input-group pull-right" style="width: 150px;">
+              <input type="text" ng-model="searchText" class="form-control pull-right" placeholder="Procurar"/>
+              <div class="input-group-btn">
+                  <button class="btn btn-default" ><i class="fa fa-search"></i></button>
+              </div>
+          </div>
+
         </div>
         <div class="box-body">
            <div ui-grid="pessoasGridOptions" ui-grid-pagination ui-grid-selection class="grid"></div> 

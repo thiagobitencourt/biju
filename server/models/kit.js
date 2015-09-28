@@ -42,6 +42,7 @@ MODELO: KIT
 {
 	"dataEntrega" : "09-22-2015",
 	"dataProxRetorno" : "10-22-2015",
+	"pessoa" : "56014f76721e4c2c146c4df8",
 	"itens" : [
 		{
 			"produto": "56014f76721e4c2c146c4df8",
@@ -89,12 +90,13 @@ MODELO: KIT
 	"vlrTotalPgto" : 40.00,
 	"estado" : "Dívida Pendente",
 	"observacao" : "Num sei",
-	"deletedAt" : null
+	"dataDevolucao" : "09-22-2015"
 }
 */
 
 kitSchema = new Schema({
 	codigo : {type : Number, required : true, unique : true},
+	pessoa: {type:Schema.ObjectId, ref:"Pessoa"},
 	dataEntrega : {type : Date, default: null},
 	dataProxRetorno : {type : Date, default: null},
 	itens : [
@@ -119,7 +121,10 @@ kitSchema = new Schema({
 	vlrTotalPgto : {type : Number, required : true, default : 0.0},
 	estado : {type : String, required : true},
 	observacao : {type : String},
-	deletedAt : { type: Date, default: null}
+	deletedAt : { type: Date, default: null},
+	dataGeracao : { type: Date, default: new Date(), required : true},
+	dataEntrega : { type: Date, default: null},
+	dataDevolucao : { type: Date, default: null}
 });
 
 kitSchema.statics.secureFind = function(kitId, query, cb) {
