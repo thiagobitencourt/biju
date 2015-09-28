@@ -64,6 +64,8 @@ produtoSchema.statics.secureFind = function(produtoId, query, cb) {
 			cb(null, produto);
 		});
 	}else{
+
+		query.deletedAt = {$eq: null};
 		this.find(query, {deletedAt:0}, function(err, produtos){
 			if(err) return cb(err, null);
 			cb(null, produtos);
