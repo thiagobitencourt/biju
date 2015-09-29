@@ -35,35 +35,35 @@ app.config(function($routeProvider, RestangularProvider) {
         controller: 'bijuCtrl'
       }).
       when('/pessoas', {
-        templateUrl: 'view/pessoas.html',
+        templateUrl: 'view/Pessoa/pessoas.html',
         controller: 'pessoasCtrl'
       }).
       when('/produtos', {
-        templateUrl: 'view/produtos.html',
+        templateUrl: 'view/Produto/produtos.html',
         controller: 'produtosCtrl'
       }).
-      when('/estoque', {
-        templateUrl: 'view/estoque.html',
-        controller: 'estoqueCtrl'
+      when('/estoques', {
+        templateUrl: 'view/Estoque/estoques.html',
+        controller: 'estoquesCtrl'
       }).   
       when('/users', {
-        templateUrl: 'view/users.html',
+        templateUrl: 'view/User/users.html',
         controller: 'usersCtrl'
       }).
       when('/kits', {
-        templateUrl: 'view/kits.html',
+        templateUrl: 'view/Kit/kits.html',
         controller: 'kitsCtrl'
       }).
       when('/novo-kit', {
-        templateUrl: 'view/kit-novo.html',
+        templateUrl: 'view/Kit/kit-novo.html',
         controller: 'kitsCtrl'
       }).
       when('/editar-kit', {
-        templateUrl: 'view/kit-editar.html',
+        templateUrl: 'view/Kit/kit-editar.html',
         controller: 'kitsCtrl'
       }).
       when('/detalhes-kit', {
-        templateUrl: 'view/kit-detalhes.html',
+        templateUrl: 'view/Kit/kit-detalhes.html',
         controller: 'kitsCtrl'
       }).
       otherwise({

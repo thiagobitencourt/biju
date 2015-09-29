@@ -7,28 +7,16 @@ app.controller('pessoasCtrl', function($rootScope, $scope, Restangular){
 	var hackerFunction = function(){
 
 		var _put = function(entity){
-
 			if(entity.pessoaReferencia){
-
-				console.log("Pessoa referencia: " + entity.pessoaReferencia._id);
-
 				entity.pessoaReferencia = entity.pessoaReferencia._id;
 			}
-			console.log(entity);
-
 			return entity.put();
 		};
 
 		var _post = function(entity){
-
 			if(entity.pessoaReferencia){
-
-				console.log("Pessoa referencia: " + entity.pessoaReferencia._id);
-
 				entity.pessoaReferencia = entity.pessoaReferencia._id;
 			}
-			console.log(entity);
-
 			return pessoaService.post(entity);
 		};
 
@@ -40,8 +28,7 @@ app.controller('pessoasCtrl', function($rootScope, $scope, Restangular){
 
 	$scope.pessoasScopeProvider = {
 		details: function(row){
-			row.entity.pessoas = pessoaService.getList().$object;
-			$rootScope.openModal('view/modalDetailPessoa.html', row.entity, 'Pessoa', 'Detalhe de Pessoa', _loadPessoas, hackerFunction);
+			$rootScope.openModal('view/Pessoa/modalDetailPessoa.html', row.entity, 'Pessoa', 'Detalhe de Pessoa', _loadPessoas, hackerFunction, $scope.pessoas);
 		}
 	};
 
@@ -72,12 +59,11 @@ app.controller('pessoasCtrl', function($rootScope, $scope, Restangular){
 
 	$scope.newPessoa = function(){
 		var entity = {};
-		entity.pessoas = pessoaService.getList().$object;
-		$rootScope.openModal('view/modalFormPessoa.html', entity, 'Pessoa', 'Nova Pessoa', _loadPessoas, hackerFunction);
+		$rootScope.openModal('view/Pessoa/modalFormPessoa.html', entity, 'Pessoa', 'Nova Pessoa', _loadPessoas, hackerFunction, $scope.pessoas);
 	};
 
 	var _loadPessoas = function(){
-		$scope.pessoasGridOptions.data = pessoaService.getList().$object;
+		$scope.pessoas = $scope.pessoasGridOptions.data = pessoaService.getList().$object;
 	};
 
 	_loadPessoas();

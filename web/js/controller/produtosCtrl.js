@@ -6,7 +6,7 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular){
 
 	$scope.produtosScopeProvider = {
 		details: function(row){
-			$rootScope.openModal('view/modalDetailProduto.html', row.entity, 'Produto', 'Detalhe do Produto', _loadProdutos, produtoService);
+			$rootScope.openModal('view/Produto/modalDetailProduto.html', row.entity, 'Produto', 'Detalhe do Produto', _loadProdutos, produtoService);
 		}
 	};
 
@@ -36,7 +36,7 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular){
 	];
 
 	$scope.newProduto = function(){
-		$rootScope.openModal('view/modalFormProduto.html', {}, 'Produto', 'Novo Produto', _loadProdutos, produtoService);
+		$rootScope.openModal('view/Produto/modalFormProduto.html', {}, 'Produto', 'Novo Produto', _loadProdutos, produtoService);
 	};
 
 	var _loadProdutos = function(){

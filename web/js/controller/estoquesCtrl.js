@@ -1,13 +1,11 @@
 var app = angular.module('bijuApp');
 
-app.controller('estoqueCtrl', function($rootScope, $scope, Restangular){
+app.controller('estoquesCtrl', function($rootScope, $scope, Restangular){
 
 	var estoqueService = Restangular.service('estoque');
 	var produtoService = Restangular.service('produto');
 
 	var hackerFunction = function(){
-
-		// console.log("hackerFunction");
 
 		var _put = function(entity){
 			entity.valorTotal = (entity.produto.vlrCusto * entity.quantidade);
@@ -21,7 +19,7 @@ app.controller('estoqueCtrl', function($rootScope, $scope, Restangular){
 
 	$scope.estoqueScopeProvider = {
 		details: function(row){
-			$rootScope.openModal('view/modalDetailEstoque.html', row.entity, 'Estoque', 'Detalhes do Estoque', _loadEstoque, hackerFunction);
+			$rootScope.openModal('view/Estoque/modalDetailEstoque.html', row.entity, 'Estoque', 'Detalhes do Estoque', _loadEstoque, hackerFunction);
 		}
 	};
 
