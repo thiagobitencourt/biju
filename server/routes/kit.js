@@ -19,7 +19,20 @@ var setKitRoutes = function(){
 	var _kitId = _kit + "/:id"; 
 
 	this.router.get(_kit, function(req, res){
-		KitController.findKit(null, req.query, function(err, kits){
+
+		var query = null;
+		if(req.query && req.query.q){
+			query = req.query.q;			
+			try{
+				query = JSON.parse(query);
+			}catch(e){
+				return res.status(400).send("Query parse error: " +e);
+			}
+		}
+		if(!query)
+			query = {};
+
+		KitController.findKit(null, query, function(err, kits){
 			if(err) return res.response(err.error, err.code, err.message);
 
 			res.send(kits);

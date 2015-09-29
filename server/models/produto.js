@@ -37,7 +37,7 @@ MODELO: Produto
 
 produtoSchema = new Schema({
   	referencia: { type: String, required: true, unique: true},
-  	descricao: { type: String, required: true},
+  	descricao: { type: String},
   	tipo: { type: String, required: true},
   	tamanho: { type: String},
   	vlrCusto: { type: String, required : true},
@@ -66,6 +66,7 @@ produtoSchema.statics.secureFind = function(produtoId, query, cb) {
 	}else{
 
 		query.deletedAt = {$eq: null};
+		
 		this.find(query, {deletedAt:0}, function(err, produtos){
 			if(err) return cb(err, null);
 			cb(null, produtos);

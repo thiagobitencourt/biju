@@ -19,7 +19,20 @@ var setEstoqueRoutes = function(){
 	var _estoqueId = _estoque + "/:id"; 
 
 	this.router.get(_estoque, function(req, res){
-		EstoqueController.findEstoque(null, req.query, function(err, estoques){
+
+		var query = null;
+		if(req.query && req.query.q){
+			query = req.query.q;			
+			try{
+				query = JSON.parse(query);
+			}catch(e){
+				return res.status(400).send("Query parse error: " +e);
+			}
+		}
+		if(!query)
+			query = {};
+
+		EstoqueController.findEstoque(null, query, function(err, estoques){
 			if(err) return res.response(err.error, err.code, err.message);
 
 			res.send(estoques);

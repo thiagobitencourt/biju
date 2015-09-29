@@ -19,7 +19,19 @@ var setPessoaRoutes = function(){
 	var _pessoaId = _pessoa + '/:id';
 	
 	this.router.get(_pessoa, function(req, res){
-		PessoaController.findPessoa(null, req.query, function(err, pessoa){
+		var query = null;
+		if(req.query && req.query.q){
+			query = req.query.q;			
+			try{
+				query = JSON.parse(query);
+			}catch(e){
+				return res.status(400).send("Query parse error: " +e);
+			}
+		}
+		if(!query)
+			query = {};
+
+		PessoaController.findPessoa(null, query, function(err, pessoa){
 			if(err) return res.response(err.error, err.code, err.message);
 
 			res.send(pessoa);
