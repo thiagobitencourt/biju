@@ -55,7 +55,7 @@
           $http.post(window.location.origin + '/login', user).success(function(data){
             window.location = window.location.origin;
           }).error(function(data){
-            $scope.errorMessage = data.message;
+            $scope.errMessage = data.message;
           });
         }
 			});

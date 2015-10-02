@@ -1,16 +1,18 @@
+var logger = require('winston');
+
 var UserControler = function(){
 
 	var _User = require(__base + 'models/users');
 	var _validateId = require(__base + 'utils/validateObjectId');
 
-	var _login = function(username, password, callback){
+	var _login = function(candidateUser, callback){
 
-		if(!username || !password){
+		if(!candidateUser.username || !candidateUser.password){
 			var errObj = {code: 400, message: "Missing username or password"};
 			return callback(errObj, null);
 		}
 
-		_User.findOne({username: username, deletedAt: { $eq: null }}, function(err, user){
+		_User.findOne({username: candidateUser.username, deletedAt: { $eq: null }}, function(err, user){
 
 			if(err){
 				var errObj = {error: err, code: 500, message: "Error on find user"};
@@ -22,14 +24,15 @@ var UserControler = function(){
 				return callback(errObj, null);
 			}
 			
-			user.comparePassword(password, function(err, matchs){
+			user.comparePassword(candidateUser.password, function(err, matchs){
 				if(err){
 					var errObj = {error: err, code: 500, message: "Error on authenticate user"};
 					return callback(errObj, null);
 				}
 
 				if(matchs)
-					return callback(null, {username: user.username});
+					// return callback(null, {username: user.username}); //Return only the username
+					return callback(null, user); //Return the entire user
 				else{
 					var errObj = {code: 401, message: "User not found or invalid password"};
 					return callback(errObj, false);

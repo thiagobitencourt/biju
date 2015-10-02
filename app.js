@@ -1,6 +1,5 @@
 global.__base = __dirname + '/server/';
 
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -40,7 +39,7 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
     	resave: false, //don't save session if unmodified 
 		store: new MongoStore({ mongooseConnection: mongoose.connection }),
 		cookie: { 
-			secure: true,
+			// secure: true, //Allow connections from HTTP -- TEMP
 			maxAge: 60000 //60seg
 		}
 	}))	
@@ -60,6 +59,7 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 	app.all('*', function(req, res, next){
 		res.response = function(error, responseStatus, message){
 			var sendMessage = {message: message, status: responseStatus};
+
 			if(error){
 				sendMessage.error = error;
 			}
@@ -75,11 +75,27 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 			return next();
 		}
 		logger.debug("NOT LoggedIn");
-		//return res.redirect('/login');
-		next();
+		//TODO: Comment this code, to not interrupt tests
+		return res.redirect('/login'); 
+		// next();
 	}
 
 	app.get('/', isLoggedIn);
+
+	app.use('/login', function(req, res, next){
+		if(req.session && req.session.userData){
+			return next(); //TODO: Remove this line
+			return res.redirect('/web');
+		}
+
+		return next();
+	});
+	app.use('/login', express.static('web/public/login'));
+
+	/*
+		Cria as rotas de login e logout, recebe app como parâmetro.
+	*/
+	require(__base + 'routes/loginRoute')(app);
 
 	app.use(express.static('web/'));
 

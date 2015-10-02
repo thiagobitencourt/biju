@@ -51,7 +51,8 @@ userSchema.methods.clean = function() {
   var resObj = {};
   resObj._id = this._id;
   resObj.username = this.username;
-  resObj.pessoa = this.pessoa;
+  if(this.pessoa)
+    resObj.pessoa = this.pessoa;
 
 	return resObj;
 };
