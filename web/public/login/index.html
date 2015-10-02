@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html ng-app="Bijulogin">
+	<head>
+		<meta charset="utf-8">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <title>Biju | Log in</title>
+
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    
+    <!-- Theme style -->
+    <link rel="stylesheet" href="lib/AdminLTE/AdminLTE.min.css">
+  </head>
+  
+  <body class="hold-transition login-page">
+    <div class="login-box">
+      <div class="login-logo">
+        <a href="#/"><b>Biju</b></a>
+      </div>
+      <div class="login-box-body" ng-controller="loginController">
+        <p class="login-box-msg">Faça login para iniciar a sua sessão</p>
+        <form>
+          <div class="form-group has-feedback">
+            <input type="text" class="form-control" placeholder="Usuário" ng-model="user.username">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input type="password" class="form-control" placeholder="Senha" ng-model="user.password">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>
+
+          <br />
+          <div class="row">
+            <div class="col-xs-8">
+              <p class="text-red"><i class="glyphicon glyphicon-remove" ng-show="errMessage"></i> {{errMessage}}</p>
+            </div>
+            <div class="col-xs-4">
+              <button type="submit" ng-click="login(user)" class="btn btn-primary btn-block btn-flat">Log In</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+		<!-- Angular -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js">
+    </script>
+		<script>
+			angular.module('Bijulogin', []).controller('loginController', function($scope, $http){
+        $scope.login = function(user){
+        	console.log(user);
+          console.log(window.location.origin);
+          $http.post(window.location.origin + '/login', user).success(function(data){
+            window.location = window.location.origin;
+          }).error(function(data){
+            $scope.errorMessage = data.message;
+          });
+        }
+			});
+		</script>
+	</body>
+
+</html>
