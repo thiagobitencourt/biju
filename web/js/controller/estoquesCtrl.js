@@ -5,21 +5,10 @@ app.controller('estoquesCtrl', function($rootScope, $scope, Restangular){
 	var estoqueService = Restangular.service('estoque');
 	var produtoService = Restangular.service('produto');
 
-	var hackerFunction = function(){
-
-		var _put = function(entity){
-			entity.valorTotal = (entity.produto.vlrCusto * entity.quantidade);
-			return entity.put();
-		};
-
-		return {
-			myUpdate: _put
-		}
-	}();
-
 	$scope.estoqueScopeProvider = {
 		details: function(row){
-			$rootScope.openModal('view/Estoque/modalDetailEstoque.html', row.entity, 'Estoque', 'Detalhes do Estoque', _loadEstoque, hackerFunction);
+			row.entity.edit = true;
+			$rootScope.openModal('view/Estoque/modalFormEstoque.html', row.entity, 'Estoque', 'Novo Estoque', _loadEstoque, estoqueService, null);
 		}
 	};
 
@@ -47,36 +36,9 @@ app.controller('estoquesCtrl', function($rootScope, $scope, Restangular){
 	      { name: 'valorTotal', cellFilter: 'currency', displayName: 'Valor Total'}
 	];
 
-	$scope.newEstoque = function(estoque){
-
-		Restangular.one('produto').get({"q":{"referencia":estoque.referencia}})
-		.then( function(response){
-
-			if(response.length == 0){
-				$scope.estoqueError = "Referência não encontrada";
-				return;
-			}
-
-			var produto = response[0];
-
-			//estoque.tipo = produto.tipo; // TODO: Remover;
-			estoque.produto = produto._id;
-			estoque.valor = produto.vlrCusto;
-			estoque.valorTotal = (produto.vlrCusto * estoque.quantidade);
-
-			estoqueService.post(estoque).then(function(responde){
-
-				//Limpa os campos.
-				delete $scope.estoque;
-				delete $scope.estoqueError
-				_loadEstoque();
-
-			}, function(response) {
-				delete $scope.estoque;
-	  			// $scope.estoqueError = response.data.message;
-	  			$scope.estoqueError = response.data;
-			});
-		});
+	$scope.newEstoque = function(){
+		var entity = {};
+		$rootScope.openModal('view/Estoque/modalFormEstoque.html', entity, 'Estoque', 'Novo Estoque', _loadEstoque, estoqueService, null);
 	};
 
 	$scope.totalEstoque = 0;
