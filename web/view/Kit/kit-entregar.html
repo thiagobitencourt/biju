@@ -1,0 +1,99 @@
+<section class="content-header">
+	<h1>Entrega do Kit</h1>
+</section>
+
+<section class="content">
+	<div class="row">
+		<div class="col-md-12">
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">Código do Kit: {{kit.codigo}}</h3>
+        </div>
+        
+        <form class="form-horizontal">
+          <div class="box-body">
+						<div class="row">
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Estado:</label>
+								<div class="col-sm-6">
+									<p class="form-control-static">{{kit.estado}}</p>
+								</div>
+							</div>
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Data Geração:</label>
+								<div class="col-sm-6">
+									<p class="form-control-static">{{kit.dataGeracao | date:"dd/MM/yyyy"}}</p>
+								</div>
+							</div>
+
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Valor Total:</label>
+								<div class="col-sm-6">
+									<p class="form-control-static">{{kit.vlrTotalKit | currency}}</p>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Pessoa:</label>
+								<div class="col-sm-6">
+									<select class="form-control" ng-model="kit.pessoa" name="pessoa">
+					        		<option ng-repeat="pessoa in pessoas" value="{{pessoa._id}}">
+								      		{{pessoa.nome}}
+						    			</option>
+					        	</select>
+								</div>
+							</div>
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Data Entrega:</label>
+								<div class="col-sm-6">
+									<input type="text" name="dataEntrega" class="form-control" ng-model="kit.dataEntrega" ui-date-mask>
+								</div>
+							</div>
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Data Prox. Retorno:</label>
+								<div class="col-sm-6">
+									<input type="text" name="dataProxRetorno" class="form-control" ng-model="kit.dataProxRetorno" ui-date-mask>
+								</div>
+							</div>
+						</div>
+			      <div class="row">
+			        <div class="col-xs-12">
+			          <div class="box">
+			            <div class="box-header">
+			              <h3 class="box-title">Lista de Produtos</h3>
+			            </div><!-- /.box-header -->
+			            <div class="box-body table-responsive no-padding">
+			              <table class="table table-hover">
+			                <tr>
+			                  <th>Ref.</th>
+			                  <th>Tipo</th>
+			                  <th>Descricao</th>
+			                  <th>Qtd. Entrgue</th>
+			                  <th>Valor Unit</th>
+			                  <th>Valor Total</th>
+			                </tr>
+			                <tr ng-repeat="item in kit.itens">
+			                	<td>{{item.produto.referencia}}</td>
+			                	<td>{{item.produto.tipo}}</td>
+			                	<td>{{item.produto.descricao}}</td>
+			                	<td>{{item.qtdeEntregue}}</td>
+			                	<td>{{item.vlrUnit}}</td>
+			                	<td>{{item.vlrTotal}}</td>
+			                </tr>
+			              </table>
+			              
+			            </div><!-- /.box-body -->
+			          </div><!-- /.box -->
+			        </div>
+			      </div>
+					</div>
+			    <div class="box-footer">
+			      <button type="submit" class="btn btn-default" ng-click="go('/kits')">Cancel</button>
+			    	<button type="submit" class="btn btn-success pull-right" ng-click="entregarKit()">Entregar Kit</button>
+			    </div>
+  			</form>
+  		</div>
+  	</div>
+	</div>
+</section>

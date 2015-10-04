@@ -54,16 +54,20 @@ app.config(function($routeProvider, RestangularProvider) {
         templateUrl: 'view/Kit/kits.html',
         controller: 'kitsCtrl'
       }).
-      when('/novo-kit', {
-        templateUrl: 'view/Kit/kit-novo.html',
-        controller: 'kitsCtrl'
-      }).
-      when('/editar-kit', {
-        templateUrl: 'view/Kit/kit-editar.html',
-        controller: 'kitsCtrl'
-      }).
       when('/detalhes-kit', {
         templateUrl: 'view/Kit/kit-detalhes.html',
+        controller: 'kitsCtrl'
+      }).
+      when('/gerar-kit', {
+        templateUrl: 'view/Kit/kit-gerar.html',
+        controller: 'kitsCtrl'
+      }).
+      when('/entregar-kit', {
+        templateUrl: 'view/Kit/kit-entregar.html',
+        controller: 'kitsCtrl'
+      }).
+      when('/fechar-kit', {
+        templateUrl: 'view/Kit/kit-fechar.html',
         controller: 'kitsCtrl'
       }).
       otherwise({

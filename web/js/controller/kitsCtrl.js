@@ -1,17 +1,27 @@
 var app = angular.module('bijuApp');
 
-app.controller('kitsCtrl', function($rootScope, $scope, Restangular){
+app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Restangular, shareData){
+
+
+	if(shareData.has('kit')){
+		$scope.kit = shareData.get('kit');
+		shareData.remove('kit');
+	}
 
 	var kitService = Restangular.service('kit');
 	var produtoService = Restangular.service('produto');
-
-	$scope.kit = {vlrTotalKit: 0};
-	$scope.produto = {quantidade: 1};
-	$scope.itens = [];
+	var pessoaService = Restangular.service('pessoa');
+		
+	$scope.estadosKit = 
+		{NOVO: 'Novo',
+		GERADO:'Gerado', 
+		ENTREGUE:'Entrgue',
+		FECHADO:'Fechado'};
 
 	$scope.kitsScopeProvider = {
 		details: function(row){
-			console.log(row.entity);
+			shareData.set('kit',row.entity);
+			$rootScope.go('/detalhes-kit');
 		}
 	};
 
@@ -32,59 +42,131 @@ app.controller('kitsCtrl', function($rootScope, $scope, Restangular){
  	};
 
 	$scope.kitsGridOptions.columnDefs = [
-    { name: 'codigo', displayName: 'Codigo'},
-    { name: 'vlrTotalKit', displayName: 'Valor Total'},
-    { name: 'estado', displayName: 'Estado'}
+    	{ name: 'codigo', displayName: 'Codigo'},
+	    { name: 'vlrTotalKit', displayName: 'Valor Total'},
+	    { name: 'estado', displayName: 'Estado'}
 	];
-
-	$scope.newKit = function(){
-		console.log('novo kit');
-	};
 
 	var _loadKits = function(){
 		$scope.kitsGridOptions.data = kitService.getList().$object;
 	};
 
-	_loadKits();
-
-	$scope.inserirItem = function(produto){
-		Restangular.one('produto').get({"q":{"referencia":produto.referencia}}).then( function(response){
-			$scope.itens.push(
-				{
-					"produtoCompleto": response[0],
-					"produto": response[0]._id,
-					"qtdeEntregue" : produto.quantidade,
-					"qtdeDevolvida" : 0,
-					"vlrUnit" : response[0].vlrCusto,
-					"vlrTotal" : produto.quantidade * response[0].vlrCusto
-				}
-			);
-			
-		});
+	var _loadPessoas = function(){
+		$scope.pessoas = pessoaService.getList().$object;
 	};
 
-	$scope.saveKit = function(){
+	$scope.gerarKitForm = function(){
+		shareData.set('kit', { estado: $scope.estadosKit.NOVO, itens: [], vlrTotalKit: 0 });
+		$rootScope.go('/gerar-kit');
+	};
 
-		var _kit = {};
-		_kit.vlrTotalKit = 0
+	$scope.entregarKitForm = function(){
+		shareData.set('kit', $scope.kit);
+		$rootScope.go('/entregar-kit');
+	};
 
-		angular.forEach($scope.itens, function(item){
-			_kit.vlrTotalKit += item.vlrTotal;
-		});
+	$scope.fecharKitForm = function(){
+		shareData.set('kit', $scope.kit);
+		$rootScope.go('/fechar-kit');
+	};
 
-		_kit.itens = $scope.itens;
-		_kit.estado = "Gerado";
+	$scope.gerarKit = function(){
+
+		var _kit = $scope.kit;
+		_kit.estado = $scope.estadosKit.GERADO;
 		
-		console.log(_kit);
-
 		kitService.post(_kit).then(function(response){
-			console.log(response);
 			$rootScope.go('/kits');
 		}, function(response){
 			console.log(response);
 		});
 
 	};
+
+	$scope.entregarKit = function(){
+
+		var _kit = $scope.kit;
+		_kit.estado = $scope.estadosKit.ENTREGUE;
+
+		_kit.put().then(function(response){
+			$rootScope.go('/kits');
+		}, function(response){
+			console.log('erro ao atualizar kit');
+		});
+	};
+
+
+	$scope.fecharKit = function(){
+
+		var _kit = $scope.kit;
+		_kit.estado = $scope.estadosKit.FECHADO;
+
+		_kit.put().then(function(response){
+			$rootScope.go('/kits');
+		}, function(response){
+			console.log('erro ao atualizar kit');
+		});
+	};
+
+	$scope.inserirItem = function(produto){
+		Restangular.one('produto').get({"q":{"referencia":produto.referencia}}).then( function(response){
+			var _vlrTotal = produto.quantidade * response[0].vlrCusto;
+			$scope.kit.itens.push(
+				{
+					"produtoCompleto": response[0],
+					"produto": response[0]._id,
+					"qtdeEntregue" : produto.quantidade,
+					"qtdeDevolvida" : 0,
+					"vlrUnit" : response[0].vlrCusto,
+					"vlrTotal" : _vlrTotal
+				}
+			);
+
+			$scope.kit.vlrTotalKit += _vlrTotal;
+			$scope.produto = {quantidade: 1};
+		}, function(error){
+			//@TODO tratar erro se o produto nao existe
+			console.log(error);
+		});
+	};
+
+	$scope.removerItem = function(){
+
+	};
+
+	$scope.devolverItem = function(produto){
+		angular.forEach($scope.kit.itens, function(item){
+			if(item.produto.referencia === produto.referencia){
+				if(produto.quantidade <= item.qtdeEntregue){
+					item.qtdeDevolvida = produto.quantidade;
+				}else{
+					console.log('nao e possivel devolver quantidade maior que entregue');
+				}
+			}
+		});
+		$scope.produto = {quantidade: 1};
+	};
+
+
+	switch($location.path()){
+		case '/kits':
+			_loadKits();
+			break;
+		case '/gerar-kit':
+			$scope.produto = {quantidade: 1};
+			break;
+		case '/entregar-kit':
+			var _dataProxRetorno = new Date();
+			_dataProxRetorno.setDate(_dataProxRetorno.getDate() + 25);
+			$scope.kit.dataProxRetorno = _dataProxRetorno;
+			$scope.kit.dataEntrega = new Date();
+			_loadPessoas();
+			break;
+		case '/fechar-kit':
+			$scope.produto = {quantidade: 1};
+			$scope.kit.dataDevolucao = new Date();
+			break;
+	}
 
 
 });
