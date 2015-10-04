@@ -6,7 +6,7 @@
 		<div class="col-md-12">
       <div class="box box-info">
         <div class="box-header with-border">
-          <h3 class="box-title">Código do Kit: {{kit.codigo}}</h3>
+          <h3 class="box-title">Código do Kit: {{ ::kit.codigo }}</h3>
         </div>
         
         <form class="form-horizontal">
@@ -15,20 +15,20 @@
 				<div class="col-lg-4 form-group">
 					<label class="col-sm-6 control-label">Estado:</label>
 					<div class="col-sm-6">
-						<p class="form-control-static">{{kit.estado}}</p>
+						<p class="form-control-static label" ng-class="{'label-success': kit.estado === 'Gerado', 'label-warning': kit.estado === 'Entrgue', 'label-danger': kit.estado === 'Fechado'}">{{ ::kit.estado }}</p>
 					</div>
 				</div>
 				<div class="col-lg-4 form-group">
 					<label class="col-sm-6 control-label">Data Geração:</label>
 					<div class="col-sm-6">
-						<p class="form-control-static">{{kit.dataGeracao | date:"dd/MM/yyyy"}}</p>
+						<p class="form-control-static">{{ ::kit.dataGeracao | date:"dd/MM/yyyy" }}</p>
 					</div>
 				</div>
 
 				<div class="col-lg-4 form-group">
 					<label class="col-sm-6 control-label">Valor Total Kit:</label>
 					<div class="col-sm-6">
-						<p class="form-control-static">{{kit.vlrTotalKit | currency}}</p>
+						<p class="form-control-static">{{ ::kit.vlrTotalKit | currency }}</p>
 					</div>
 				</div>
 			</div>
@@ -36,26 +36,40 @@
 				<div class="col-lg-4 form-group">
 					<label class="col-sm-6 control-label">Pessoa:</label>
 					<div class="col-sm-6">
-						<p class="form-control-static">{{kit.pessoa}}</p>
+						<p class="form-control-static">{{ ::kit.pessoa }}</p>
 					</div>
 				</div>
 				<div class="col-lg-4 form-group">
 					<label class="col-sm-6 control-label">Data Entrega:</label>
 					<div class="col-sm-6">
-						<p class="form-control-static">{{kit.dataEntrega | date:"dd/MM/yyyy"}}</p>
+						<p class="form-control-static">{{ ::kit.dataEntrega | date:"dd/MM/yyyy" }}</p>
 					</div>
 				</div>
 				<div class="col-lg-4 form-group" ng-if="kit.estado === 'Entrgue'">
 					<label class="col-sm-6 control-label">Data Prox. Retorno:</label>
 					<div class="col-sm-6">
-						<p class="form-control-static">{{kit.dataProxRetorno | date:"dd/MM/yyyy"}}</p>
+						<p class="form-control-static">{{ ::kit.dataProxRetorno | date:"dd/MM/yyyy" }}</p>
 					</div>
 				</div>
 				<div class="col-lg-4 form-group" ng-if="kit.estado === 'Fechado'">
 					<label class="col-sm-6 control-label">Data Devolução:</label>
 					<div class="col-sm-6">
-						<p class="form-control-static">{{kit.dataDevolucao | date:"dd/MM/yyyy"}}</p>
+						<p class="form-control-static">{{ ::kit.dataDevolucao | date:"dd/MM/yyyy" }}</p>
 					</div>
+				</div>
+			</div>
+			<div class="row" ng-if="kit.estado === 'Fechado' ">
+				<div class="col-lg-4 form-group">
+					<label class="col-sm-6 control-label">Valor Total Divida:</label>
+					<div class="col-sm-6">
+						<p class="form-control-static">{{ ::kit.vlrTotalDivida | currency}}</p>
+					</div>
+				</div>
+				<div class="col-lg-4 form-group">
+					
+				</div>
+				<div class="col-lg-4 form-group">
+					
 				</div>
 			</div>
 
@@ -77,13 +91,13 @@
 		                  <th>Valor Total</th>
 		                </tr>
 		                <tr ng-repeat="item in kit.itens">
-		                	<td>{{item.produto.referencia}}</td>
-		                	<td>{{item.produto.tipo}}</td>
-		                	<td>{{item.produto.descricao}}</td>
-		                	<td>{{item.qtdeEntregue}}</td>
-		                	<td ng-if="kit.estado === 'Fechado'">{{item.qtdeDevolvida}}</td>
-		                	<td>{{item.vlrUnit}}</td>
-		                	<td>{{item.vlrTotal}}</td>
+		                	<td>{{ ::item.produto.referencia }}</td>
+		                	<td>{{ ::item.produto.tipo }}</td>
+		                	<td>{{ ::item.produto.descricao }}</td>
+		                	<td>{{ ::item.qtdeEntregue }}</td>
+		                	<td ng-if="kit.estado === 'Fechado'">{{ ::item.qtdeDevolvida }}</td>
+		                	<td>{{ ::item.vlrUnit }}</td>
+		                	<td>{{ ::item.vlrTotal }}</td>
 		                </tr>
 		              </table>
 	                  

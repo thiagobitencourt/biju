@@ -43,8 +43,9 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 
 	$scope.kitsGridOptions.columnDefs = [
     	{ name: 'codigo', displayName: 'Codigo'},
+    	{ name: 'pessoa', displayName: 'Pessoa'},
 	    { name: 'vlrTotalKit', displayName: 'Valor Total'},
-	    { name: 'estado', displayName: 'Estado'}
+	    { name: 'estado', displayName: 'Estado', cellTemplate: 'view/Kit/kit-template-estado.html'}
 	];
 
 	var _loadKits = function(){
@@ -100,6 +101,14 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 
 		var _kit = $scope.kit;
 		_kit.estado = $scope.estadosKit.FECHADO;
+
+		var _vlrTotalDivida = 0;
+
+		angular.forEach(_kit.itens, function(item){
+			_vlrTotalDivida += ( parseInt(item.qtdeEntregue) - parseInt(item.qtdeDevolvida) ) * item.vlrUnit;
+		});
+
+		_kit.vlrTotalDivida = _vlrTotalDivida;
 
 		_kit.put().then(function(response){
 			$rootScope.go('/kits');
