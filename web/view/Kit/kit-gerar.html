@@ -15,7 +15,7 @@
 							<div class="col-lg-3 form-group">
 								<label class="col-sm-4 control-label">Ref.:</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" ng-model="produto.referencia" ng-enter="inserirItem(produto)">
+									<input type="text" id="referencia" class="form-control" ng-model="produto.referencia" ng-enter="inserirItem(produto)">
 								</div>
 							</div>
 							<div class="col-lg-3 form-group">
@@ -25,7 +25,7 @@
 								</div>
 							</div>
 							<div class="col-lg-2 form-group">
-								<button type="button" class="btn btn-info" ng-click="inserirItem(produto)">Inserir</button>
+								<button type="button" class="btn btn-info" event-focus="click" event-focus-id="referencia" ng-click="inserirItem(produto)">Inserir</button>
 							</div>
 							<div class="col-lg-4 form-group">
 								<label class="col-sm-6 control-label">Valor Total Kit:</label>

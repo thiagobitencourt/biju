@@ -1,6 +1,6 @@
 var app = angular.module('bijuApp');
 
-app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Restangular, shareData){
+app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Restangular, shareData, focus){
 
 
 	if(shareData.has('kit')){
@@ -124,6 +124,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 
 			$scope.kit.vlrTotalKit += _vlrTotal;
 			$scope.produto = {quantidade: 1};
+			focus('referencia');
 		}, function(error){
 			//@TODO tratar erro se o produto nao existe
 			console.log(error);

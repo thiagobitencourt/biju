@@ -1,4 +1,5 @@
-angular.module('bijuApp').factory('shareData', function(){
+var app = angular.module('bijuApp');
+app.factory('shareData', function(){
 	var _shareData = {};
 
 	var _setData = function(name, data){
