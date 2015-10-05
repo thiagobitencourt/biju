@@ -4,73 +4,38 @@
       <div class="box">
         <div class="box-header">
           <h3 class="box-title">Estoque</h3>
-         
+          <button class="btn btn-success pull-right" ng-click="newEstoque()"><i class="glyphicon glyphicon-plus"></i> Adicionar</button>
+
           <!-- Espaço entre o campo e o botão-->
           <div class="pull-right">
-              &nbsp
-              &nbsp
+            &nbsp
+            &nbsp
           </div>
           <div class="input-group pull-right" style="width: 150px;">
-              <input type="text" ng-model="searchText" class="form-control pull-right" placeholder="Procurar"/>
-              <div class="input-group-btn">
-                  <button class="btn btn-default" ><i class="fa fa-search"></i></button>
-              </div>
+            <input type="text" ng-model="searchText" class="form-control pull-right" placeholder="Procurar"/>
+            <div class="input-group-btn">
+              <button class="btn btn-default" >
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
           </div>
-
         </div>
-
-            <div class="row">
-                <div class="col-md-6" align="center">
-                    <h3>Valor Total: {{totalValorEstoque | currency}}</h3>
-                </div>
-                <div lass="col-md-6" align="center">
-                    <h3>Produtos em Estoque: {{totalProdutosEstoque}}</h3>
-                </div>
-            </div>
-
-            <br />
-
-            <div class="row">
-              <div class="col-md-8" align="center">
-                <form class="form-inline" name="estoqueForm">
-                  <div class="form-group">
-                    
-                    <input type="text" class="form-control" placeholder="Referência" ng-model="estoque.referencia" ng-required="true">
-                    
-                    <input type="text" class="form-control" placeholder="Quantidade" ng-model="estoque.quantidade" ng-required="true">
-                    
-                    <a href="" class="btn btn-success" ng-click="newEstoque(estoque)" ng-disabled="estoqueForm.$invalid">
-                        <i class="glyphicon glyphicon-plus">Adicionar</i>
-                    </a>
-                  </div>
-                </form>
-              </div>
-              <div class="col-md-4" style="margin-top: 10px;">
-                <div class="text-red" ng-if="estoqueError"><i class="glyphicon glyphicon-remove"></i> {{estoqueError}}</div>
-              </div>
-            </div>
-
-
-
-
-
-<!--                 <div class="form-group">
-                  <label class="col-sm-3 control-label">Referência: *</label>
-                  <div class="col-sm-9" ng-class="{'has-error': (form.tipo.$error.required && form.$submitted)}">
-                    <input type="text" name="tipo" class="form-control" ng-model="entity.referencia" required capitalize>
-                  </div>
-                </div>
-                
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Quantidade: *</label>
-                  <div class="col-sm-9" ng-class="{'has-error': (form.quantidade.$error.required && form.$submitted)}">
-                    <input type="text" class="form-control" name="quantidade" rows="3" ng-model="entity.quantidade" required></input>
-                  </div>
-                </div> -->
 
         <div class="box-body">
-           <div ui-grid="estoqueGridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
+          <div ui-grid="estoqueGridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
         </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-6" align="center">
+            <h3>Valor Total: {{totalValorEstoque | currency}}</h3>
+          </div>
+          <div lass="col-md-6" align="center">
+            <h3>Produtos em Estoque: {{totalProdutosEstoque}}</h3>
+          </div>
+        </div>
+        <br />
+
       </div>
     </div>
   </div>

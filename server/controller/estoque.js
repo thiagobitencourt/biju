@@ -1,3 +1,5 @@
+var logger = require('winston');
+
 var estoqueController = function(){
 
 	var _Estoque = require(__base + 'models/estoque');
@@ -57,13 +59,37 @@ var estoqueController = function(){
 				});
 
 			}else{
-				//insert
-				var p = new _Estoque(body);
-				p.save(function(err, newEstoque){
-					if(err)
-						return callback({error: err, code: 500, message : "Erro ao salvar estoque."});
 
-					return callback(null, newEstoque);
+				var ProdutoCtrl = require(__base + 'controller/produto');
+
+				ProdutoCtrl.findProduto(null, {referencia: body.produto.referencia}, function(err, prod){
+					if(err){
+						logger.error(err);
+						return callback(err);
+					}
+
+					if(prod.length !== 0){
+
+						//TEMP CODE... Need improvement
+						var prod = prod[0];
+						body.produto = prod._id;
+
+						body.valor = prod.vlrCusto;
+						body.valorTotal = (prod.vlrCusto * body.quantidade);
+
+						//insert
+						var p = new _Estoque(body);
+						p.save(function(err, newEstoque){
+							if(err)
+								return callback({error: err, code: 500, message : "Erro ao salvar estoque."});
+
+							return callback(null, newEstoque);
+
+						});
+
+					}else{
+						return callback({error: "Produto não encontrado", code: 400, message : "Produto não encontrado"});
+					}
 
 				});
 			}
