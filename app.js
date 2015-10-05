@@ -40,7 +40,7 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 		store: new MongoStore({ mongooseConnection: mongoose.connection }),
 		cookie: { 
 			// secure: true, //Allow connections from HTTP -- TEMP
-			maxAge: 60000 //60seg
+			maxAge: 30000 * 10 //30min
 		}
 	}))	
 
@@ -68,27 +68,16 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 		next();
 	});
 
-	var isLoggedIn = function(req, res, next){
+	var hasSession = function(req){
+		return req.session && req.session.userData;
+	};
 
-		if(req.session && req.session.userData){
-			logger.debug("isLoggedIn");
-			return next();
-		}
-		logger.debug("NOT LoggedIn");
-		//TODO: Comment this code, to not interrupt tests
-		return res.redirect('/login'); 
-		// next();
-	}
-
-	app.get('/', isLoggedIn);
+	app.get('/', function(req, res){
+		return res.redirect(hasSession(req) ? '/web' : '/login');
+	});
 
 	app.use('/login', function(req, res, next){
-		if(req.session && req.session.userData){
-			return next(); //TODO: Remove this line
-			return res.redirect('/web');
-		}
-
-		return next();
+		return hasSession(req)? res.redirect('/web') : next();
 	});
 	app.use('/login', express.static('web/public/login'));
 
@@ -97,9 +86,17 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 	*/
 	require(__base + 'routes/loginRoute')(app);
 
-	app.use(express.static('web/'));
+	app.use('/images', express.static('web/images/'));
+
+	app.use('/web', function(req, res, next){
+		return hasSession(req)? next() : res.redirect('/login');
+	});
+	app.use('/web', express.static('web/private'));
 
 	app.use('/api', new LoadRouter());
+	app.use('/api', function(req, res, next){
+		return hasSession(req)? next() : res.status(403).send({message: "Unauthorized"});
+	});
 
 //TODO - replace this
 	var server = app.listen(httpPort, function () {

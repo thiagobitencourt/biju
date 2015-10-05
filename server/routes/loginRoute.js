@@ -16,15 +16,9 @@ var LoginRoute = function(app){
 		});
 	});
 
-	app.post('/logout', function(req, res){
-
-		if(!req.session || !req.session.userData){
-			//Forbidden
-			return res.status(403).send({messsage:"Sessão não encontrada"});	
-		}
-
+	app.get('/logout', function(req, res){
 		delete req.session.userData;
-		return res.send();
+		return res.redirect('/login');
 	});
 
 	app.get('/session', function(req, res){
