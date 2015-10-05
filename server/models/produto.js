@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var AppError = require(__base + 'utils/apperror');
+var logger = require('winston');
 var Schema = mongoose.Schema;
 
 var _validateId = require(__base + 'utils/validateObjectId');
@@ -44,7 +45,7 @@ produtoSchema = new Schema({
   	descricao: { type: String, appDescription : "Descrição"},
   	tipo: { type: String, required: true, appDescription : "Tipo"},
   	tamanho: { type: String, appDescription : "Tamanho"},
-  	vlrCusto: { type: String, required : true, appDescription : "Valor de Custo"},
+  	vlrCusto: { type: String, required : true, appDescription : "Valor de Custos"},
   	vlrVenda: { type: String, required : true, appDescription : "Valor de Venda"},
   	observacao: { type: String, appDescription : "Observação"},
   	deletedAt: { type: Date, default: null, appDescription : "Removido em"}
@@ -60,7 +61,7 @@ produtoSchema.statics.secureFind = function(produtoId, query, cb) {
 		}
 
 		this.findOne({_id: produtoId, deletedAt: { $eq: null }}, {deletedAt:0}, function(err, produto){
-			if(err) return cb(new AppError(err), null);
+			if(err) return cb(new AppError(err, null, null, 'Produto'), null);
 
 			if(!produto)
 				return cb("Produto não encontrado", null);
@@ -72,7 +73,7 @@ produtoSchema.statics.secureFind = function(produtoId, query, cb) {
 		query.deletedAt = {$eq: null};
 
 		this.find(query, {deletedAt:0}, function(err, produtos){
-			if(err) return cb(new AppError(err), null);
+			if(err) return cb(new AppError(err, null, null, 'Produto'), null);
 			cb(null, produtos);
 		});
 	}
@@ -86,7 +87,7 @@ produtoSchema.statics.secureDelete = function(produtoId, cb) {
 
 	this.findOneAndUpdate({_id : produtoId,  deletedAt: { $eq: null } }, {deletedAt : getTimezonedISODateString()}, {new : true} ,function(err, p){
 		if(err)
-			return cb(new AppError(err), null);
+			return cb(new AppError(err, null, null, 'Produto'), null);
 
 		if(!p)
 			return cb(new AppError(null, "Produto não encontrado.", AppError.ERRORS.CLIENT), null);
@@ -103,7 +104,7 @@ produtoSchema.statics.secureUpdate = function(produtoId, newProduto, cb) {
 
 	this.findOneAndUpdate({_id : produtoId,  deletedAt: { $eq: null } }, newProduto, {new : true} ,function(err, p){
 		if(err)
-			return cb(new AppError(err), null);
+			return cb(new AppError(err, null, null, 'Produto'), null);
 
 		if(!p)
 			return cb(new AppError(null, "Produto não encontrado.", AppError.ERRORS.CLIENT), null);

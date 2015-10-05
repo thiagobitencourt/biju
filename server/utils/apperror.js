@@ -24,8 +24,6 @@ AppError.prototype.clientify = function(){
     switch (this.native.code) {
       case 11000:
         var schema = mongoose.model(this.model).schema;
-        logger.debug(JSON.stringify(mongoose.model(this.model).schema));
-
         var tmp_err_message = this.native.errmsg.split("dup key:");
         this.message = "O seguinte valor não pode ser inserido pois já foi utilizado na base de dados: " + tmp_err_message[1];
         this.appErrorType = AppError.ERRORS.CLIENT;
@@ -47,7 +45,8 @@ AppError.prototype.clientify = function(){
           try {
             schema = mongoose.model(this.model).schema;
             for (var attr in this.native.errors) {
-              this.message += " Campo [" + schema.paths['referencia'].options['appDescription'] + "] com problema: " + AppError.MONGOOSE.KIND[this.native.errors[attr].kind] + ";";
+              this.message += " Campo [" + schema.paths['referencia'].options['appDescription'] || this.native.errors[attr].path
+              + "] com problema: " + AppError.MONGOOSE.KIND[this.native.errors[attr].kind] || this.native.errors[attr].kind + ";";
             }
           } catch (e) {
             logger.error(e.toString());

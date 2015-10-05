@@ -54,7 +54,7 @@ var produtoController = function(){
 
 				_Produto.secureUpdate(id, body ,function(err, newProduto){
 					if(err)
-						return callback({error: err, code: 500, message : "Erro ao atualizar produto."});
+						return callback(err);
 
 					return callback(null, newProduto);
 				});
@@ -84,13 +84,13 @@ var produtoController = function(){
 
 			_Produto.secureDelete(id, function(err, produto){
 				if(err)
-					return callback({error: err, code: 500, message : "Erro ao remover produto."});
+					return callback(err);
 
 				return callback(null, produto);
 			});
 
 		}catch(e){
-			return callback({error: e, code: 400, message : "Erro ao remover produto."});
+			return callback(new AppError(e, null, null, 'User'));
 		}
 
 	}

@@ -1,3 +1,6 @@
+var AppError = require(__base + 'utils/apperror');
+var logger = require('winston');
+
 var kitController = function(){
 
 	var _Kit = require(__base + 'models/kit');
@@ -17,7 +20,7 @@ var kitController = function(){
 
 				_Kit.secureFind(id, null, function(err, kit){
 					if(err)
-						return callback({error: err, code: 500, message : "Erro ao procurar kit."});
+						return callback(err);
 
 					return callback(null, kit);
 				});
@@ -27,15 +30,15 @@ var kitController = function(){
 
 				_Kit.secureFind(null, query, function(err, kits){
 					if(err)
-						return callback({error: err, code: 500, message : "Erro ao procurar kit."});
+						return callback(err);
 
 					return callback(null, kits);
 				});
 			}
 
 		}catch(e){
-			return callback({error: e, code: 500, message : "Erro ao salvar kit."});
-		}	
+			return callback(new AppError(e, null, null, 'Kit'));
+		}
 
 	}
 
@@ -43,7 +46,7 @@ var kitController = function(){
 
 		try{
 			body.deletedAt = null; //TODO - limpeza manual do campo para evitar que o usuário altere.
-				
+
 			if(body._id){
 				//update
 
@@ -53,7 +56,7 @@ var kitController = function(){
 
 				_Kit.secureUpdate(id, body ,function(err, newKit){
 					if(err)
-						return callback({error: err, code: 500, message : "Erro ao atualizar kit."});
+						return callback(err);
 
 					return callback(null, newKit);
 				});
@@ -70,15 +73,15 @@ var kitController = function(){
 					p.codigo = result.next;
 					p.save(function(err, newKit){
 						if(err)
-							return callback({error: err, code: 500, message : "Erro ao salvar kit."});
+							return callback(new AppError(err, null, null, 'Kit'));
 
 						return callback(null, newKit);
-					})					
+					})
 				});
-			}			
+			}
 
 		}catch(e){
-			return callback({error: e.toString(), code: 400, message : "Erro ao salvar kit."});
+			return callback(new AppError(e, null, null, 'Kit'));
 		}
 
 	}
@@ -89,13 +92,13 @@ var kitController = function(){
 
 			_Kit.secureDelete(id, function(err, kit){
 				if(err)
-					return callback({error: err, code: 500, message : "Erro ao remover kit."});
+					return callback(err);
 
 				return callback(null, kit);
 			});
 
 		}catch(e){
-			return callback({error: e, code: 400, message : "Erro ao remover kit."});
+			return callback(new AppError(e, null, null, 'Kit'));
 		}
 
 	}
