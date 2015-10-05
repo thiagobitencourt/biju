@@ -1,3 +1,6 @@
+var AppError = require(__base + 'utils/apperror');
+var logger = require('winston');
+
 var produtoController = function(){
 
 	var _Produto = require(__base + 'models/produto');
@@ -16,7 +19,7 @@ var produtoController = function(){
 
 				_Produto.secureFind(id, null, function(err, produto){
 					if(err)
-						return callback({error: err, code: 500, message : "Erro ao procurar produto."});
+						return callback(err);
 
 					return callback(null, produto);
 				});
@@ -26,15 +29,15 @@ var produtoController = function(){
 
 				_Produto.secureFind(null, query, function(err, produtos){
 					if(err)
-						return callback({error: err, code: 500, message : "Erro ao procurar produto."});
+						return callback(err);
 
 					return callback(null, produtos);
 				});
 			}
 
 		}catch(e){
-			return callback({error: e, code: 500, message : "Erro ao salvar produto."});
-		}	
+			return callback(new AppError(e, "Unknown error while finding product."));
+		}
 
 	}
 
@@ -58,10 +61,11 @@ var produtoController = function(){
 
 			}else{
 				//insert
+
 				var p = new _Produto(body);
 				p.save(function(err, newProduto){
 					if(err)
-						return callback({error: err, code: 500, message : "Erro ao salvar produto."});
+						return callback(new AppError(err, null, null, "Produto"));
 
 					return callback(null, newProduto);
 
@@ -69,7 +73,7 @@ var produtoController = function(){
 			}
 
 		}catch(e){
-			return callback({error: e, code: 400, message : "Erro ao salvar produto."});
+			return callback(new AppError(e, "Unknown error while saving product."));
 		}
 
 	}

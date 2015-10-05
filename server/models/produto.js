@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var AppError = require(__base + 'utils/apperror');
 var Schema = mongoose.Schema;
 
 var _validateId = require(__base + 'utils/validateObjectId');
@@ -19,7 +20,7 @@ MODELO: Produto
 * Tamanho
 * Valor de custo
 * Valor de venda
-* Observação 
+* Observação
 */
 
 /*
@@ -35,15 +36,18 @@ MODELO: Produto
 }
 */
 
+
+
 produtoSchema = new Schema({
-  	referencia: { type: String, required: true, unique: true},
-  	descricao: { type: String},
-  	tipo: { type: String, required: true},
-  	tamanho: { type: String},
-  	vlrCusto: { type: String, required : true},
-  	vlrVenda: { type: String, required : true},
-  	observacao: { type: String},
-  	deletedAt: { type: Date, default: null}
+	/*os campos description serão ignorados pelo mongoose.*/
+  	referencia: { type: String, required: true, unique: true, appDescription : "Referência"},
+  	descricao: { type: String, appDescription : "Descrição"},
+  	tipo: { type: String, required: true, appDescription : "Tipo"},
+  	tamanho: { type: String, appDescription : "Tamanho"},
+  	vlrCusto: { type: String, required : true, appDescription : "Valor de Custo"},
+  	vlrVenda: { type: String, required : true, appDescription : "Valor de Venda"},
+  	observacao: { type: String, appDescription : "Observação"},
+  	deletedAt: { type: Date, default: null, appDescription : "Removido em"}
 });
 
 produtoSchema.index({referencia: 1, deletedAt: 1}, {unique: true}); //composed unique.
@@ -52,11 +56,11 @@ produtoSchema.statics.secureFind = function(produtoId, query, cb) {
 
 	if(produtoId){
 		if(!_validateId.isIdValid(produtoId)){
-			return cb("Incorrect ID", null);
+			return cb(new AppError(null, "Incorrect ID", AppError.ERRORS.CLIENT), null);
 		}
 
 		this.findOne({_id: produtoId, deletedAt: { $eq: null }}, {deletedAt:0}, function(err, produto){
-			if(err) return cb(err, null);
+			if(err) return cb(new AppError(err), null);
 
 			if(!produto)
 				return cb("Produto não encontrado", null);
@@ -66,9 +70,9 @@ produtoSchema.statics.secureFind = function(produtoId, query, cb) {
 	}else{
 
 		query.deletedAt = {$eq: null};
-		
+
 		this.find(query, {deletedAt:0}, function(err, produtos){
-			if(err) return cb(err, null);
+			if(err) return cb(new AppError(err), null);
 			cb(null, produtos);
 		});
 	}
@@ -82,10 +86,10 @@ produtoSchema.statics.secureDelete = function(produtoId, cb) {
 
 	this.findOneAndUpdate({_id : produtoId,  deletedAt: { $eq: null } }, {deletedAt : getTimezonedISODateString()}, {new : true} ,function(err, p){
 		if(err)
-			return cb({error: err, code: 500, message : "Erro ao atualizar produto."}, null);
+			return cb(new AppError(err), null);
 
 		if(!p)
-			return cb({message: "Produto não encontrado.", code:400}, null);
+			return cb(new AppError(null, "Produto não encontrado.", AppError.ERRORS.CLIENT), null);
 
 		return cb(null, p);
 	});
@@ -99,10 +103,10 @@ produtoSchema.statics.secureUpdate = function(produtoId, newProduto, cb) {
 
 	this.findOneAndUpdate({_id : produtoId,  deletedAt: { $eq: null } }, newProduto, {new : true} ,function(err, p){
 		if(err)
-			return cb({error: err, code: 500, message : "Erro ao atualizar produto."}, null);
+			return cb(new AppError(err), null);
 
 		if(!p)
-			return cb({message: "Produto não encontrado.", code:400}, null);
+			return cb(new AppError(null, "Produto não encontrado.", AppError.ERRORS.CLIENT), null);
 
 		return cb(null, p);
 	});
@@ -111,4 +115,3 @@ produtoSchema.statics.secureUpdate = function(produtoId, newProduto, cb) {
 Produto = mongoose.model('Produto', produtoSchema);
 
 module.exports = Produto;
-
