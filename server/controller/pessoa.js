@@ -1,3 +1,4 @@
+var AppError = require(__base + 'utils/apperror');
 var logger = require('winston');
 
 var pessoaControler = function(){
@@ -15,7 +16,7 @@ var pessoaControler = function(){
 
 				_Pessoa.secureUpdate(id, body ,function(err, newPessoa){
 					if(err)
-						return callback({error: err, code: 500, message : "Erro ao atualizar pessoa."});
+						return callback(err);
 
 					return callback(null, newPessoa);
 				});
@@ -25,7 +26,7 @@ var pessoaControler = function(){
 				var p = new _Pessoa(body);
 				p.save(function(err, newPessoa){
 					if(err)
-						return callback({error: err, code: 500, message : "Erro ao salvar pessoa."});
+						return callback(new AppError(err, null, null, 'Pessoa'));
 
 					return callback(null, newPessoa);
 
@@ -34,7 +35,7 @@ var pessoaControler = function(){
 
 		}catch(e){
 			logger.error(e);
-			return callback({error: e, code: 400, message : "Erro ao salvar pessoa."});
+			return callback(new AppError(e, null, null, 'Pessoa'));
 		}
 
 	}
@@ -45,13 +46,13 @@ var pessoaControler = function(){
 
 			_Pessoa.secureDelete(id, function(err, pessoa){
 				if(err)
-					return callback({error: err, code: 500, message : "Erro ao remover pessoa."});
+					return callback(err);
 
 				return callback(null, pessoa);
 			});
 
 		}catch(e){
-			return callback({error: e, code: 400, message : "Erro ao remover pessoa."});
+			return callback(new AppError(e, null, null, 'Pessoa'));
 		}
 	}
 
@@ -68,7 +69,7 @@ var pessoaControler = function(){
 
 				_Pessoa.secureFind(id, null, function(err, pessoa){
 					if(err)
-						return callback({error: err, code: 500, message : errMessage});
+						return callback(err);
 
 					return callback(null, pessoa);
 				});
@@ -78,7 +79,7 @@ var pessoaControler = function(){
 
 				_Pessoa.secureFind(null, query, function(err, pessoas){
 					if(err)
-						return callback({error: err, code: 500, message : errMessage});
+						return callback(err);
 
 					return callback(null, pessoas);
 				});
@@ -86,8 +87,8 @@ var pessoaControler = function(){
 
 		}catch(e){
 			logger.error(e);
-			return callback({error: e, code: 500, message : errMessage});
-		}	
+			return callback(new AppError(e, null, null, 'Pessoa'));
+		}
 	}
 
 	return {

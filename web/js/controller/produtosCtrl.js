@@ -6,7 +6,7 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleF
 
 	$scope.produtosScopeProvider = {
 		details: function(row){
-			$rootScope.openModal('view/modalDetailProduto.html', row.entity, 'Produto', 'Detalhe do Produto', _loadProdutos, produtoService);
+			$rootScope.openModal('view/Produto/modalDetailProduto.html', row.entity, 'Produto', 'Detalhe do Produto', _loadProdutos, produtoService);
 		}
 	};
 
@@ -30,8 +30,8 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleF
 
 	$scope.produtosGridOptions.columnDefs = [
     { name: 'referencia', displayName: 'Ref'},
-    { name: 'descricao', displayName: 'Descrição'},
     { name: 'tipo', displayName: 'Tipo'},
+    { name: 'descricao', displayName: 'Descrição'},
     { name: 'tamanho', displayName: 'Tamanho'},
     { name: 'vlrCusto', cellFilter:'currency', displayName: 'Valor Custo'},
     { name: 'vlrVenda', cellFilter:'currency', displayName: 'Valor Venda'}
@@ -44,7 +44,7 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleF
   };
 
 	$scope.newProduto = function(){
-		$rootScope.openModal('view/modalFormProduto.html', {}, 'Produto', 'Novo Produto', _loadProdutos, produtoService);
+		$rootScope.openModal('view/Produto/modalFormProduto.html', {}, 'Produto', 'Novo Produto', _loadProdutos, produtoService);
 	};
 
 	var _loadProdutos = function(){

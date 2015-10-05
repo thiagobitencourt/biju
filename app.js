@@ -23,10 +23,10 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 		logDebug = true;
 	var loggingErrors = LoggingSystem.configure(logDebug);
 	if(loggingErrors){
-		return console.error(loggingErrors);		
+		return console.error(loggingErrors);
 	}
 	logger.info("Logger online.");
-	
+
 	var LoadRouter = require(__base + 'routes/loadRoutes');
 
 	var app = express();
@@ -36,14 +36,14 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 
 	app.use(session({
 		secret: 'migué por polegada quadrada',
-		saveUninitialized: true, // don't create session until something stored 
-    	resave: false, //don't save session if unmodified 
+		saveUninitialized: true, // don't create session until something stored
+    	resave: false, //don't save session if unmodified
 		store: new MongoStore({ mongooseConnection: mongoose.connection }),
-		cookie: { 
+		cookie: {
 			secure: true,
 			maxAge: 60000 //60seg
 		}
-	}))	
+	}))
 
 	var httpPort = 8180;
 	var httpsPort = 8143;
@@ -54,17 +54,6 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 		res.header('Access-Control-Allow-Credentials', 'true');
 		res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
 		res.header('Access-Control-Allow-Headers', 'Content-Type');
-		next();
-	});
-
-	app.all('*', function(req, res, next){
-		res.response = function(error, responseStatus, message){
-			var sendMessage = {message: message, status: responseStatus};
-			if(error){
-				sendMessage.error = error;
-			}
-			return res.status(responseStatus).send(sendMessage);
-		};
 		next();
 	});
 
@@ -107,5 +96,3 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 		logger.info('HTTPS server listening on port %s', httpsPort);
 	});
 });
-
-

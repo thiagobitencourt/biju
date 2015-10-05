@@ -116,10 +116,12 @@
 					<div class="col-lg-4 form-group">
 						<label class="col-sm-4 control-label">P.Ref.:</label>
 						<div class="col-sm-8">
-
-						   	<select class="form-control" ng-model="entity.pessoaReferencia" name="pessoa" ng-options="pessoa.nome for pessoa in entity.pessoas">
-	            				<option></option>
-	            			</select>
+			       	<select class="form-control" ng-model="entity.pessoaReferencia._id" name="pessoa">
+		        		<option ng-selected="{{pessoa._id == entity.pessoaReferencia._id}}"
+			            ng-repeat="pessoa in pessoas" value="{{pessoa._id}}">
+					      		{{pessoa.nome}}
+			    			</option>
+		        	</select>
 						</div>
 					</div>
 					<div class="col-lg-4 form-group">

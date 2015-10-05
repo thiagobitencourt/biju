@@ -1,10 +1,11 @@
 var app = angular.module('bijuApp');
 
-app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restangular, entity, type, title, loadDataTableGrid, serviceEntity) {
+app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restangular, entity, type, title, loadDataTableGrid, serviceEntity, pessoas) {
 	
 	$scope.entity = entity;
 	$scope.type = type;
 	$scope.title = title;
+	$scope.pessoas = pessoas;
 
 	$scope.close = function(){
 		$modalInstance.close();
@@ -12,12 +13,12 @@ app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restang
 
 	$scope.editFromDetail = function(entity){
 		$modalInstance.close();
-		$rootScope.openModal('view/modalForm'+type+'.html', Restangular.copy(entity), null, 'Editar '+type, loadDataTableGrid, serviceEntity);
+		$rootScope.openModal('view/'+type+'/modalForm'+type+'.html', Restangular.copy(entity), null, 'Editar '+type, loadDataTableGrid, serviceEntity, pessoas);
 	};
 
 	$scope.removeFromDetail = function(entity){
 		$modalInstance.close();
-		$rootScope.openModal('view/modalDelete'+type+'.html', entity, null, 'Excluir '+type, loadDataTableGrid, serviceEntity);
+		$rootScope.openModal('view/'+type+'/modalDelete'+type+'.html', entity, null, 'Excluir '+type, loadDataTableGrid, serviceEntity, pessoas);
 	};
 
 	$scope.remove = function(entity){

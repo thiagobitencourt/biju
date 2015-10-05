@@ -1,3 +1,6 @@
+var AppError = require(__base + 'utils/apperror');
+var logger = require('winston');
+
 var UserControler = function(){
 
 	var _User = require(__base + 'models/users');
@@ -6,33 +9,28 @@ var UserControler = function(){
 	var _login = function(username, password, callback){
 
 		if(!username || !password){
-			var errObj = {code: 400, message: "Missing username or password"};
-			return callback(errObj, null);
+			return callback(new AppError(null, "Missing username or password", AppError.ERRORS.CLIENT), null);
 		}
 
 		_User.findOne({username: username, deletedAt: { $eq: null }}, function(err, user){
 
 			if(err){
-				var errObj = {error: err, code: 500, message: "Error on find user"};
-				return callback(errObj, null);
+				return callback(new AppError(err, null, null, 'User'), null);
 			}
 
 			if(!user){
-				var errObj = {code: 401, message: "User not found or invalid password"};
-				return callback(errObj, null);
+				return callback(new AppError(null, "User not found or invalid password", AppError.ERRORS.CLIENT), null);
 			}
-			
+
 			user.comparePassword(password, function(err, matchs){
 				if(err){
-					var errObj = {error: err, code: 500, message: "Error on authenticate user"};
-					return callback(errObj, null);
+					return callback(err, null);
 				}
 
 				if(matchs)
 					return callback(null, {username: user.username});
 				else{
-					var errObj = {code: 401, message: "User not found or invalid password"};
-					return callback(errObj, false);
+					return callback(new AppError(null, "User not found or invalid password", AppError.ERRORS.CLIENT), false);
 				}
 			});
 		});
@@ -46,8 +44,7 @@ var UserControler = function(){
 
 		var afterFind = function(err, user){
 			if(err){
-				var errObj = {error: err, code: 500, message: "Error on find user"};
-				return callback(errObj, null);
+				return callback(err, null);
 			}
 
 			//Find all
@@ -58,15 +55,13 @@ var UserControler = function(){
 			if(user){
 				return callback(null, user);
 			}else{
-				var errObj = {code: 400, message: "User not found"};
-				return callback(errObj, null);
+				return callback(new AppError(null, "User not found", AppError.ERRORS.CLIENT), null);
 			}
 		}
 
 		if(id){
 			if(!_validateId.isIdValid(id)){
-				var errObj = {code: 400, message: "Incorrect ID"};
-				return callback(errObj, null);
+				return callback(new AppError(null, "Incorrect ID", AppError.ERRORS.CLIENT), null);
 			}
 
 			//Find by id
@@ -87,14 +82,7 @@ var UserControler = function(){
 	*/
 	var _onCreateOrUpdate = function(err, user, operation, cb){
 		if(err){
-			var errObj = {error: err, code: 500, message: "Error on " + operation + " user"};
-			if(err.code == 11000){
-				errObj.code = 400;
-				errObj.message = "Username already in use";
-				errObj.error = null;
-			}
-
-			return cb(errObj, null);
+			return cb(err, null);
 		}
 
 		return cb(null, user.clean());
@@ -103,8 +91,7 @@ var UserControler = function(){
 	var _newUser = function(newUser, callback){
 
 		if(!newUser.username || !newUser.password){
-			var errObj = {code: 400, message: "Missing field username or password"};
-			return callback(errObj, null);
+			return callback(new AppError(null, "Missing username or password", AppError.ERRORS.CLIENT), null);
 		}
 
 		/*
@@ -113,14 +100,13 @@ var UserControler = function(){
 		*/
 		if(newUser.pessoa){
 			if(!_validateId.isIdValid(newUser.pessoa)){
-				var errObj = {code: 400, message: "Incorrect ID for pessoal field"};
-				return callback(errObj, null);
+				return callback(new AppError(null, "Incorrect ID for pessoal field", AppError.ERRORS.CLIENT), null);
 			}
 		}
 		//TODO: descomentar o else se o campo pessoa for obrigatório.
 		// else{
 		// 	var errObj = {code: 400, message: "Missing field pessoa"};
-		// 	return callback(errObj, null);
+		// 	return callback(new AppError(null, "Missing username or password", AppError.ERRORS.CLIENT), null);
 		// }
 
 		var user = new _User();
@@ -130,15 +116,14 @@ var UserControler = function(){
 		user.pessoa = newUser.pessoa;
 
 		user.save(function(err, userCreated){
-			return _onCreateOrUpdate(err, userCreated, "create", callback);
+			return _onCreateOrUpdate(new AppError(err, null, null, 'User'), userCreated, "create", callback);
 		});
 	}
 
 	var _updateUser = function(userId, newUser, callback){
 
 		if(!_validateId.isIdValid(userId)){
-			var errObj = {code: 400, message: "Incorrect ID"};
-			return callback(errObj, null);
+			return callback(new AppError(null, "Incorrect ID", AppError.ERRORS.CLIENT), null);
 		}
 
 		/*
@@ -147,8 +132,7 @@ var UserControler = function(){
 		*/
 		if(newUser.pessoa){
 			if(!_validateId.isIdValid(newUser.pessoa)){
-				var errObj = {code: 400, message: "Incorrect ID for pessoal field"};
-				return callback(errObj, null);
+				return callback(new AppError(null, "Incorrect ID for pessoal field", AppError.ERRORS.CLIENT), null);
 			}
 		}
 
@@ -160,14 +144,12 @@ var UserControler = function(){
 	var _removeUser = function(userId, callback){
 
 		if(!_validateId.isIdValid(userId)){
-			var errObj = {code: 400, message: "Incorrect ID"};
-			return callback(errObj, null);
+			return callback(new AppError(null, "Incorrect ID", AppError.ERRORS.CLIENT), null);
 		}
 
 		_User.secureDelete(userId, function(err, removedUser){
 			if(err){
-				var errObj = {error: err, code: err.code || 500, message: (err.code == 400? err.message : "Error on remove user")};
-				return callback(errObj, null);
+				return callback(err, null);
 			}
 
 			return callback(null, removedUser);

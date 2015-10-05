@@ -5,15 +5,15 @@
 	</div>
 
 	<div class="modal-body">
-		
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Pessoa: *</label>
 			<div class="col-sm-9" ng-class="{'has-error': (form.pessoa.$error.required && form.$submitted)}">
-
-		       	<select class="form-control" ng-model="entity.pessoa" name="pessoa" ng-options="pessoa.nome for pessoa in entity.pessoas" required>
-	            	<option></option>
-	            </select>
-
+       	<select class="form-control" ng-model="entity.pessoa._id" name="pessoa" required>
+        	<option ng-selected="{{pessoa._id == entity.pessoa._id}}"
+	            ng-repeat="pessoa in pessoas" value="{{pessoa._id}}">
+			      		{{pessoa.nome}}
+	    		</option>
+        </select>
 			</div>
 	 	</div>
 
