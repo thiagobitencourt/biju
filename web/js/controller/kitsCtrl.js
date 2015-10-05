@@ -26,9 +26,9 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 	};
 
 	$scope.kitsGridOptions = {
-	    paginationPageSizes: [10, 10, 25, 50, 100],
-    	paginationPageSize: 10,
-    	minRowsToShow: 11,
+	    paginationPageSizes: [20, 50, 100],
+    	paginationPageSize: 20,
+    	minRowsToShow: 21,
 	    multiSelect: false,
 	    enableRowSelection: true, 
 	    enableSelectAll: false,
