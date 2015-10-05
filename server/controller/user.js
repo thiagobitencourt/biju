@@ -100,6 +100,7 @@ var UserControler = function(){
 		*/
 		if(newUser.pessoa){
 			if(!_validateId.isIdValid(newUser.pessoa)){
+				logger.debug("1");
 				return callback(new AppError(null, "Incorrect ID for pessoal field", AppError.ERRORS.CLIENT), null);
 			}
 		}
@@ -116,12 +117,14 @@ var UserControler = function(){
 		user.pessoa = newUser.pessoa;
 
 		user.save(function(err, userCreated){
-			return _onCreateOrUpdate(new AppError(err, null, null, 'User'), userCreated, "create", callback);
+			var error = null;
+			if(err)
+				error = new AppError(err, null, null, 'User');
+			return _onCreateOrUpdate(error, userCreated, "create", callback);
 		});
 	}
 
 	var _updateUser = function(userId, newUser, callback){
-
 		if(!_validateId.isIdValid(userId)){
 			return callback(new AppError(null, "Incorrect ID", AppError.ERRORS.CLIENT), null);
 		}

@@ -8,6 +8,7 @@ var Responser = (function(){
       throw new Error("Missing res or/and obj parameters.");
 
     if(obj.name && obj.name === "AppError"){ //AppError
+      logger.debug(obj);
       if(!obj.message){
         obj.clientify();
       }

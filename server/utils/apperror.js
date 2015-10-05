@@ -46,13 +46,13 @@ AppError.prototype.clientify = function(){
           try {
             schema = mongoose.model(this.model).schema;
             for (var attr in this.native.errors) {
-              this.message += " Campo [" + schema.paths['referencia'].options['appDescription'] || this.native.errors[attr].path
-              + "] com problema: " + AppError.MONGOOSE.KIND[this.native.errors[attr].kind] || this.native.errors[attr].kind + ";";
+              this.message += " Campo [" + (schema.paths[this.native.errors[attr].path].options['appDescription'] || this.native.errors[attr].path)
+  + "] com problema: " + (AppError.MONGOOSE.KIND[this.native.errors[attr].kind] || this.native.errors[attr].kind) + ";";
             }
           } catch (e) {
             logger.error(e.toString());
             this.appErrorType = AppError.ERRORS.INTERNAL;
-            this.message = "NÃO É POSSÍVEL AVALIAR ERRO, DEVIDO AO ERRO INTERNO: " + e.toString();
+            this.message = "Não é possível avaliar erro devido ao seguinte erro interno: " + e.toString();
           }
 
         }else{
