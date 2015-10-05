@@ -1,13 +1,11 @@
 var app = angular.module('bijuApp');
 
-app.controller('estoqueCtrl', function($rootScope, $scope, Restangular){
+app.controller('estoqueCtrl', function($rootScope, $scope, Restangular, singleFilter){
 
 	var estoqueService = Restangular.service('estoque');
 	var produtoService = Restangular.service('produto');
 
 	var hackerFunction = function(){
-
-		// console.log("hackerFunction");
 
 		var _put = function(entity){
 			entity.valorTotal = (entity.produto.vlrCusto * entity.quantidade);
@@ -34,8 +32,10 @@ app.controller('estoqueCtrl', function($rootScope, $scope, Restangular){
 	    enableSelectAll: false,
 	    enableRowHeaderSelection: false,
 	    selectionRowHeaderWidth: 35,
+	    enableFiltering: false,
 	    onRegisterApi: function(gridApi){ 
 	      $scope.gridApi = gridApi;
+	      $scope.gridApi.grid.registerRowsProcessor( singleFilter.filter, 200 );
 	    },
 	    appScopeProvider: $scope.estoqueScopeProvider,
 	    rowTemplate: 'view/template-dblclick.html'
@@ -48,6 +48,12 @@ app.controller('estoqueCtrl', function($rootScope, $scope, Restangular){
 	      { name: 'produto.vlrCusto', cellFilter: 'currency', displayName: 'Valor Unit.'},
 	      { name: 'valorTotal', cellFilter: 'currency', displayName: 'Valor Total'}
 	];
+
+	$scope.filter = function() {
+		singleFilter.value($scope.filterValue, 
+			['produto', 'tipo', 'referencia']);
+    	$scope.gridApi.grid.refresh();
+  	};
 
 	$scope.newEstoque = function(estoque){
 
