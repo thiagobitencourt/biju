@@ -1,6 +1,6 @@
 var app = angular.module('bijuApp');
 
-app.controller('estoquesCtrl', function($rootScope, $scope, Restangular){
+app.controller('estoquesCtrl', function($rootScope, $scope, Restangular, singleFilter){
 
 	var estoqueService = Restangular.service('estoque');
 	var produtoService = Restangular.service('produto');
@@ -21,8 +21,10 @@ app.controller('estoquesCtrl', function($rootScope, $scope, Restangular){
 	    enableSelectAll: false,
 	    enableRowHeaderSelection: false,
 	    selectionRowHeaderWidth: 35,
+	    enableFiltering: false,
 	    onRegisterApi: function(gridApi){ 
 	      $scope.gridApi = gridApi;
+	      $scope.gridApi.grid.registerRowsProcessor( singleFilter.filter, 200 );
 	    },
 	    appScopeProvider: $scope.estoqueScopeProvider,
 	    rowTemplate: 'view/template-dblclick.html'
@@ -35,6 +37,12 @@ app.controller('estoquesCtrl', function($rootScope, $scope, Restangular){
 	      { name: 'produto.vlrCusto', cellFilter: 'currency', displayName: 'Valor Unit.'},
 	      { name: 'valorTotal', cellFilter: 'currency', displayName: 'Valor Total'}
 	];
+
+	$scope.filter = function() {
+		singleFilter.values($scope.filterValue, 
+			['produto', 'tipo', 'referencia']);
+    	$scope.gridApi.grid.refresh();
+  	};
 
 	$scope.newEstoque = function(){
 		var entity = {};

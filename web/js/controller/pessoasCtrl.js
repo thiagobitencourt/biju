@@ -1,6 +1,6 @@
 var app = angular.module('bijuApp');
 
-app.controller('pessoasCtrl', function($rootScope, $scope, Restangular){
+app.controller('pessoasCtrl', function($rootScope, $scope, Restangular, singleFilter){
 
 	var pessoaService = Restangular.service('pessoa');
 
@@ -41,8 +41,10 @@ app.controller('pessoasCtrl', function($rootScope, $scope, Restangular){
 	    enableSelectAll: false,
 	    enableRowHeaderSelection: false,
 	    selectionRowHeaderWidth: 35,
+	    enableFiltering: false,
 	    onRegisterApi: function(gridApi){ 
 	      $scope.gridApi = gridApi;
+	      $scope.gridApi.grid.registerRowsProcessor( singleFilter.filter, 200 );
 	    },
 	    appScopeProvider: $scope.pessoasScopeProvider,
 	    rowTemplate: 'view/template-dblclick.html'
@@ -56,6 +58,12 @@ app.controller('pessoasCtrl', function($rootScope, $scope, Restangular){
 	      { name: 'pessoaReferencia.nome', displayName: 'P. Ref.'},
 	      { name: 'status', displayName: 'Status'}
 	];
+
+	$scope.filter = function() {
+		singleFilter.values($scope.filterValue, 
+			[ 'nome', 'telefoneFixo', 'telefoneCelular', 'email', 'pessoaReferencia', 'nome']);
+    	$scope.gridApi.grid.refresh();
+  	};
 
 	$scope.newPessoa = function(){
 		var entity = {};

@@ -1,6 +1,6 @@
 var app = angular.module('bijuApp');
 
-app.controller('usersCtrl', function($scope, $rootScope, Restangular){
+app.controller('usersCtrl', function($scope, $rootScope, Restangular, singleFilter){
 
 	var userService = Restangular.service('user');
 	var pessoaService = Restangular.service('pessoa');
@@ -69,8 +69,10 @@ var hackerFunction = function(){
 	    enableSelectAll: false,
 	    enableRowHeaderSelection: false,
 	    selectionRowHeaderWidth: 35,
+	    enableFiltering: false,
 	    onRegisterApi: function(gridApi){ 
 	      $scope.gridApi = gridApi;
+	      $scope.gridApi.grid.registerRowsProcessor( singleFilter.filter, 200 );
 	    },
 	    appScopeProvider: $scope.usersScopeProvider,
 	    rowTemplate: 'view/template-dblclick.html'
@@ -80,6 +82,12 @@ var hackerFunction = function(){
 			{ name: 'pessoa.nome', displayName: 'Nome'},
 	      	{ name: 'username', displayName: 'Username'}
 	];
+
+	$scope.filter = function() {
+		singleFilter.values($scope.filterValue, 
+			[ 'username', 'pessoa', 'nome']);
+    	$scope.gridApi.grid.refresh();
+ 	};
 
 	$scope.newUser = function(){
 		var entity = {};

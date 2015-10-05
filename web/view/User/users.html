@@ -12,10 +12,12 @@
               &nbsp
           </div>
           <div class="input-group pull-right" style="width: 150px;">
-              <input type="text" ng-model="searchText" class="form-control pull-right" placeholder="Procurar"/>
-              <div class="input-group-btn">
-                  <button class="btn btn-default" ><i class="fa fa-search"></i></button>
-              </div>
+            <input type="text" ng-model="filterValue" ng-enter="filter()" class="form-control pull-right" placeholder="Procurar"/>
+            <div class="input-group-btn">
+              <button ng-click="filter()" class="btn btn-default" >
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
           </div>
 
         </div>

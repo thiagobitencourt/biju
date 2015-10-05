@@ -1,6 +1,6 @@
 var app = angular.module('bijuApp');
 
-app.controller('kitsCtrl', function($rootScope, $scope, Restangular){
+app.controller('kitsCtrl', function($rootScope, $scope, Restangular, singleFilter){
 
 	var kitService = Restangular.service('kit');
 	var produtoService = Restangular.service('produto');
@@ -24,18 +24,26 @@ app.controller('kitsCtrl', function($rootScope, $scope, Restangular){
 	    enableSelectAll: false,
 	    enableRowHeaderSelection: false,
 	    selectionRowHeaderWidth: 35,
+	    enableFiltering: false,
 	    onRegisterApi: function(gridApi){ 
 	      $scope.gridApi = gridApi;
+	      $scope.gridApi.grid.registerRowsProcessor( singleFilter.filter, 200 );
 	    },
 	    appScopeProvider: $scope.kitsScopeProvider,
 	    rowTemplate: 'view/template-dblclick.html'
  	};
 
 	$scope.kitsGridOptions.columnDefs = [
-    { name: 'codigo', displayName: 'Codigo'},
-    { name: 'vlrTotalKit', displayName: 'Valor Total'},
-    { name: 'estado', displayName: 'Estado'}
+	    { name: 'codigo', displayName: 'Codigo'},
+	    { name: 'vlrTotalKit', displayName: 'Valor Total'},
+	    { name: 'estado', displayName: 'Estado'}
 	];
+
+	$scope.filter = function() {
+		singleFilter.values($scope.filterValue, 
+			['estado', 'codigo', 'vlrTotalKit']);
+    	$scope.gridApi.grid.refresh();
+  	};
 
 	$scope.newKit = function(){
 		console.log('novo kit');
@@ -83,8 +91,5 @@ app.controller('kitsCtrl', function($rootScope, $scope, Restangular){
 		}, function(response){
 			console.log(response);
 		});
-
 	};
-
-
 });
