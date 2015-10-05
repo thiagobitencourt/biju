@@ -8,7 +8,6 @@ var Responser = (function(){
       throw new Error("Missing res or/and obj parameters.");
 
     if(obj.name && obj.name === "AppError"){ //AppError
-      logger.debug('Responser: AppError');
       if(!obj.message){
         obj.clientify();
       }
@@ -16,11 +15,9 @@ var Responser = (function(){
     }
 
     if(obj.stack){ //Native Error
-      logger.debug('Responser: NativeError');
       return res.status(500).send({code : 500, message: obj.toString(), nativeError : obj.stack});
     }
 
-    logger.debug('Responser: No-Error obj');
     res.status(200).send(obj);
   };
 

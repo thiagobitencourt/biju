@@ -24,6 +24,7 @@ AppError.prototype.clientify = function(){
     switch (this.native.code) {
       case 11000:
         var schema = mongoose.model(this.model).schema;
+
         var tmp_err_message = this.native.errmsg.split("dup key:");
         this.message = "O seguinte valor não pode ser inserido pois já foi utilizado na base de dados: " + tmp_err_message[1];
         this.appErrorType = AppError.ERRORS.CLIENT;

@@ -136,7 +136,7 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 			return cb(new AppError(null, "Incorrect ID", AppError.ERRORS.CLIENT), null);
 		}
 
-		this.findOne({_id: kitId, deletedAt: { $eq: null }}, {deletedAt:0}).populate('itens.produto').exec( function(err, kit){
+		this.findOne({_id: kitId, deletedAt: { $eq: null }}, {deletedAt:0}).populate('itens.produto pessoa').exec( function(err, kit){
 			if(err) return cb(new AppError(err, null, null, 'Kit'), null);
 
 			if(!kit)
@@ -150,7 +150,7 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 
 		query.deletedAt = { $eq: null };
 
-		this.find(query, {deletedAt:0}).populate('itens.produto').exec( function(err, kits){
+		this.find(query, {deletedAt:0}).populate('itens.produto pessoa').exec( function(err, kits){
 			if(err) return cb(new AppError(err, null, null, 'Kit'), null);
 			cb(null, kits);
 		});
