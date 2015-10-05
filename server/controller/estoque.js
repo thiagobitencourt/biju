@@ -1,3 +1,6 @@
+var AppError = require(__base + 'utils/apperror');
+var logger = require('winston');
+
 var estoqueController = function(){
 
 	var _Estoque = require(__base + 'models/estoque');
@@ -16,7 +19,7 @@ var estoqueController = function(){
 
 				_Estoque.secureFind(id, null, function(err, estoque){
 					if(err)
-						return callback({error: err, code: 500, message : "Erro ao procurar estoque."});
+						return callback(err);
 
 					return callback(null, estoque);
 				});
@@ -26,15 +29,16 @@ var estoqueController = function(){
 
 				_Estoque.secureFind(null, query, function(err, estoques){
 					if(err)
-						return callback({error: err, code: 500, message : "Erro ao procurar estoque."});
+						return callback(err);
 
 					return callback(null, estoques);
 				});
 			}
 
 		}catch(e){
-			return callback({error: e, code: 500, message : "Erro ao salvar estoque."});
-		}	
+			logger.error(e.toString());
+			return callback(new AppError(e, null, null, 'Estoque'));
+		}
 
 	}
 
@@ -51,25 +55,49 @@ var estoqueController = function(){
 
 				_Estoque.secureUpdate(id, body ,function(err, newEstoque){
 					if(err)
-						return callback({error: err, code: 500, message : "Erro ao atualizar estoque."});
+						return callback(err);
 
 					return callback(null, newEstoque);
 				});
 
 			}else{
-				//insert
-				var p = new _Estoque(body);
-				p.save(function(err, newEstoque){
-					if(err)
-						return callback({error: err, code: 500, message : "Erro ao salvar estoque."});
 
-					return callback(null, newEstoque);
+				var ProdutoCtrl = require(__base + 'controller/produto');
+
+				ProdutoCtrl.findProduto(null, {referencia: body.produto.referencia}, function(err, prod){
+					if(err){
+						logger.error(err);
+						return callback(err);
+					}
+
+					if(prod.length !== 0){
+
+						//TEMP CODE... Need improvement
+						var prod = prod[0];
+						body.produto = prod._id;
+
+						body.valor = prod.vlrCusto;
+						body.valorTotal = (prod.vlrCusto * body.quantidade);
+
+						//insert
+						var p = new _Estoque(body);
+						p.save(function(err, newEstoque){
+							if(err)
+								return callback(new AppError(e, null, null, 'Estoque'));
+
+							return callback(null, newEstoque);
+
+						});
+
+					}else{
+						return callback(new AppError(null, "Produto não encontrado", AppError.ERRORS.CLIENT));
+					}
 
 				});
 			}
 
 		}catch(e){
-			return callback({error: e, code: 400, message : "Erro ao salvar estoque."});
+			return callback(new AppError(e, null, null, 'Estoque'));
 		}
 
 	}
@@ -80,13 +108,13 @@ var estoqueController = function(){
 
 			_Estoque.secureDelete(id, function(err, estoque){
 				if(err)
-					return callback({error: err, code: 500, message : "Erro ao remover estoque."});
+					return callback(err);
 
 				return callback(null, estoque);
 			});
 
 		}catch(e){
-			return callback({error: e, code: 400, message : "Erro ao remover estoque."});
+			return callback(new AppError(e, null, null, 'Estoque'));
 		}
 
 	}

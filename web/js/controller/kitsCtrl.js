@@ -1,6 +1,6 @@
 var app = angular.module('bijuApp');
 
-app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Restangular, shareData, focus){
+app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Restangular, singleFilter, shareData, focus){
 
 
 	if(shareData.has('kit')){
@@ -15,7 +15,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 	$scope.estadosKit = 
 		{NOVO: 'Novo',
 		GERADO:'Gerado', 
-		ENTREGUE:'Entrgue',
+		ENTREGUE:'Entregue',
 		FECHADO:'Fechado'};
 
 	$scope.kitsScopeProvider = {
@@ -34,8 +34,10 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 	    enableSelectAll: false,
 	    enableRowHeaderSelection: false,
 	    selectionRowHeaderWidth: 35,
+	    enableFiltering: false,
 	    onRegisterApi: function(gridApi){ 
 	      $scope.gridApi = gridApi;
+	      $scope.gridApi.grid.registerRowsProcessor( singleFilter.filter, 200 );
 	    },
 	    appScopeProvider: $scope.kitsScopeProvider,
 	    rowTemplate: 'view/template-dblclick.html'
@@ -43,10 +45,16 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 
 	$scope.kitsGridOptions.columnDefs = [
     	{ name: 'codigo', displayName: 'Codigo'},
-    	{ name: 'pessoa', displayName: 'Pessoa'},
+    	{ name: 'pessoa.nome', displayName: 'Pessoa'},
 	    { name: 'vlrTotalKit', displayName: 'Valor Total'},
 	    { name: 'estado', displayName: 'Estado', cellTemplate: 'view/Kit/kit-template-estado.html'}
 	];
+
+	$scope.filter = function() {
+		singleFilter.values($scope.filterValue, 
+			['estado', 'codigo', 'pessoa', 'nome']);
+    	$scope.gridApi.grid.refresh();
+  	};
 
 	var _loadKits = function(){
 		$scope.kitsGridOptions.data = kitService.getList().$object;
@@ -140,6 +148,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 		});
 	};
 
+	//@TODO remover um item da tabela
 	$scope.removerItem = function(){
 
 	};
@@ -177,6 +186,5 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 			$scope.kit.dataDevolucao = new Date();
 			break;
 	}
-
 
 });

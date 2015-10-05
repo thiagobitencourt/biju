@@ -15,7 +15,7 @@
 				<div class="col-lg-4 form-group">
 					<label class="col-sm-6 control-label">Estado:</label>
 					<div class="col-sm-6">
-						<p class="form-control-static label" ng-class="{'label-success': kit.estado === 'Gerado', 'label-warning': kit.estado === 'Entrgue', 'label-danger': kit.estado === 'Fechado'}">{{ ::kit.estado }}</p>
+						<p class="form-control-static label" ng-class="{'label-success': kit.estado === 'Gerado', 'label-warning': kit.estado === 'Entregue', 'label-danger': kit.estado === 'Fechado'}">{{ ::kit.estado }}</p>
 					</div>
 				</div>
 				<div class="col-lg-4 form-group">
@@ -32,11 +32,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="row" ng-if="kit.estado === 'Entrgue' || kit.estado === 'Fechado' ">
+			<div class="row" ng-if="kit.estado === 'Entregue' || kit.estado === 'Fechado' ">
 				<div class="col-lg-4 form-group">
 					<label class="col-sm-6 control-label">Pessoa:</label>
 					<div class="col-sm-6">
-						<p class="form-control-static">{{ ::kit.pessoa }}</p>
+						<p class="form-control-static">{{ ::kit.pessoa.nome }}</p>
 					</div>
 				</div>
 				<div class="col-lg-4 form-group">
@@ -45,7 +45,7 @@
 						<p class="form-control-static">{{ ::kit.dataEntrega | date:"dd/MM/yyyy" }}</p>
 					</div>
 				</div>
-				<div class="col-lg-4 form-group" ng-if="kit.estado === 'Entrgue'">
+				<div class="col-lg-4 form-group" ng-if="kit.estado === 'Entregue'">
 					<label class="col-sm-6 control-label">Data Prox. Retorno:</label>
 					<div class="col-sm-6">
 						<p class="form-control-static">{{ ::kit.dataProxRetorno | date:"dd/MM/yyyy" }}</p>
@@ -85,7 +85,7 @@
 		                  <th>Ref.</th>
 		                  <th>Tipo</th>
 		                  <th>Descricao</th>
-		                  <th>Qtd. Entrgue</th>
+		                  <th>Qtd. Entregue</th>
 		                  <th ng-if="kit.estado === 'Fechado'">Qtd. Devolvida</th>
 		                  <th>Valor Unit</th>
 		                  <th>Valor Total</th>
@@ -112,7 +112,7 @@
 
             <button type="submit" class="btn btn-success pull-right" ng-if="kit.estado ==='Gerado'" ng-click="entregarKitForm()">Entregar Kit</button>
 
-            <button type="submit" class="btn btn-success pull-right" ng-if="kit.estado ==='Entrgue'" ng-click="fecharKitForm()">Fechar Kit</button>
+            <button type="submit" class="btn btn-success pull-right" ng-if="kit.estado ==='Entregue'" ng-click="fecharKitForm()">Fechar Kit</button>
 
           </div>
         </form>

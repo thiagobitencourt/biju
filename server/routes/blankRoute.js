@@ -1,11 +1,13 @@
 var express = require('express');
 var logger = require('winston');
+var AppError = require(__base + 'utils/apperror');
+var responder = require(__base + 'utils/responder');
 
 var router;
 
 /*
-	Classe modelo para criação de rotas. 
-	1. Substitua Blank pelo nome da classe 
+	Classe modelo para criação de rotas.
+	1. Substitua Blank pelo nome da classe
 	(use Ctrl+d, no sublime, para selecionar todas as aparições de Blank)
 		Ex.: Blank troque por Kit
 
@@ -28,7 +30,7 @@ var BlankRoute = function(router){
 var setBlankRoutes = function(){
 
 	var _blank = "/_blank";
-	var _blankId = _blank + "/:id"; 
+	var _blankId = _blank + "/:id";
 
 	this.router.get(_blank, function(req, res){
 		var message = 'GET in ' + _blank + ' route';
