@@ -40,7 +40,7 @@ app.controller('estoquesCtrl', function($rootScope, $scope, Restangular, singleF
 
 	$scope.filter = function() {
 		singleFilter.values($scope.filterValue, 
-			['produto', 'tipo', 'referencia']);
+			['produto', 'tipo', 'referencia', 'quantidade']);
     	$scope.gridApi.grid.refresh();
   	};
 
