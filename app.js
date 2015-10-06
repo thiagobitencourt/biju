@@ -57,6 +57,16 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 		next();
 	});
 
+	// Redirect any connection on http to https (secure)
+	app.use('*', function(req, res, next){
+		if(!req.secure){
+			var host = req.headers.host.split(':')[0];
+			//TODO On production, remove the :8143 port. Should be 443 (native)
+			return res.redirect('https://' + host + ':8143' +req.url);
+		}
+		next();
+	});
+
 	var isLoggedIn = function(req, res, next){
 
 		if(req.session && req.session.userData){
@@ -74,14 +84,15 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 
 	app.use('/api', new LoadRouter());
 
-//TODO - replace this
+
+//TODO - replace this -- Didn't work
 	var server = app.listen(httpPort, function () {
 	  logger.info('App listening at %s', httpPort);
 	});
 //TODO - by this
 	// http.createServer(function(req, res){
-	// 	res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
- 	//	res.end();
+	// 	res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url});
+ // 		res.end();
 	// }).listen(httpPort, function(){
 	// 	logger.info("HTTP server listening on port %s", httpPort);
 	// });

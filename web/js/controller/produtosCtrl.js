@@ -15,12 +15,12 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleF
   	paginationPageSize: 10,
   	minRowsToShow: 11,
     multiSelect: false,
-    enableRowSelection: true, 
+    enableRowSelection: true,
     enableSelectAll: false,
     enableRowHeaderSelection: false,
     selectionRowHeaderWidth: 35,
     enableFiltering: false,
-    onRegisterApi: function(gridApi){ 
+    onRegisterApi: function(gridApi){
       $scope.gridApi = gridApi;
       $scope.gridApi.grid.registerRowsProcessor( singleFilter.filter, 200 );
     },
@@ -38,8 +38,8 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleF
 	];
 
 	$scope.filter = function() {
-		singleFilter.values($scope.filterValue, 
-			[ 'referencia', 'tipo', 'tamanho']);
+		singleFilter.values($scope.filterValue,
+			[ 'referencia', 'tipo', 'tamanho', 'vlrCusto', 'vlrVenda']);
     $scope.gridApi.grid.refresh();
   };
 
