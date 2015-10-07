@@ -9,11 +9,11 @@
 
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    
+
     <!-- Theme style -->
     <link rel="stylesheet" href="lib/AdminLTE/AdminLTE.min.css">
   </head>
-  
+
   <body class="hold-transition login-page">
     <div class="login-box">
       <div class="login-logo">
@@ -45,13 +45,12 @@
     </div>
 
 		<!-- Angular -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js">
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
     </script>
 		<script>
 			angular.module('Bijulogin', []).controller('loginController', function($scope, $http){
         $scope.login = function(user){
         	console.log(user);
-          console.log(window.location.origin);
           $http.post(window.location.origin + '/login', user).success(function(data){
             window.location = window.location.origin;
           }).error(function(data){

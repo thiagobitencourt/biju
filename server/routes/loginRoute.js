@@ -1,14 +1,17 @@
 var logger = require('winston');
 var User = require(__base + 'controller/user');
+// var AppError = require(__base + 'utils/apperror');
+var responder = require(__base + 'utils/responder');
 
 var LoginRoute = function(app){
 
 	app.post('/login', function(req, res){
 
+		logger.info(req.body);
 		User.login(req.body, function(err, user){
 			if(err){
 				logger.error(err);
-				return res.response(err.error, err.code, err.message);
+				return responder(res, err);
 			}
 
 			req.session.userData = user.clean();
@@ -24,7 +27,7 @@ var LoginRoute = function(app){
 	app.get('/session', function(req, res){
 
 		if(req.session && req.session.userData){
-			
+
 			User.getUser(req.session.userData._id, function(err, user){
 				if(err){
 					logger.error(err);
@@ -41,7 +44,7 @@ var LoginRoute = function(app){
 			});
 		}else{
 			//Forbidden
-			return res.status(403).send({messsage:"Sessão não encontrada"});	
+			return res.status(403).send({messsage:"Sessão não encontrada"});
 		}
 	});
 };

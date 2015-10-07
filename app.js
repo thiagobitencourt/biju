@@ -1,3 +1,5 @@
+'use strict';
+
 global.__base = __dirname + '/server/';
 
 var express = require('express');
@@ -38,7 +40,7 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 		saveUninitialized: true, // don't create session until something stored
     	resave: false, //don't save session if unmodified
 		store: new MongoStore({ mongooseConnection: mongoose.connection }),
-		cookie: { 
+		cookie: {
 			// secure: true, //Allow connections from HTTP -- TEMP
 			maxAge: 30000 * 10 //30min
 		}
@@ -65,11 +67,11 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 			}
 			return res.status(responseStatus).send(sendMessage);
 		}
+		next();
 	});
 
 	// Redirect any connection on http to https (secure)
 	app.use('*', function(req, res, next){
-		logger.info(" kkkk ");
 		if(!req.secure){
 			var host = req.headers.host.split(':')[0];
 			//TODO On production, remove the :8143 port. Should be 443 (native)
@@ -107,7 +109,6 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 	app.use('/api', function(req, res, next){
 		return hasSession(req)? next() : res.status(403).send({message: "Unauthorized"});
 	});
-
 
 //TODO - replace this -- Didn't work
 	var server = app.listen(httpPort, function () {

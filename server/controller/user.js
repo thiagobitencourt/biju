@@ -23,7 +23,7 @@ var UserControler = function(){
 			if(!user){
 				return callback(new AppError(null, "User not found or invalid password", AppError.ERRORS.CLIENT), null);
 			}
-			
+
 			user.comparePassword(candidateUser.password, function(err, matchs){
 
 				if(err){
