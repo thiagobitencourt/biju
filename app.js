@@ -22,10 +22,10 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 		logDebug = true;
 	var loggingErrors = LoggingSystem.configure(logDebug);
 	if(loggingErrors){
-		return console.error(loggingErrors);		
+		return console.error(loggingErrors);
 	}
 	logger.info("Logger online.");
-	
+
 	var LoadRouter = require(__base + 'routes/loadRoutes');
 
 	var app = express();
@@ -35,14 +35,14 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 
 	app.use(session({
 		secret: 'migué por polegada quadrada',
-		saveUninitialized: true, // don't create session until something stored 
-    	resave: false, //don't save session if unmodified 
+		saveUninitialized: true, // don't create session until something stored
+    	resave: false, //don't save session if unmodified
 		store: new MongoStore({ mongooseConnection: mongoose.connection }),
 		cookie: { 
 			// secure: true, //Allow connections from HTTP -- TEMP
 			maxAge: 30000 * 10 //30min
 		}
-	}))	
+	}));
 
 	var httpPort = 8180;
 	var httpsPort = 8143;
@@ -64,7 +64,17 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 				sendMessage.error = error;
 			}
 			return res.status(responseStatus).send(sendMessage);
-		};
+		}
+	});
+
+	// Redirect any connection on http to https (secure)
+	app.use('*', function(req, res, next){
+		logger.info(" kkkk ");
+		if(!req.secure){
+			var host = req.headers.host.split(':')[0];
+			//TODO On production, remove the :8143 port. Should be 443 (native)
+			return res.redirect('https://' + host + ':8143' +req.url);
+		}
 		next();
 	});
 
@@ -98,14 +108,15 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 		return hasSession(req)? next() : res.status(403).send({message: "Unauthorized"});
 	});
 
-//TODO - replace this
+
+//TODO - replace this -- Didn't work
 	var server = app.listen(httpPort, function () {
 	  logger.info('App listening at %s', httpPort);
 	});
 //TODO - by this
 	// http.createServer(function(req, res){
-	// 	res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
- 	//	res.end();
+	// 	res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url});
+ // 		res.end();
 	// }).listen(httpPort, function(){
 	// 	logger.info("HTTP server listening on port %s", httpPort);
 	// });
@@ -120,5 +131,3 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 		logger.info('HTTPS server listening on port %s', httpsPort);
 	});
 });
-
-

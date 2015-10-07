@@ -3,6 +3,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var _validateId = require(__base + 'utils/validateObjectId');
+var AppError = require(__base + 'utils/apperror');
+var logger = require('winston');
 
 var getTimezonedISODateString = function(){
 	console.warn("Use from utils : getTimezonedISODateString");
@@ -95,50 +97,50 @@ MODELO: KIT
 */
 
 kitSchema = new Schema({
-	codigo : {type : Number, required : true, unique : true},
-	pessoa: {type:Schema.ObjectId, ref:"Pessoa"},
-	dataEntrega : {type : Date, default: null},
-	dataProxRetorno : {type : Date, default: null},
+	codigo : {type : Number, required : true, unique : true, appDescription : "Código"},
+	pessoa: {type:Schema.ObjectId, ref:"Pessoa", appDescription : "Pessoa"},
+	dataEntrega : {type : Date, default: null, appDescription : "Data de Entrega"},
+	dataProxRetorno : {type : Date, default: null, appDescription : "Data do Próximo Retorno"},
 	itens : [
 		{
-			produto: {type : Schema.ObjectId, ref:"Produto", required: true},
-			vlrUnit : {type : Number, required : true},
-			qtdeEntregue : {type : Number, required : true, default : 0.0},
-			qtdeDevolvida : {type : Number, required : true, default : 0.0},
-			vlrTotal : {type : Number, required : true, default : 0.0},
+			produto: {type : Schema.ObjectId, ref:"Produto", required: true, appDescription : "Produto"},
+			vlrUnit : {type : Number, required : true, appDescription : "Valor Unitário"},
+			qtdeEntregue : {type : Number, required : true, default : 0.0, appDescription : "Quantidade Entregue"},
+			qtdeDevolvida : {type : Number, required : true, default : 0.0, appDescription : "Quantidade Devolvida"},
+			vlrTotal : {type : Number, required : true, default : 0.0, appDescription : "Valor Total do Item"},
 		}
 	],
-	vlrTotalKit : {type : Number, required : true, default : 0.0},
-	vlrTotalDivida : {type : Number, required : true, default : 0.0},
+	vlrTotalKit : {type : Number, required : true, default : 0.0, appDescription : "Valor Total do KIT"},
+	vlrTotalDivida : {type : Number, required : true, default : 0.0, appDescription : "Valor Total da Dívida"},
 	pagamentos : [
 		{
-			formaPgto : {type : String, required : true},
-			dataVencimento : {type : Date, default: null},
-			dataPgto : {type : Date, default: null},
-			vlrPgto : {type : Number, required : true, default : 0.0},
+			formaPgto : {type : String, required : true, appDescription : "Forma de Pagamento"},
+			dataVencimento : {type : Date, default: null, appDescription : "Data de Vencimento"},
+			dataPgto : {type : Date, default: null, appDescription : "Data do Pagamento"},
+			vlrPgto : {type : Number, required : true, default : 0.0, appDescription : "Valor do Pagamento"},
 		}
 	],
-	vlrTotalPgto : {type : Number, required : true, default : 0.0},
-	estado : {type : String, required : true},
-	observacao : {type : String},
-	deletedAt : { type: Date, default: null},
-	dataGeracao : { type: Date, default: new Date(), required : true},
-	dataEntrega : { type: Date, default: null},
-	dataDevolucao : { type: Date, default: null}
+	vlrTotalPgto : {type : Number, required : true, default : 0.0, appDescription : "Valor Total dos Pagamentos"},
+	estado : {type : String, required : true, appDescription : "Estado"},
+	observacao : {type : String, appDescription : "Observação"},
+	deletedAt : { type: Date, default: null, appDescription : "Removido em"},
+	dataGeracao : { type: Date, default: new Date(), required : true, appDescription : "Data da Geração"},
+	dataEntrega : { type: Date, default: null, appDescription : "Data da Entrega"},
+	dataDevolucao : { type: Date, default: null, appDescription : "Data da Devolução"}
 });
 
 kitSchema.statics.secureFind = function(kitId, query, cb) {
 
 	if(kitId){
 		if(!_validateId.isIdValid(kitId)){
-			return cb("Incorrect ID", null);
+			return cb(new AppError(null, "Incorrect ID", AppError.ERRORS.CLIENT), null);
 		}
 
-		this.findOne({_id: kitId, deletedAt: { $eq: null }}, {deletedAt:0}).populate('itens.produto').exec( function(err, kit){
-			if(err) return cb(err, null);
+		this.findOne({_id: kitId, deletedAt: { $eq: null }}, {deletedAt:0}).populate('itens.produto pessoa').exec( function(err, kit){
+			if(err) return cb(new AppError(err, null, null, 'Kit'), null);
 
 			if(!kit)
-				return cb("Kit não encontrado", null);
+				return cb(new AppError(null, "Kit não encontrado", AppError.ERRORS.CLIENT), null);
 
 			cb(null, kit);
 		});
@@ -148,8 +150,8 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 
 		query.deletedAt = { $eq: null };
 
-		this.find(query, {deletedAt:0}).populate('itens.produto').exec( function(err, kits){
-			if(err) return cb(err, null);
+		this.find(query, {deletedAt:0}).populate('itens.produto pessoa').exec( function(err, kits){
+			if(err) return cb(new AppError(err, null, null, 'Kit'), null);
 			cb(null, kits);
 		});
 	}
@@ -158,15 +160,15 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 kitSchema.statics.secureDelete = function(kitId, cb) {
 
 	if(!_validateId.isIdValid(kitId)){
-		return cb("Incorrect ID", null);
+		return cb(new AppError(null, "Incorrect ID", AppError.ERRORS.CLIENT), null);
 	}
 
 	this.findOneAndUpdate({_id : kitId,  deletedAt: { $eq: null } }, {deletedAt : getTimezonedISODateString()}, {new : true} ,function(err, p){
 		if(err)
-			return cb({error: err, code: 500, message : "Erro ao atualizar kit."}, null);
+			return cb(new AppError(err, null, null, 'Kit'), null);
 
 		if(!p)
-			return cb({message: "Kit não encontrado.", code:400}, null);
+			return cb(new AppError(null, "Kit não encontrado.", AppError.ERRORS.CLIENT), null);
 
 		return cb(null, p);
 	});
@@ -175,15 +177,15 @@ kitSchema.statics.secureDelete = function(kitId, cb) {
 kitSchema.statics.secureUpdate = function(kitId, newKit, cb) {
 
 	if(!_validateId.isIdValid(kitId)){
-		return cb("Incorrect ID", null);
+		return cb(new AppError(null, "Incorrect ID", AppError.ERRORS.CLIENT), null);
 	}
 
 	this.findOneAndUpdate({_id : kitId,  deletedAt: { $eq: null } }, newKit, {new : true} ,function(err, p){
 		if(err)
-			return cb({error: err, code: 500, message : "Erro ao atualizar kit."}, null);
+			return cb(new AppError(err, null, null, 'Kit'), null);
 
 		if(!p)
-			return cb({message: "Kit não encontrado.", code:400}, null);
+			return cb(new AppError(null, "Kit não encontrado.", AppError.ERRORS.CLIENT), null);
 
 		return cb(null, p);
 	});
@@ -192,4 +194,3 @@ kitSchema.statics.secureUpdate = function(kitId, newKit, cb) {
 Kit = mongoose.model('Kit', kitSchema);
 
 module.exports = Kit;
-

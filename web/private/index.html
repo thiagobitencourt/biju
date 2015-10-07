@@ -7,20 +7,20 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> -->
     <!-- Theme style -->
     <link rel="stylesheet" href="lib/AdminLTE/AdminLTE.min.css">
     <!-- AdminLTE Skins. -->
     <link rel="stylesheet" href="lib/AdminLTE/skin-blue.min.css">
     <!-- ui-grid -->
-    <link rel="stylesheet" href="http://ui-grid.info/release/ui-grid.min.css">
+    <link rel="stylesheet" href="lib/ui-grid/ui-grid.min.css">
 
   </head>
- 
+
   <body class="hold-transition skin-blue sidebar-mini" ng-app="bijuApp">
     <div class="wrapper" ng-controller="bijuCtrl">
 
@@ -99,35 +99,35 @@
 
     <!-- REQUIRED JS SCRIPTS -->
     <!-- jQuery 2.1.4 -->
-    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
     <!-- Angular -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-touch.min.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-animate.min.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-touch.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-animate.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-sanitize.min.js"></script>
 
     <!-- Angular locale pt-br -->
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.4.6/angular-locale_pt-br.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.4.6/angular-locale_pt-br.min.js"></script>
 
     <!-- angular-input-masks -->
     <script type="text/javascript" src="lib/angular-input-masks/angular-input-masks-standalone.min.js"></script>
 
-    <!-- angular-br-filters --> 
+    <!-- angular-br-filters -->
     <script type="text/javascript" src="lib/angular-br-filters/release/angular-br-filters.min.js"></script>
 
     <!-- Restangular -->
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.1/restangular.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/restangular/1.5.1/restangular.js"></script>
 
     <!-- ui-grid -->
-    <script type="text/javascript" src="http://ui-grid.info/release/ui-grid.min.js"></script>
-    
+    <script type="text/javascript" src="lib/ui-grid/ui-grid.min.js"></script>
+
     <!-- Angular ui-bootstrap -->
-    <script type="text/javascript" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.4.min.js"></script>
+    <script type="text/javascript" src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.4.min.js"></script>
 
     <!-- AdminLTE App -->
     <script type="text/javascript" src="lib/AdminLTE/app.min.js"></script>
@@ -142,7 +142,12 @@
     <script type="text/javascript" src="js/controller/kitsCtrl.js"></script>
     <script type="text/javascript" src="js/controller/estoquesCtrl.js"></script>
 
+    <script type="text/javascript" src="js/services/singleFilter.js"></script>
+
     <script type="text/javascript" src="js/directives/capitalize.js"></script>
+    <script type="text/javascript" src="js/directives/enter.js"></script>
+    <script type="text/javascript" src="js/directives/focus.js"></script>
+    <script type="text/javascript" src="js/services/shareData.js"></script>
 
   </body>
 </html>

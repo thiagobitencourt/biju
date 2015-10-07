@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var _validateId = require(__base + 'utils/validateObjectId');
+var AppError = require(__base + 'utils/apperror');
+var logger = require('winston');
 
 var getTimezonedISODateString = function(){
   console.warn("Use from utils : getTimezonedISODateString");
@@ -29,11 +31,11 @@ MODELO: Estoque
 */
 
 estoqueSchema = new Schema({
-  produto: {type:Schema.ObjectId, ref:"Produto", required: true}, //Faz referencia a um produto existente
-  quantidade: { type: Number, required : true},
-  valor: { type: Number, required : true},
-  valorTotal: { type: Number, required : true}, //Definido pela multiplacação de valor por quantidade (valor * quantidade).
-  deletedAt: { type: Date, default: null}
+  produto: {type:Schema.ObjectId, ref:"Produto", required: true, appDescription : "Produto"}, //Faz referencia a um produto existente
+  quantidade: { type: Number, required : true, appDescription : "Quantidade"},
+  valor: { type: Number, required : true, appDescription : "Valor"},
+  valorTotal: { type: Number, required : true, appDescription : "Valor Total"}, //Definido pela multiplacação de valor por quantidade (valor * quantidade).
+  deletedAt: { type: Date, default: null, appDescription : "Removido em"}
 });
 
 //estoqueSchema.index({tipo: 1, deletedAt: 1}, {unique: true}); //composed unique.
@@ -42,14 +44,14 @@ estoqueSchema.statics.secureFind = function(estoqueId, query, cb) {
 
   if(estoqueId){
     if(!_validateId.isIdValid(estoqueId)){
-      return cb("Incorrect ID", null);
+      return cb(new AppError(null, "Incorrect ID", AppError.ERRORS.CLIENT), null);
     }
 
     this.findOne({_id: estoqueId, deletedAt: { $eq: null }}, {deletedAt:0}).populate('produto').exec( function(err, estoque){
-      if(err) return cb(err, null);
+      if(err) return cb(new AppError(err, null, null, 'Estoque'), null);
 
       if(!estoque)
-        return cb("Estoque não encontrado", null);
+        return cb(new AppError(null, "Estoque não encontrado.", AppError.ERRORS.CLIENT), null);
 
       cb(null, estoque);
     });
@@ -60,7 +62,7 @@ estoqueSchema.statics.secureFind = function(estoqueId, query, cb) {
     query.deletedAt = { $eq: null };
 
     this.find(query, {deletedAt:0}).populate('produto').exec( function(err, estoques){
-      if(err) return cb(err, null);
+      if(err) return cb(new AppError(err, null, null, 'Estoque'), null);
       cb(null, estoques);
     });
   }
@@ -69,15 +71,15 @@ estoqueSchema.statics.secureFind = function(estoqueId, query, cb) {
 estoqueSchema.statics.secureDelete = function(estoqueId, cb) {
 
   if(!_validateId.isIdValid(estoqueId)){
-    return cb("Incorrect ID", null);
+    return cb(new AppError(null, "Incorrect ID", AppError.ERRORS.CLIENT), null);
   }
 
   this.findOneAndUpdate({_id : estoqueId,  deletedAt: { $eq: null } }, {deletedAt : getTimezonedISODateString()}, {new : true} ,function(err, p){
     if(err)
-      return cb({error: err, code: 500, message : "Erro ao atualizar estoque."}, null);
+      return cb(new AppError(err, null, null, 'Estoque'), null);
 
     if(!p)
-      return cb({message: "Estoque não encontrado.", code:400}, null);
+      return cb(new AppError(null, "Estoque não encontrado.", AppError.ERRORS.CLIENT), null);
 
     return cb(null, p);
   });
@@ -86,15 +88,15 @@ estoqueSchema.statics.secureDelete = function(estoqueId, cb) {
 estoqueSchema.statics.secureUpdate = function(estoqueId, newEstoque, cb) {
 
   if(!_validateId.isIdValid(estoqueId)){
-    return cb("Incorrect ID", null);
+    return cb(new AppError(null, "Incorrect ID", AppError.ERRORS.CLIENT), null);
   }
 
   this.findOneAndUpdate({_id : estoqueId,  deletedAt: { $eq: null } }, newEstoque, {new : true} ,function(err, p){
     if(err)
-      return cb({error: err, code: 500, message : "Erro ao atualizar estoque."}, null);
+      return cb(new AppError(err, null, null, 'Estoque'), null);
 
     if(!p)
-      return cb({message: "Estoque não encontrado.", code:400}, null);
+      return cb(new AppError(null, "Estoque não encontrado.", AppError.ERRORS.CLIENT), null);
 
     return cb(null, p);
   });
@@ -103,4 +105,3 @@ estoqueSchema.statics.secureUpdate = function(estoqueId, newEstoque, cb) {
 Estoque = mongoose.model('Estoque', estoqueSchema);
 
 module.exports = Estoque;
-
