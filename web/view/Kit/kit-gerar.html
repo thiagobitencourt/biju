@@ -1,5 +1,5 @@
 <section class="content-header">
-	<h1>Novo Kit</h1>
+	<h1>Gerar Novo Kit</h1>
 </section>
 <section class="content">
 	<div class="row">
@@ -50,14 +50,16 @@
 	                      <th>Qtd. Entregue</th>
 	                      <th>Valor Unit</th>
 	                      <th>Valor Total</th>
+	                      <th></th>
 	                    </tr>
-	                    <tr ng-repeat="item in kit.itens">
+	                    <tr ng-repeat="(index, item) in kit.itens">
 	                    	<td>{{item.produtoCompleto.referencia}}</td>
 	                    	<td>{{item.produtoCompleto.tipo}}</td>
 	                    	<td>{{item.produtoCompleto.descricao}}</td>
 	                    	<td>{{item.qtdeEntregue}}</td>
 	                    	<td>{{item.vlrUnit}}</td>
 	                    	<td>{{item.vlrTotal}}</td>
+	                    	<td><button class="btn btn-danger btn-sm" title="Excluir" ng-click="removerItem(item.produtoCompleto._id)"><i class="fa fa-times"></i></button> </td>
 	                    </tr>
 	                  </table>
 	                  
@@ -69,7 +71,7 @@
           <div class="box-footer">
             <button type="submit" class="btn btn-default" ng-click="go('/kits')">Cancel</button>
 
-            <button type="submit" class="btn btn-success pull-right" ng-click="gerarKit()">Gerar Kit</button>
+            <button type="submit" class="btn btn-success pull-right" ng-disabled="kit.itens.length === 0" ng-click="gerarKit()">Salvar</button>
           </div>
         </form>
 

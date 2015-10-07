@@ -7,8 +7,11 @@
       <div class="box box-info">
         <div class="box-header with-border">
           <h3 class="box-title">Código do Kit: {{ ::kit.codigo }}</h3>
+
+          <button class="btn btn-info pull-right" ng-if="kit.estado ==='Gerado'" ng-click="entregarKitForm()">Entregar Kit</button>
+
+					<button class="btn btn-info pull-right" ng-if="kit.estado ==='Entregue'" ng-click="fecharKitForm()">Fechar Kit</button>
         </div>
-        
         <form class="form-horizontal">
           <div class="box-body">
 			<div class="row">
@@ -110,9 +113,7 @@
           <div class="box-footer">
             <button type="submit" class="btn btn-default" ng-click="go('/kits')">Cancel</button>
 
-            <button type="submit" class="btn btn-success pull-right" ng-if="kit.estado ==='Gerado'" ng-click="entregarKitForm()">Entregar Kit</button>
-
-            <button type="submit" class="btn btn-success pull-right" ng-if="kit.estado ==='Entregue'" ng-click="fecharKitForm()">Fechar Kit</button>
+             <button type="submit" class="btn btn-success pull-right" ng-click="editarKitForm()">Editar</button>
 
           </div>
         </form>

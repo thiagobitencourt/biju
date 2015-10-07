@@ -90,7 +90,7 @@
 					</div>
 			    <div class="box-footer">
 			      <button type="submit" class="btn btn-default" ng-click="go('/kits')">Cancel</button>
-			    	<button type="submit" class="btn btn-success pull-right" ng-click="entregarKit()">Entregar Kit</button>
+			    	<button type="submit" class="btn btn-success pull-right" ng-disabled="checkPessoa()" ng-click="entregarKit()">Salvar</button>
 			    </div>
   			</form>
   		</div>

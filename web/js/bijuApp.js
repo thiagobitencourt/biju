@@ -58,6 +58,10 @@ app.config(function($routeProvider, RestangularProvider) {
         templateUrl: 'view/Kit/kit-detalhes.html',
         controller: 'kitsCtrl'
       }).
+      when('/editar-kit', {
+        templateUrl: 'view/Kit/kit-editar.html',
+        controller: 'kitsCtrl'
+      }).
       when('/gerar-kit', {
         templateUrl: 'view/Kit/kit-gerar.html',
         controller: 'kitsCtrl'
