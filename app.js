@@ -42,7 +42,7 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 		store: new MongoStore({ mongooseConnection: mongoose.connection }),
 		cookie: {
 			// secure: true, //Allow connections from HTTP -- TEMP
-			maxAge: 30000 * 10 //30min
+			maxAge: 1000 * 60 * 30 //30min
 		}
 	}));
 
