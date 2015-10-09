@@ -81,7 +81,7 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 	});
 
 	var hasSession = function(req){
-		return req.session && req.session.userData;
+		return !!(req.session && req.session.userData);
 	};
 
 	app.get('/', function(req, res){
@@ -105,10 +105,10 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 	});
 	app.use('/web', express.static('web/private'));
 
-	app.use('/api', new LoadRouter());
 	app.use('/api', function(req, res, next){
 		return hasSession(req)? next() : res.status(403).send({message: "Unauthorized"});
 	});
+	app.use('/api', new LoadRouter());
 
 //TODO - replace this -- Didn't work
 	var server = app.listen(httpPort, function () {

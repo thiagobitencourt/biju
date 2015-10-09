@@ -50,7 +50,6 @@
 		<script>
 			angular.module('Bijulogin', []).controller('loginController', function($scope, $http){
         $scope.login = function(user){
-        	console.log(user);
           $http.post(window.location.origin + '/login', user).success(function(data){
             window.location = window.location.origin;
           }).error(function(data){
