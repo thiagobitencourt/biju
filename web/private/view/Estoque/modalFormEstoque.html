@@ -5,14 +5,14 @@
 	</div>
 
 	<div class="modal-body">
-		
+
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Referência: *</label>
 			<div class="col-sm-9" ng-class="{'has-error': (form.tipo.$error.required && form.$submitted)}">
 			  <input type="text" name="tipo" ng-disabled="entity.edit" class="form-control" ng-model="entity.produto.referencia" required capitalize>
 			</div>
 	 	</div>
-	 	
+
 	 	<div class="form-group">
 			<label class="col-sm-3 control-label">Quantidade: *</label>
 			<div class="col-sm-9" ng-class="{'has-error': (form.quantidade.$error.required && form.$submitted)}">
@@ -20,6 +20,13 @@
 			</div>
 	 	</div>
 
+		<div class="form-group row" ng-if="entity.edit">
+			<label class="col-sm-3 control-label">Subtrair quantidade?</label>
+			<div class="col-sm-3" style="margin-top:10px;">
+				<input type="checkbox" name="subtrair" ng-model="entity.subtrair">
+			</div>
+			<p class="col-sm-6 text-red" style="margin-top:10px;" ng-show="entity.subtrair === true">Subtrai a quantidade informada da quantidade de produtos!</p>
+		</div>
 	  	<div class="callout callout-danger" ng-if="errorMessage">
 	    	<h4>Erro!</h4>
 	    	<p>{{ errorMessage }}</p>

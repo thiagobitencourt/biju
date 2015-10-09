@@ -59,11 +59,11 @@ var estoqueController = function(){
 
 					return callback(null, newEstoque);
 				});
-
 			}else{
 
 				var ProdutoCtrl = require(__base + 'controller/produto');
 
+				//Busca o produto na base de dados, para sabar se existe. Se não existir deve retornar erro para o usuário.
 				ProdutoCtrl.findProduto(null, {referencia: body.produto.referencia}, function(err, prod){
 					if(err){
 						logger.error(err);
@@ -71,35 +71,48 @@ var estoqueController = function(){
 					}
 
 					if(prod.length !== 0){
-
 						//TEMP CODE... Need improvement
+						var estoque = body;
 						var prod = prod[0];
-						body.produto = prod._id;
 
-						body.valor = prod.vlrCusto;
-						body.valorTotal = (prod.vlrCusto * body.quantidade);
+						//Recebe um estoque e salva no banco de dados, indiferente se for um novo registro ou um registro existente
+						var saveEstoque = function(p){
+							p.save(function(err, newEstoque){
+								if(err)
+									return callback(new AppError(e, null, null, 'Estoque'));
+								return callback(null, newEstoque);
+							});
+						}
 
-						//insert
-						var p = new _Estoque(body);
-						p.save(function(err, newEstoque){
-							if(err)
-								return callback(new AppError(e, null, null, 'Estoque'));
+						//Busca em banco um registro de estoque com a referencia do produto, se existir atualiza a quantidade, senão cria o registro
+						_findEstoque(null, {produto: prod._id}, function(err, estq){
+							if(err){
+								logger.error(err);
+								return callback(err);
+							}
 
-							return callback(null, newEstoque);
-
+							if(estq.length !== 0){
+								estq = estq[0];
+								estq.quantidade += parseInt(estoque.quantidade);
+								estq.valorTotal = (estq.valor * estq.quantidade);
+								return saveEstoque(estq);
+							}else{
+								//insert
+								estoque.produto = prod._id;
+								estoque.valor = prod.vlrCusto;
+								estoque.valorTotal = (prod.vlrCusto * estoque.quantidade);
+								var p = new _Estoque(estoque);
+								return saveEstoque(p);
+							}
 						});
-
 					}else{
 						return callback(new AppError(null, "Produto não encontrado", AppError.ERRORS.CLIENT));
 					}
-
 				});
 			}
-
 		}catch(e){
 			return callback(new AppError(e, null, null, 'Estoque'));
 		}
-
 	}
 
 	var _removeEstoque = function(id, callback){

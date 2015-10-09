@@ -1,13 +1,13 @@
-var app = angular.module('bijuApp', 
-  ['ngRoute', 
-  'ngTouch', 
+var app = angular.module('bijuApp',
+  ['ngRoute',
+  'ngTouch',
   'ngAnimate',
   'ngSanitize',
   'restangular',
   'ui.bootstrap',
-  'ui.grid', 
+  'ui.grid',
   'ui.grid.pagination',
-  'ui.grid.selection', 
+  'ui.grid.selection',
   'ui.utils.masks',
   'idf.br-filters']);
 
@@ -22,8 +22,30 @@ app.config(function($routeProvider, RestangularProvider) {
   }
 
   RestangularProvider.setBaseUrl(newBaseUrl);
+  // add a response interceptor
+    RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
 
-  // change the default id for put and get on url 
+      if(response.status == 403){
+        console.log("Unauthorized... ");
+        window.location = window.location.origin + '/login';
+      }
+    /*
+      var extractedData;
+      // .. to look for getList operations
+      if (operation === "getList") {
+        // .. and handle the data and meta data
+        extractedData = data.data.data;
+        extractedData.meta = data.data.meta;
+      } else {
+        extractedData = data.data;
+      }
+      return extractedData;
+      */
+      return data;
+    });
+
+
+  // change the default id for put and get on url
   RestangularProvider.setRestangularFields({ id: "_id" });
 
   // set default header "token"
@@ -45,7 +67,7 @@ app.config(function($routeProvider, RestangularProvider) {
       when('/estoques', {
         templateUrl: 'view/Estoque/estoques.html',
         controller: 'estoquesCtrl'
-      }).   
+      }).
       when('/users', {
         templateUrl: 'view/User/users.html',
         controller: 'usersCtrl'
@@ -89,3 +111,4 @@ Date.prototype.addDays = function(days) {
   this.setDate(this.getDate() + days);
   return this;
 };
+

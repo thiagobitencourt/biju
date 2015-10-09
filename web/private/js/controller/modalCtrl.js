@@ -1,7 +1,7 @@
 var app = angular.module('bijuApp');
 
 app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restangular, entity, type, title, loadDataTableGrid, serviceEntity, pessoas) {
-	
+
 	$scope.entity = entity;
 	$scope.type = type;
 	$scope.title = title;
@@ -44,15 +44,15 @@ app.controller('modalCtrl', function($rootScope, $scope, $modalInstance, Restang
 			var successFunction = function(response){
 				$modalInstance.dismiss();
 				loadDataTableGrid();
-	  		};
+	  	};
 
-	  		var errorFunction = function(response) {
-	  			console.log(response.data);
+	  	var errorFunction = function(response) {
+	  		console.log(response.data);
 				$scope.errorMessage = response.data.message;
 			};
 
 			if(serviceEntity.myUpdate){
-				serviceEntity.myUpdate(entity).then(successFunction, errorFunction);	
+				serviceEntity.myUpdate(entity).then(successFunction, errorFunction);
 			}else{
 				entity.put().then(successFunction, errorFunction);
 			}
