@@ -109,6 +109,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 	var referenciaFocus = true;
 	var quantidadeFocus = false;
 	focus('referencia');
+
 	$scope.setFocus = function(pr, next){
 		if(referenciaFocus === true){
 			referenciaFocus = false;
@@ -124,45 +125,49 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 	}
 
 	$scope.inserirItem = function(produto){
-		var produtoExistente = false;
-		angular.forEach($scope.kit.itens, function(item){
-			if(item.produtoCompleto.referencia === produto.referencia){
-				item.qtdeEntregue = parseInt(item.qtdeEntregue) + parseInt(produto.quantidade);
-				$scope.kit.vlrTotalKit = calcularValorTotalKit($scope.kit.itens);
-				produtoExistente = true;
-				$scope.errorProdutoMessage = false;
-
-				quantidadeFocus = false;
-				referenciaFocus = true;
-				focus('referencia');
-			}
-		});
-
-		if(!produtoExistente){
-			Restangular.one('produto').get({"q":{"referencia":produto.referencia}})
-			.then( function(response){
-				if(response.length > 0){
-					$scope.kit.itens.push(
-						{
-							"produtoCompleto": response[0],
-							"produto": response[0]._id,
-							"qtdeEntregue" : produto.quantidade,
-							"qtdeDevolvida" : 0,
-							"vlrUnit" : response[0].vlrCusto,
-							"vlrTotal" :produto.quantidade * response[0].vlrCusto
-						}
-					);
-					$scope.produto = {quantidade: 1};
+		if(angular.isDefined(produto.referencia)){
+			var produtoExistente = false;
+			angular.forEach($scope.kit.itens, function(item){
+				if(item.produtoCompleto.referencia === produto.referencia){
+					item.qtdeEntregue = parseInt(item.qtdeEntregue) + parseInt(produto.quantidade);
 					$scope.kit.vlrTotalKit = calcularValorTotalKit($scope.kit.itens);
+					produtoExistente = true;
 					$scope.errorProdutoMessage = false;
+
+					quantidadeFocus = false;
+					referenciaFocus = true;
 					focus('referencia');
-				}else{
-					$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
-				}				
-			}, function(error){
-				$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
+				}
 			});
-		}	
+
+			if(!produtoExistente){
+				Restangular.one('produto').get({"q":{"referencia":produto.referencia}})
+				.then( function(response){
+					if(response.length > 0){
+						$scope.kit.itens.push(
+							{
+								"produtoCompleto": response[0],
+								"produto": response[0]._id,
+								"qtdeEntregue" : produto.quantidade,
+								"qtdeDevolvida" : 0,
+								"vlrUnit" : response[0].vlrCusto,
+								"vlrTotal" :produto.quantidade * response[0].vlrCusto
+							}
+						);
+						$scope.produto = {quantidade: 1};
+						$scope.kit.vlrTotalKit = calcularValorTotalKit($scope.kit.itens);
+						$scope.errorProdutoMessage = false;
+						focus('referencia');
+					}else{
+						$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
+					}				
+				}, function(error){
+					$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
+				});
+			}
+		}else{
+			$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
+		}
 	};
 
 	//remover um item da tabela em geracao
@@ -177,19 +182,26 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 
 
 	$scope.devolverItem = function(produto){
-		angular.forEach($scope.kit.itens, function(item){
-			if(item.produto.referencia === produto.referencia){
-				if(produto.quantidade <= item.qtdeEntregue){
-					item.qtdeDevolvida = parseInt(item.qtdeDevolvida) + parseInt(produto.quantidade);
-				}else{
-					// @TODO enviar para a a view o erro
-					console.log('nao e possivel devolver quantidade maior que entregue');
+		if(angular.isDefined(produto.referencia)){
+			angular.forEach($scope.kit.itens, function(item){
+				if(item.produto.referencia === produto.referencia){
+					if(produto.quantidade <= item.qtdeEntregue){
+						item.qtdeDevolvida = parseInt(item.qtdeDevolvida) + parseInt(produto.quantidade);
+						$scope.errorProdutoMessage = false;
+						$scope.produtoAvailableDescription = false;
+					}else{
+						$scope.errorProdutoMessage = "Valor Maior Entregue!";
+						$scope.produtoAvailableDescription = false;
+					}
 				}
-			}
-		});
-		$scope.produto = {quantidade: 1};
-		$scope.kit.vlrTotalDivida = calcularValorTotalDivida($scope.kit.itens);
-		$scope.geraParamentos();
+			});
+			$scope.produto = {quantidade: 1};
+			$scope.kit.vlrTotalDivida = calcularValorTotalDivida($scope.kit.itens);
+			$scope.geraParamentos();
+		}else{
+			$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
+			$scope.produtoAvailableDescription = false;
+		}
 	};
 
 	$scope.zerarQtdDevolvida = function(item){
