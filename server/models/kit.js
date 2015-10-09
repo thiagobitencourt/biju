@@ -145,7 +145,7 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 			var k = JSON.parse(JSON.stringify(kit));
 			k.pessoa_completo = k.pessoa;
 			k.pessoa = k.pessoa_completo._id;
-			
+
 			cb(null, k);
 		});
 	}else{
@@ -161,8 +161,10 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 			var final_kits = [];
 			for (var i in kits){
 				var k = JSON.parse(JSON.stringify(kits[i]));
-				k.pessoa_completo = k.pessoa;
-				k.pessoa = k.pessoa_completo._id;
+				
+				if(k.pessoa)
+					k.pessoaId = k.pessoa._id;
+
 				final_kits.push(k);
 			}
 			cb(null, final_kits);

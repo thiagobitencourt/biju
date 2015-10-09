@@ -14,23 +14,21 @@
 							<div class="col-lg-4 form-group">
 								<label class="col-sm-6 control-label">Estado:</label>
 								<div class="col-sm-6">
-									<div class="col-sm-6">
 										<select class="form-control" ng-model="kit.estado" name="estado">
 				        			<option ng-selected="{{kit.estado === value}}" ng-repeat="(key, value) in estadosKit" value="{{value}}">
 						      			{{value}}
 					    				</option>
 				        		</select>
-									</div>
 								</div>
 							</div>
 							<div class="col-lg-4 form-group">
 								<label class="col-sm-6 control-label">Pessoa:</label>
 								<div class="col-sm-6">
 									<select class="form-control" ng-model="kit.pessoa" name="pessoa">
-				        		<option ng-selected="{{kit.pessoa._id === pessoa._id}}" ng-repeat="pessoa in pessoas" value="{{pessoa._id}}">
-						      		{{pessoa.nome}}
-					    			</option>
-				        	</select>
+										<option ng-repeat="pessoa in pessoas" value="{{pessoa._id}}">
+											{{pessoa.nome}}
+										</option>
+									</select>
 								</div>
 							</div>
 							<div class="col-lg-4 form-group">
@@ -76,7 +74,7 @@
 	                </div>
 	                <div class="box-body">
 	                	<div class="row">
-	                		
+
 	                	</div>
 	                	<div class="row">
 	                		<div class="table-responsive no-padding">
@@ -99,7 +97,7 @@
 					                	<td>{{item.vlrUnit}}</td>
 					                	<td>{{item.vlrTotal}}</td>
 					                </tr>
-	                  		</table>		
+	                  		</table>
 	                		</div>
 	                	</div>
 	                </div>

@@ -7,7 +7,6 @@ var LoginRoute = function(app){
 
 	app.post('/login', function(req, res){
 
-		logger.info(req.body);
 		User.login(req.body, function(err, user){
 			if(err){
 				logger.error(err);
