@@ -1,0 +1,112 @@
+<section class="content-header">
+	<h1>Pagamento do Kit</h1>
+</section>
+<section class="content">
+	<div class="row">
+		<div class="col-md-12">
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">Código do Kit: {{ ::kit.codigo }}</h3>
+        </div>
+        <form class="form-horizontal">
+          <div class="box-body">
+						<div class="row">
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Estado:</label>
+								<div class="col-sm-6">
+									<p class="form-control-static label" ng-class="{'label-success': kit.estado === 'Gerado', 'label-warning': kit.estado === 'Entregue', 'label-danger': kit.estado === 'Fechado'}">{{ ::kit.estado }}</p>
+								</div>
+							</div>
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Data Geração:</label>
+								<div class="col-sm-6">
+									<p class="form-control-static">{{ ::kit.dataGeracao | date:"dd/MM/yyyy" }}</p>
+								</div>
+							</div>
+
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Valor Total Kit:</label>
+								<div class="col-sm-6">
+									<p class="form-control-static">{{ ::kit.vlrTotalKit | currency }}</p>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-if="kit.estado === 'Entregue' || kit.estado === 'Fechado' ">
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Pessoa:</label>
+								<div class="col-sm-6">
+									<p class="form-control-static">{{ ::kit.pessoa.nome }}</p>
+								</div>
+							</div>
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Data Entrega:</label>
+								<div class="col-sm-6">
+									<p class="form-control-static">{{ ::kit.dataEntrega | date:"dd/MM/yyyy" }}</p>
+								</div>
+							</div>
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Data Devolução:</label>
+								<div class="col-sm-6">
+									<p class="form-control-static">{{ ::kit.dataDevolucao | date:"dd/MM/yyyy" }}</p>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Valor Total Divida:</label>
+								<div class="col-sm-6">
+									<p class="form-control-static">{{ ::kit.vlrTotalDivida | currency}}</p>
+								</div>
+							</div>
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-7 control-label">Valor Total Pagamento:</label>
+								<div class="col-sm-5">
+									<p class="form-control-static">{{ kit.vlrTotalPgto | currency}}</p>
+								</div>
+							</div>
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-4 control-label">Pagar:</label>
+								<div class="col-sm-4" ng-init="pagarValor = 0">
+										<input type="number" name="pagar" class="form-control" ng-model="pagarValor" min="0">
+								</div>
+								<div class="col-sm-2">
+									<button class="btn btn-success btn-sm" title="Somar" ng-click="somarTotal(pagarValor)"><i class="fa fa-plus"></i></button>
+								</div>
+								<div class="col-sm-2">
+									<button class="btn btn-danger btn-sm" title="Subtrair" ng-click="subtrairTotal(pagarValor)"><i class="fa fa-minus"></i></button>
+								</div>
+							</div>
+							
+						</div>
+						<div class="row">
+						  <table class="table table-hover">
+						    <tr>
+						      <th>Valor Pagamento</th>
+						      <th>Data Vencimento</th>
+						      <th>Forma Pagamento</th>
+						      <th>Data Pagamento</th>
+						    </tr>
+						    <tr ng-repeat="pagamento in kit.pagamentos">
+						    	<td>{{ ::pagamento.vlrPgto | currency }}</td>
+						    	<td>{{ ::pagamento.dataVencimento | date:"dd/MM/yyyy" }}</td>
+						    	<td>{{ ::pagamento.formaPgto }}</td>
+						    	<td>
+						    		<input type="text" name="dataPagamento" class="form-control" ng-model="pagamento.dataPgto" ng-hide="pagamento.dataPgto" ui-date-mask>
+						    		<p ng-bind="pagamento.dataPgto | date:'dd/MM/yyyy' " ng-show="pagamento.dataPgto"></p>
+						    		<button class="btn btn-danger btn-sm" title="Zerar Data" ng-click="pagamento.dataPgto = ''" ng-show="pagamento.dataPgto"><i class="fa fa-trash"></i></button>
+						    	</td>
+						    </tr>
+						  </table>
+						</div>
+					</div>
+          <div class="box-footer">
+            <button type="submit" class="btn btn-default" ng-click="go('/kits')">Cancel</button>
+
+             <button type="submit" class="btn btn-success pull-right" ng-click="pagarKit()">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+	</div>
+</section>
+<pre>{{kit | json}}</pre>

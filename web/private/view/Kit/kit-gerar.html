@@ -15,23 +15,22 @@
 							<div class="col-lg-3 form-group">
 								<label class="col-sm-4 control-label">Ref.:</label>
 								<div class="col-sm-8">
-									<input type="text" id="referencia" class="form-control" ng-model="produto.referencia" ng-enter="inserirItem(produto)">
+									<!-- @TODO corregir case ele encontre pela diretiva nao buscar novamente no inserirItem na Ctrl-->
+									<input type="text" id="referencia" class="form-control" ng-model="produto.referencia" ng-model-options="{ updateOn: 'blur' }" produto-available ng-trim="true" ng-enter="setFocus(produto, inserirItem)">
 								</div>
 							</div>
 							<div class="col-lg-3 form-group">
 								<label class="col-sm-4 control-label">Qtd.:</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" ng-model="produto.quantidade" ng-enter="inserirItem(produto)">
+									<input type="text" id="quantidade" class="form-control" ng-model="produto.quantidade" ng-enter="setFocus(produto, inserirItem)">
 								</div>
 							</div>
 							<div class="col-lg-2 form-group">
 								<button type="button" class="btn btn-info" event-focus="click" event-focus-id="referencia" ng-click="inserirItem(produto)">Inserir</button>
 							</div>
 							<div class="col-lg-4 form-group">
-								<label class="col-sm-6 control-label">Valor Total Kit:</label>
-								<div class="col-sm-6">
-									<p class="form-control-static">{{kit.vlrTotalKit | currency}}</p>
-								</div>
+								<p class="form-control-static text-danger" ng-show="errorProdutoMessage">{{errorProdutoMessage}}</p>
+								<p class="form-control-static" ng-show="produtoAvailableDescription"><b>Produto:</b> {{produtoAvailableDescription}}</p>
 							</div>
 						</div>
 
@@ -39,7 +38,17 @@
 	            <div class="col-xs-12">
 	              <div class="box">
 	                <div class="box-header">
-	                  <h3 class="box-title">Lista de Produtos</h3>
+	                  <div class="row">
+											<div class="col-sm-6">
+												<h3 class="box-title">Lista de Produtos</h3>
+											</div>
+											<div class="col-sm-6 form-group">
+												<label class="col-sm-6 control-label">Valor Total Kit:</label>
+												<div class="col-sm-6">
+													<p class="form-control-static">{{kit.vlrTotalKit | currency}}</p>
+												</div>
+											</div>
+										</div>
 	                </div><!-- /.box-header -->
 	                <div class="box-body table-responsive no-padding">
 	                  <table class="table table-hover">

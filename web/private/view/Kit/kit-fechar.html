@@ -89,8 +89,12 @@
 					                </tr>
 					                <tr ng-repeat="pagamento in kit.pagamentos">
 					                	<td>{{pagamento.vlrPgto | currency}}</td>
-					                	<td><input type="text" name="dataVencimento" class="form-control" ng-model="pagamento.dataVencimento" ui-date-mask></td>
-					                	<td><input type="text" name="formaPgto" class="form-control" ng-model="pagamento.formaPgto"></td>
+					                	<td>
+					                		<input type="text" name="dataVencimento" class="form-control" ng-model="pagamento.dataVencimento" ui-date-mask>
+					                	</td>
+					                	<td>
+					                		<input type="text" name="formaPgto" class="form-control" ng-model="pagamento.formaPgto">
+					                	</td>
 					                </tr>
 					              </table>
 											</div>
@@ -108,7 +112,27 @@
 			            <!-- <div class="box-body table-responsive no-padding"> -->
 					          <div class="box-body">
 					    				<div class="row">
-												<div class="col-lg-3 form-group">
+
+							<div class="col-lg-3 form-group">
+								<label class="col-sm-4 control-label">Ref.:</label>
+								<div class="col-sm-8">
+									<!-- @TODO corregir case ele encontre pela diretiva nao buscar novamente no inserirItem na Ctrl-->
+									<input type="text" id="referencia" class="form-control" ng-model="produto.referencia" ng-model-options="{ updateOn: 'blur' }" produto-available ng-trim="true" ng-enter="setFocus(produto, devolverItem)">
+								</div>
+							</div>
+							<div class="col-lg-3 form-group">
+								<label class="col-sm-4 control-label">Qtd.:</label>
+								<div class="col-sm-8">
+									<input type="text" id="quantidade" class="form-control" ng-model="produto.quantidade" ng-enter="setFocus(produto, devolverItem)">
+								</div>
+							</div>
+
+
+
+
+
+
+<!-- 												<div class="col-lg-3 form-group">
 													<label class="col-sm-4 control-label">Ref.:</label>
 													<div class="col-sm-8">
 														<input type="text" class="form-control" ng-model="produto.referencia">
@@ -119,7 +143,7 @@
 													<div class="col-sm-8">
 														<input type="text" class="form-control" ng-model="produto.quantidade">
 													</div>
-												</div>
+												</div> -->
 												<div class="col-lg-2 form-group">
 													<button type="button" class="btn btn-info" ng-click="devolverItem(produto)">Devolver</button>
 												</div>
@@ -161,4 +185,4 @@
     </div>
 	</div>
 </section>
-<pre>{{kit | json}}</pre>
+<pre>{{kit.pagamentos | json}}</pre>

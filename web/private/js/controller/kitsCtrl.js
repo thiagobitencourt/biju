@@ -88,6 +88,12 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 		$rootScope.go('/fechar-kit');
 	};
 
+	//@TODO parametrizar function com rota
+	$scope.pagarKitForm = function(){
+		shareData.set('kit', $scope.kit);
+		$rootScope.go('/pagar-kit');
+	};
+
 	//@TODO parametrizar function com estado
 	$scope.gerarKit = function(){
 
@@ -128,8 +134,27 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 		});
 	};
 
+	var referenciaFocus = true;
+	var quantidadeFocus = false;
+	focus('referencia');
+
+	$scope.setFocus = function(pr, next){
+		if(referenciaFocus === true){
+			referenciaFocus = false;
+			quantidadeFocus = true;
+			focus('quantidade');
+			return;
+		}else if(quantidadeFocus === true){
+			quantidadeFocus = false;
+			referenciaFocus = true;
+			focus('referencia');
+			next(pr);
+		}
+	}
+
 
 	$scope.inserirItem = function(produto){
+		// console.log("produto: " + produto);
 		var produtoExistente = false;
 
 		angular.forEach($scope.kit.itens, function(item){
@@ -137,6 +162,10 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 				item.qtdeEntregue = parseInt(item.qtdeEntregue) + parseInt(produto.quantidade);
 				$scope.kit.vlrTotalKit = calcularValorTotalKit($scope.kit.itens);
 				produtoExistente = true;
+				$scope.errorProdutoMessage = false;
+
+				quantidadeFocus = false;
+				referenciaFocus = true;
 				focus('referencia');
 			}
 		});
@@ -144,22 +173,26 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 		if(!produtoExistente){
 			Restangular.one('produto').get({"q":{"referencia":produto.referencia}})
 			.then( function(response){
-				$scope.kit.itens.push(
-					{
-						"produtoCompleto": response[0],
-						"produto": response[0]._id,
-						"qtdeEntregue" : produto.quantidade,
-						"qtdeDevolvida" : 0,
-						"vlrUnit" : response[0].vlrCusto,
-						"vlrTotal" :produto.quantidade * response[0].vlrCusto
-					}
-				);
-				$scope.produto = {quantidade: 1};
-				$scope.kit.vlrTotalKit = calcularValorTotalKit($scope.kit.itens);
-				focus('referencia');
+				if(response.length > 0){
+					$scope.kit.itens.push(
+						{
+							"produtoCompleto": response[0],
+							"produto": response[0]._id,
+							"qtdeEntregue" : produto.quantidade,
+							"qtdeDevolvida" : 0,
+							"vlrUnit" : response[0].vlrCusto,
+							"vlrTotal" :produto.quantidade * response[0].vlrCusto
+						}
+					);
+					$scope.produto = {quantidade: 1};
+					$scope.kit.vlrTotalKit = calcularValorTotalKit($scope.kit.itens);
+					$scope.errorProdutoMessage = false;
+					focus('referencia');
+				}else{
+					$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
+				}				
 			}, function(error){
-				//@TODO tratar erro se o produto nao existe
-				console.log(error);
+				$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
 			});
 		}	
 	};
@@ -181,6 +214,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 				if(produto.quantidade <= item.qtdeEntregue){
 					item.qtdeDevolvida = parseInt(item.qtdeDevolvida) + parseInt(produto.quantidade);
 				}else{
+					// @TODO enviar para a a view o erro
 					console.log('nao e possivel devolver quantidade maior que entregue');
 				}
 			}
@@ -196,34 +230,47 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 		$scope.geraParamentos();
 	};
 
+	//@TODO corregir com validator Form do angular
 	$scope.checkPessoa = function(){
 		return angular.isUndefined($scope.kit.pessoa);
 	};
 
+	$scope.somarTotal = function(valor){
+		if(($scope.kit.vlrTotalPgto + valor) < $scope.kit.vlrTotalDivida){
+			$scope.kit.vlrTotalPgto += valor;	
+		}else{
+			console.log("Operação invalida!");
+		}
+	};
+	
+	$scope.subtrairTotal = function(valor){
+		if($scope.kit.vlrTotalPgto > valor){
+			$scope.kit.vlrTotalPgto -= valor;
+		}else{
+			console.log("Operação invalida!");
+		}
+	};
+	
 	$scope.geraParamentos = function(){
 		var _numeroParcelas = parseInt(angular.copy($scope.kit.numeroParcelas));
 		var _valorTotalDivida = angular.copy($scope.kit.vlrTotalDivida);
 		var _dataEntrega = angular.copy($scope.kit.dataEntrega);
 
-		// console.log(_dataEntrega);
-		// console.log(addDaysToDate(_dataEntrega, 45));
 		$scope.kit.pagamentos = [];
 
-		var _dataVencimento = new Date();
-		//@TODO gerar datas para vencimentos 
+		var _dataVencimento = new Date(_dataEntrega);
+
 		for (var i = 0; i < _numeroParcelas; i++) {
-			//@TODO corregir logica dos dias
-			// if(i === 0){
-			// 	var _dataVencimento = addDaysToDate(_dataEntrega, 45);
-			// }else if(i === 1){
-			// 	var _dataVencimento = addDaysToDate(_dataEntrega, 60);
-			// }else if(i === 2){
-			// 	var _dataVencimento = addDaysToDate(_dataEntrega, 90);
-			// }
+
+			if(i === 0){
+				_dataVencimento = new Date(_dataVencimento.addDays(45));
+			}else {
+				_dataVencimento = new Date(_dataVencimento.addDays(30));
+			}
 
 			$scope.kit.pagamentos.push({
 				vlrPgto: _valorTotalDivida / _numeroParcelas,
-				dataVencimento: _dataVencimento,
+				dataVencimento: angular.copy(_dataVencimento),
 				formaPgto: 'Promissória'
 			})
 		};

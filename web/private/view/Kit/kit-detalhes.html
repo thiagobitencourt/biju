@@ -11,6 +11,9 @@
           <button class="btn btn-info pull-right" ng-if="kit.estado ==='Gerado'" ng-click="entregarKitForm()">Entregar Kit</button>
 
 					<button class="btn btn-info pull-right" ng-if="kit.estado ==='Entregue'" ng-click="fecharKitForm()">Fechar Kit</button>
+
+					<button class="btn btn-info pull-right" ng-if="kit.estado ==='Fechado'" ng-click="pagarKitForm()">Pagar Kit</button>
+
         </div>
         <form class="form-horizontal">
           <div class="box-body">
@@ -68,13 +71,14 @@
 						<p class="form-control-static">{{ ::kit.vlrTotalDivida | currency}}</p>
 					</div>
 				</div>
-				<div class="col-lg-4 form-group">
-					
-				</div>
-				<div class="col-lg-4 form-group">
-					
+				<div class="col-lg-4 form-group" ng-if="kit.vlrTotalPgto	">
+					<label class="col-sm-6 control-label">Valor Total Pagamento:</label>
+					<div class="col-sm-6">
+						<p class="form-control-static">{{ kit.vlrTotalPgto | currency}}</p>
+					</div>
 				</div>
 			</div>
+			</div><!-- @TODO corregir template, tabelas, indentação -->
 
             <div class="row">
 	            <div class="col-xs-12">
