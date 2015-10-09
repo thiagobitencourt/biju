@@ -182,19 +182,26 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 
 
 	$scope.devolverItem = function(produto){
-		angular.forEach($scope.kit.itens, function(item){
-			if(item.produto.referencia === produto.referencia){
-				if(produto.quantidade <= item.qtdeEntregue){
-					item.qtdeDevolvida = parseInt(item.qtdeDevolvida) + parseInt(produto.quantidade);
-				}else{
-					// @TODO enviar para a a view o erro
-					console.log('nao e possivel devolver quantidade maior que entregue');
+		if(angular.isDefined(produto.referencia)){
+			angular.forEach($scope.kit.itens, function(item){
+				if(item.produto.referencia === produto.referencia){
+					if(produto.quantidade <= item.qtdeEntregue){
+						item.qtdeDevolvida = parseInt(item.qtdeDevolvida) + parseInt(produto.quantidade);
+						$scope.errorProdutoMessage = false;
+						$scope.produtoAvailableDescription = false;
+					}else{
+						$scope.errorProdutoMessage = "Valor Maior Entregue!";
+						$scope.produtoAvailableDescription = false;
+					}
 				}
-			}
-		});
-		$scope.produto = {quantidade: 1};
-		$scope.kit.vlrTotalDivida = calcularValorTotalDivida($scope.kit.itens);
-		$scope.geraParamentos();
+			});
+			$scope.produto = {quantidade: 1};
+			$scope.kit.vlrTotalDivida = calcularValorTotalDivida($scope.kit.itens);
+			$scope.geraParamentos();
+		}else{
+			$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
+			$scope.produtoAvailableDescription = false;
+		}
 	};
 
 	$scope.zerarQtdDevolvida = function(item){
