@@ -10,10 +10,10 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 	var kitService = Restangular.service('kit');
 	var produtoService = Restangular.service('produto');
 	var pessoaService = Restangular.service('pessoa');
-		
-	$scope.estadosKit = 
+
+	$scope.estadosKit =
 		{NOVO: 'Novo',
-		GERADO:'Gerado', 
+		GERADO:'Gerado',
 		ENTREGUE:'Entregue',
 		FECHADO:'Fechado',
 		PAGO:'Pago',
@@ -31,12 +31,12 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
     	paginationPageSize: 20,
     	minRowsToShow: 21,
 	    multiSelect: false,
-	    enableRowSelection: true, 
+	    enableRowSelection: true,
 	    enableSelectAll: false,
 	    enableRowHeaderSelection: false,
 	    selectionRowHeaderWidth: 35,
 	    enableFiltering: false,
-	    onRegisterApi: function(gridApi){ 
+	    onRegisterApi: function(gridApi){
 	      $scope.gridApi = gridApi;
 	      $scope.gridApi.grid.registerRowsProcessor( singleFilter.filter, 200 );
 	    },
@@ -55,7 +55,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 	];
 
 	$scope.filter = function() {
-		singleFilter.values($scope.filterValue, 
+		singleFilter.values($scope.filterValue,
 			['estado', 'codigo', 'pessoa', 'nome']);
   	$scope.gridApi.grid.refresh();
 	};
@@ -80,10 +80,10 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 
 	$scope.kitSave = function(estado){
 		var _kit = $scope.kit;
-		
+
 		//@TODO corregir logica melhorar condicao quando e pago
 		if(angular.isDefined(estado)){
-			_kit.estado = $scope.estadosKit[estado];	
+			_kit.estado = $scope.estadosKit[estado];
 		}else if(_kit.vlrTotalDivida === _kit.vlrTotalPgto){
 			_kit.estado = $scope.estadosKit.PAGO;
 		}
@@ -134,6 +134,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 					produtoExistente = true;
 					$scope.errorProdutoMessage = false;
 
+					$scope.produto = {quantidade: 1};
 					quantidadeFocus = false;
 					referenciaFocus = true;
 					focus('referencia');
@@ -160,7 +161,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 						focus('referencia');
 					}else{
 						$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
-					}				
+					}
 				}, function(error){
 					$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
 				});
@@ -219,12 +220,12 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 		if(($scope.kit.vlrTotalPgto + valor) <= $scope.kit.vlrTotalDivida){
 			$scope.kit.vlrTotalPgto += valor;
 			$scope.pagarValor = 0;
-			$scope.errorPagar = false;	
+			$scope.errorPagar = false;
 		}else{
 			$scope.errorPagar = "Operação invalida!";
 		}
 	};
-	
+
 	$scope.subtrairTotal = function(valor){
 		if($scope.kit.vlrTotalPgto >= valor){
 			$scope.kit.vlrTotalPgto -= valor;
@@ -234,7 +235,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 			$scope.errorPagar = "Operação invalida!";
 		}
 	};
-	
+
 	$scope.geraParamentos = function(){
 		$scope.kit.pagamentos = [];
 
@@ -259,7 +260,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 
 	$scope.modalEditKit = function(){
 		var modalInstance = $modal.open({
-			animation: true, 
+			animation: true,
 			templateUrl: 'view/Kit/kit-modal-edit-confirm.html',
 			resolve: {
         kitForm: function () {
@@ -280,7 +281,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 
 	$scope.modalSaveKit = function(){
 		var modalInstance = $modal.open({
-			animation: true, 
+			animation: true,
 			templateUrl: 'view/Kit/kit-modal-save-confirm.html',
 			resolve: {
         kitSave: function () {

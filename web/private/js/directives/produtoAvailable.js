@@ -4,7 +4,7 @@ app.directive('produtoAvailable', function($timeout, Restangular) {
     require: 'ngModel',
     link: function(scope, elem, attrs, ngModel) {
       ngModel.$asyncValidators.produtoAvailable = function(referencia) {
-        return $timeout(function() {
+       return $timeout(function() {
           if(angular.isDefined(referencia)){
             Restangular.one('produto').get({"q":{"referencia":referencia}})
             .then( function(response){
@@ -14,10 +14,10 @@ app.directive('produtoAvailable', function($timeout, Restangular) {
               }else{
                 scope.produtoAvailableDescription = false;
                 scope.errorProdutoMessage = "Referencia Produto Não Existe!";
-              }    
+              }
             });
           }
-        }, 500);
+       }, 100);
       };
     }
   }
