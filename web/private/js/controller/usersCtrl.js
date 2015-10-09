@@ -20,7 +20,7 @@ var hackerFunction = function(){
 				return {
 					then: function(cbOk, cbErr){
 						var obj = {data: errMessage};
-						return cbErr(obj);						
+						return cbErr(obj);
 					}
 				};
 			}
@@ -43,7 +43,7 @@ var hackerFunction = function(){
 
 			return {
 				then: function(cbOk, cbErr){
-					var obj = {data: errMessage};
+					var obj = {data: {message: errMessage}};
 					return cbErr(obj);
 				}
 			}
@@ -65,12 +65,12 @@ var hackerFunction = function(){
 	    paginationPageSizes: [5, 10, 25, 50, 100],
     	paginationPageSize: 5,
 	    multiSelect: false,
-	    enableRowSelection: true, 
+	    enableRowSelection: true,
 	    enableSelectAll: false,
 	    enableRowHeaderSelection: false,
 	    selectionRowHeaderWidth: 35,
 	    enableFiltering: false,
-	    onRegisterApi: function(gridApi){ 
+	    onRegisterApi: function(gridApi){
 	      $scope.gridApi = gridApi;
 	      $scope.gridApi.grid.registerRowsProcessor( singleFilter.filter, 200 );
 	    },
@@ -84,7 +84,7 @@ var hackerFunction = function(){
 	];
 
 	$scope.filter = function() {
-		singleFilter.values($scope.filterValue, 
+		singleFilter.values($scope.filterValue,
 			[ 'username', 'pessoa', 'nome']);
     	$scope.gridApi.grid.refresh();
  	};
