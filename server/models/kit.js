@@ -142,7 +142,11 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 			if(!kit)
 				return cb(new AppError(null, "Kit não encontrado", AppError.ERRORS.CLIENT), null);
 
-			cb(null, kit);
+			var k = JSON.parse(JSON.stringify(kit));
+			k.pessoa_completo = k.pessoa;
+			k.pessoa = k.pessoa_completo._id;
+			
+			cb(null, k);
 		});
 	}else{
 		if(!query)
@@ -152,7 +156,16 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 
 		this.find(query, {deletedAt:0}).populate('itens.produto pessoa').exec( function(err, kits){
 			if(err) return cb(new AppError(err, null, null, 'Kit'), null);
-			cb(null, kits);
+
+			//TODO fix
+			var final_kits = [];
+			for (var i in kits){
+				var k = JSON.parse(JSON.stringify(kits[i]));
+				k.pessoa_completo = k.pessoa;
+				k.pessoa = k.pessoa_completo._id;
+				final_kits.push(k);
+			}
+			cb(null, final_kits);
 		});
 	}
 };
