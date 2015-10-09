@@ -144,8 +144,7 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 
 			var k = JSON.parse(JSON.stringify(kit));
 			if(k.pessoa){
-				k.pessoaCompleto = k.pessoa;
-				k.pessoa = k.pessoaCompleto._id;
+				k.pessoaId = k.pessoa._id;
 			}
 
 			cb(null, k);
@@ -164,10 +163,9 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 			for (var i in kits){
 				var k = JSON.parse(JSON.stringify(kits[i]));
 				if(k.pessoa){
-					k.pessoaCompleto = k.pessoa;
-					k.pessoa = k.pessoaCompleto._id;
-					final_kits.push(k);
+					k.pessoaId = k.pessoa._id;
 				}
+				final_kits.push(k);
 			}
 			cb(null, final_kits);
 		});
