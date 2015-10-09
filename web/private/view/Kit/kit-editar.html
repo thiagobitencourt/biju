@@ -1,1 +1,169 @@
-<pre>{{kit | json}}</pre>
+<section class="content-header">
+	<h1>Editar Kit</h1>
+</section>
+<section class="content">
+	<div class="row">
+		<div class="col-md-12">
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">Código do Kit: {{kit.codigo}}</h3>
+        </div>
+        <form class="form-horizontal">
+          <div class="box-body">
+    				<div class="row">
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Estado:</label>
+								<div class="col-sm-6">
+									<div class="col-sm-6">
+										<select class="form-control" ng-model="kit.estado" name="estado">
+				        			<option ng-selected="{{kit.estado === value}}" ng-repeat="(key, value) in estadosKit" value="{{value}}">
+						      			{{value}}
+					    				</option>
+				        		</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Pessoa:</label>
+								<div class="col-sm-6">
+									<select class="form-control" ng-model="kit.pessoa" name="pessoa">
+				        		<option ng-selected="{{kit.pessoa._id === pessoa._id}}" ng-repeat="pessoa in pessoas" value="{{pessoa._id}}">
+						      		{{pessoa.nome}}
+					    			</option>
+				        	</select>
+								</div>
+							</div>
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Data Geração:</label>
+								<div class="col-sm-6">
+									<input type="text" name="dataGeracao" class="form-control" ng-model="kit.dataGeracao	" ui-date-mask>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Data Entrega:</label>
+								<div class="col-sm-6">
+									<input type="text" name="dataEntrega" class="form-control" ng-model="kit.dataEntrega	" ui-date-mask>
+								</div>
+							</div>
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Data Prox. Retorno:</label>
+								<div class="col-sm-6">
+									<input type="text" name="dataProxRetorno" class="form-control" ng-model="kit.dataProxRetorno	" ui-date-mask>
+								</div>
+							</div>
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Data Devolução:</label>
+								<div class="col-sm-6">
+									<input type="text" name="dataDevolucao" class="form-control" ng-model="kit.dataDevolucao	" ui-date-mask>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Valor Total Kit:</label>
+								<div class="col-sm-6">
+									<p class="form-control-static">{{ kit.vlrTotalKit | currency }}</p>
+								</div>
+							</div>
+						</div>
+            <div class="row">
+	            <div class="col-xs-12">
+	              <div class="box box-success">
+	                <div class="box-header">
+	                  <h3 class="box-title">Lista de Produtos</h3>
+	                </div>
+	                <div class="box-body">
+	                	<div class="row">
+	                		
+	                	</div>
+	                	<div class="row">
+	                		<div class="table-responsive no-padding">
+	                			<table class="table table-striped">
+                 				 	<tr>
+					                  <th>Ref.</th>
+					                  <th>Tipo</th>
+					                  <th>Descricao</th>
+					                  <th>Qtd. Entregue</th>
+					                  <th>Qtd. Devolvida</th>
+					                  <th>Valor Unit</th>
+					                  <th>Valor Total</th>
+					                </tr>
+					                <tr ng-repeat="item in kit.itens">
+					                	<td>{{item.produto.referencia}}</td>
+					                	<td>{{item.produto.tipo}}</td>
+					                	<td>{{item.produto.descricao}}</td>
+					                	<td><input type="number" id="qtdeEntregue" class="form-control" ng-model="item.qtdeEntregue" min="0" ng-blur="atualizarEditKit()"></td>
+					                	<td><input type="number" id="qtdeDevolvida" class="form-control" ng-model="item.qtdeDevolvida" min="0" ng-blur="atualizarEditKit()"></td>
+					                	<td>{{item.vlrUnit}}</td>
+					                	<td>{{item.vlrTotal}}</td>
+					                </tr>
+	                  		</table>		
+	                		</div>
+	                	</div>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
+            <div class="row">
+	            <div class="col-xs-12">
+	              <div class="box box-danger">
+	                <div class="box-header">
+	                  <h3 class="box-title">Lista de Pagamentos</h3>
+	                </div>
+	                <div class="box-body">
+	                	<div class="row">
+											<div class="col-lg-4 form-group">
+												<label class="col-sm-6 control-label">Valor Total Divida:</label>
+												<div class="col-sm-6">
+													<p class="form-control-static">{{ kit.vlrTotalDivida | currency}}</p>
+												</div>
+											</div>
+											<div class="col-lg-4 form-group">
+												<label class="col-sm-6 control-label">Numero Parcelas:</label>
+												<div class="col-sm-6">
+													<input type="number" name="numeroParcelas" class="form-control" ng-change="geraParamentos()" ng-model="kit.numeroParcelas" min="1">
+												</div>
+											</div>
+											<div class="col-lg-4 form-group">
+												<label class="col-sm-6 control-label">Valor Total Pagamento:</label>
+												<div class="col-sm-6">
+													<input type="text" name="dataProxRetorno" class="form-control" ng-model="kit.vlrTotalPgto	" ui-money-mask>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="table-responsive no-padding">
+												<table class="table table-striped">
+                 				 	<tr>
+					                  <th>Valor Pagamento</th>
+					                  <th>Data Vencimento</th>
+					                  <th>Forma Pagamento</th>
+					                </tr>
+					                <tr ng-repeat="pagamento in kit.pagamentos">
+					                	<td>{{pagamento.vlrPgto | currency}}</td>
+					                	<td>
+					                		<input type="text" name="dataVencimento" class="form-control" ng-model="pagamento.dataVencimento" ui-date-mask>
+					                	</td>
+					                	<td>
+					                		<input type="text" name="formaPgto" class="form-control" ng-model="pagamento.formaPgto">
+					                	</td>
+					                </tr>
+	                  		</table>
+											</div>
+										</div>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
+          </div>
+          <div class="box-footer">
+         		<button type="submit" class="btn btn-default" ng-click="go('/kits')">Cancel</button>
+	          <button type="submit" class="btn btn-success pull-right" ng-click="modalSaveKit()">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+	</div>
+</section>

@@ -8,10 +8,9 @@
         <div class="box-header with-border">
           <h3 class="box-title">Código do Kit: {{kit.codigo}}</h3>
         </div>
-        
         <form class="form-horizontal">
           <div class="box-body">
-						<div class="row">
+    				<div class="row">
 							<div class="col-lg-4 form-group">
 								<label class="col-sm-6 control-label">Estado:</label>
 								<div class="col-sm-6">
@@ -24,7 +23,6 @@
 									<p class="form-control-static">{{kit.dataGeracao | date:"dd/MM/yyyy"}}</p>
 								</div>
 							</div>
-
 							<div class="col-lg-4 form-group">
 								<label class="col-sm-6 control-label">Valor Total Kit:</label>
 								<div class="col-sm-6">
@@ -52,37 +50,37 @@
 								</div>
 							</div>
 						</div>
-			      <div class="row">
-			        <div class="col-xs-12">
-			          <div class="box box-danger">
-			            <div class="box-header">
-			              <h3 class="box-title">Lista de Pagamentos</h3>
-			            </div><!-- /.box-header -->
-			            <!-- <div class="box-body table-responsive no-padding"> -->
-						        <div class="box-body">
-        							<div class="row">
-												<div class="col-lg-4 form-group">
-													<label class="col-sm-6 control-label">Valor Total Divida:</label>
-													<div class="col-sm-6">
-														<p class="form-control-static">{{ kit.vlrTotalDivida | currency}}</p>
-													</div>
-												</div>
-												<div class="col-lg-4 form-group">
-													<label class="col-sm-6 control-label">Numero Parcelas:</label>
-													<div class="col-sm-6">
-														<input type="number" name="numeroParcelas" class="form-control" ng-change="geraParamentos()" ng-model="kit.numeroParcelas">
-													</div>
-												</div>
-												<div class="col-lg-4 form-group">
-													<label class="col-sm-6 control-label">Data Devolução:</label>
-													<div class="col-sm-6">
-														<input type="text" name="dataDevolucao" class="form-control" ng-model="kit.dataDevolucao" ui-date-mask>
-													</div>
+            <div class="row">
+	            <div class="col-xs-12">
+	              <div class="box box-danger">
+	                <div class="box-header">
+	                  <h3 class="box-title">Lista de Pagamentos</h3>
+	                </div>
+	                <div class="box-body">
+	                	<div class="row">
+											<div class="col-lg-4 form-group">
+												<label class="col-sm-6 control-label">Valor Total Divida:</label>
+												<div class="col-sm-6">
+													<p class="form-control-static">{{ kit.vlrTotalDivida | currency}}</p>
 												</div>
 											</div>
-											<div class="row">
-					              <table class="table table-hover">
-					                <tr>
+											<div class="col-lg-4 form-group">
+												<label class="col-sm-6 control-label">Numero Parcelas:</label>
+												<div class="col-sm-6">
+													<input type="number" name="numeroParcelas" class="form-control" ng-change="geraParamentos()" ng-model="kit.numeroParcelas" min="1">
+												</div>
+											</div>
+											<div class="col-lg-4 form-group">
+												<label class="col-sm-6 control-label">Data Devolução:</label>
+												<div class="col-sm-6">
+													<input type="text" name="dataDevolucao" class="form-control" ng-model="kit.dataDevolucao" ui-date-mask>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="table-responsive no-padding">
+												<table class="table table-striped">
+                 				 	<tr>
 					                  <th>Valor Pagamento</th>
 					                  <th>Data Vencimento</th>
 					                  <th>Forma Pagamento</th>
@@ -96,61 +94,42 @@
 					                		<input type="text" name="formaPgto" class="form-control" ng-model="pagamento.formaPgto">
 					                	</td>
 					                </tr>
-					              </table>
+	                  		</table>
 											</div>
-										</div>	              
-			            <!--</div><!-- /.box-body -->
-			          </div><!-- /.box -->
-			        </div>
-			      </div>
-			      <div class="row">
-			        <div class="col-xs-12">
-			          <div class="box">
-			            <div class="box-header">
-			              <h3 class="box-title">Lista de Produtos</h3>
-			            </div><!-- /.box-header -->
-			            <!-- <div class="box-body table-responsive no-padding"> -->
-					          <div class="box-body">
-					    				<div class="row">
-
-							<div class="col-lg-3 form-group">
-								<label class="col-sm-4 control-label">Ref.:</label>
-								<div class="col-sm-8">
-									<!-- @TODO corregir case ele encontre pela diretiva nao buscar novamente no inserirItem na Ctrl-->
-									<input type="text" id="referencia" class="form-control" ng-model="produto.referencia" ng-model-options="{ updateOn: 'blur' }" produto-available ng-trim="true" ng-enter="setFocus(produto, devolverItem)">
-								</div>
-							</div>
-							<div class="col-lg-3 form-group">
-								<label class="col-sm-4 control-label">Qtd.:</label>
-								<div class="col-sm-8">
-									<input type="text" id="quantidade" class="form-control" ng-model="produto.quantidade" ng-enter="setFocus(produto, devolverItem)">
-								</div>
-							</div>
-
-
-
-
-
-
-<!-- 												<div class="col-lg-3 form-group">
-													<label class="col-sm-4 control-label">Ref.:</label>
-													<div class="col-sm-8">
-														<input type="text" class="form-control" ng-model="produto.referencia">
-													</div>
-												</div>
-												<div class="col-lg-3 form-group">
-													<label class="col-sm-4 control-label">Qtd.:</label>
-													<div class="col-sm-8">
-														<input type="text" class="form-control" ng-model="produto.quantidade">
-													</div>
-												</div> -->
-												<div class="col-lg-2 form-group">
-													<button type="button" class="btn btn-info" ng-click="devolverItem(produto)">Devolver</button>
+										</div>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
+            <div class="row">
+	            <div class="col-xs-12">
+	              <div class="box box-success">
+	                <div class="box-header">
+	                  <h3 class="box-title">Lista de Produtos</h3>
+	                </div>
+	                <div class="box-body">
+	                	<div class="row">
+	                		<div class="col-lg-3 form-group">
+												<label class="col-sm-4 control-label">Ref.:</label>
+												<div class="col-sm-8">
+													<!-- @TODO corregir caso ele encontre pela diretiva nao buscar novamente no inserirItem na Ctrl-->
+													<input type="text" id="referencia" class="form-control" ng-model="produto.referencia" ng-model-options="{ updateOn: 'blur' }" produto-available ng-trim="true" ng-enter="setFocus(produto, devolverItem)">
 												</div>
 											</div>
-											<div class="row">
-					              <table class="table table-hover">
-					                <tr>
+											<div class="col-lg-3 form-group">
+												<label class="col-sm-4 control-label">Qtd.:</label>
+												<div class="col-sm-8">
+													<input type="text" id="quantidade" class="form-control" ng-model="produto.quantidade" ng-enter="setFocus(produto, devolverItem)">
+												</div>
+											</div>
+											<div class="col-lg-2 form-group">
+												<button type="button" class="btn btn-info" ng-click="devolverItem(produto)">Devolver</button>
+											</div>
+	                	</div>
+	                	<div class="row">
+	                		<div class="table-responsive no-padding">
+	                			<table class="table table-striped">
+                 				 	<tr>
 					                  <th>Ref.</th>
 					                  <th>Tipo</th>
 					                  <th>Descricao</th>
@@ -168,21 +147,20 @@
 					                	<td>{{item.vlrUnit}}</td>
 					                	<td>{{item.vlrTotal}}</td>
 					                </tr>
-					              </table>
-											</div>
-										</div>		              
-			            </div><!-- /.box-body -->
-			          </div><!-- /.box -->
-			        </div>
-			      </div>
-	        </div>
-	        <div class="box-footer">
-	          <button type="submit" class="btn btn-default" ng-click="go('/kits')">Cancel</button>
-	          <button type="submit" class="btn btn-success pull-right" ng-click="fecharKit()">Salvar</button>
-	        </div>
+	                  		</table>		
+	                		</div>
+	                	</div>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
+          </div>
+          <div class="box-footer">
+         		<button type="submit" class="btn btn-default" ng-click="go('/kits')">Cancel</button>
+	          <button type="submit" class="btn btn-success pull-right" ng-click="kitSave('FECHADO')">Salvar</button>
+          </div>
         </form>
       </div>
     </div>
 	</div>
 </section>
-<pre>{{kit.pagamentos | json}}</pre>

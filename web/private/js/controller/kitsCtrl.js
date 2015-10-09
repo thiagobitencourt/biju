@@ -1,7 +1,6 @@
 var app = angular.module('bijuApp');
 
-app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Restangular, singleFilter, shareData, focus){
-
+app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $modal, Restangular, singleFilter, shareData, focus){
 
 	if(shareData.has('kit')){
 		$scope.kit = shareData.get('kit');
@@ -16,7 +15,9 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 		{NOVO: 'Novo',
 		GERADO:'Gerado', 
 		ENTREGUE:'Entregue',
-		FECHADO:'Fechado'};
+		FECHADO:'Fechado',
+		PAGO:'Pago',
+	};
 
 	$scope.kitsScopeProvider = {
 		details: function(row){
@@ -46,15 +47,18 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 	$scope.kitsGridOptions.columnDefs = [
     	{ name: 'codigo', displayName: 'Codigo'},
     	{ name: 'pessoa.nome', displayName: 'Pessoa'},
-	    { name: 'vlrTotalKit', displayName: 'Valor Total'},
+	    { name: 'dataProxRetorno', cellFilter:"date:'dd/MM/yyyy'", displayName: 'Data Prox. Retorno'},
+	    { name: 'vlrTotalKit', cellFilter:'currency', displayName: 'Total Kit'},
+	    { name: 'vlrTotalDivida', cellFilter:'currency', displayName: 'Total Dívida'},
+	    { name: 'vlrTotalPgto', cellFilter:'currency', displayName: 'Total Pagamento'},
 	    { name: 'estado', displayName: 'Estado', cellTemplate: 'view/Kit/kit-template-estado.html'}
 	];
 
 	$scope.filter = function() {
 		singleFilter.values($scope.filterValue, 
 			['estado', 'codigo', 'pessoa', 'nome']);
-    	$scope.gridApi.grid.refresh();
-  	};
+  	$scope.gridApi.grid.refresh();
+	};
 
 	var _loadKits = function(){
 		$scope.kitsGridOptions.data = kitService.getList().$object;
@@ -64,80 +68,47 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 		$scope.pessoas = pessoaService.getList().$object;
 	};
 
-	//@TODO parametrizar function com rota
-	$scope.editarKitForm = function(){
-		shareData.set('kit', $scope.kit);
-		$rootScope.go('/editar-kit');
+	$scope.kitForm = function(action){
+		if(action === 'gerar'){
+			shareData.set('kit', { estado: $scope.estadosKit.NOVO, itens: [], vlrTotalKit: 0 });
+		}else{
+			shareData.set('kit', $scope.kit);
+		}
+		//@TODO corregir com servico para direcionamento
+		$rootScope.go('/'+action+'-kit');
 	};
 
-	//@TODO parametrizar function com rota
-	$scope.gerarKitForm = function(){
-		shareData.set('kit', { estado: $scope.estadosKit.NOVO, itens: [], vlrTotalKit: 0 });
-		$rootScope.go('/gerar-kit');
-	};
-
-	//@TODO parametrizar function com rota
-	$scope.entregarKitForm = function(){
-		shareData.set('kit', $scope.kit);
-		$rootScope.go('/entregar-kit');
-	};
-
-	//@TODO parametrizar function com rota
-	$scope.fecharKitForm = function(){
-		shareData.set('kit', $scope.kit);
-		$rootScope.go('/fechar-kit');
-	};
-
-	//@TODO parametrizar function com rota
-	$scope.pagarKitForm = function(){
-		shareData.set('kit', $scope.kit);
-		$rootScope.go('/pagar-kit');
-	};
-
-	//@TODO parametrizar function com estado
-	$scope.gerarKit = function(){
-
+	$scope.kitSave = function(estado){
 		var _kit = $scope.kit;
-		_kit.estado = $scope.estadosKit.GERADO;
 		
-		kitService.post(_kit).then(function(response){
-			$rootScope.go('/kits');
-		}, function(response){
-			console.log(response);
-		});
+		//@TODO corregir logica melhorar condicao quando e pago
+		if(angular.isDefined(estado)){
+			_kit.estado = $scope.estadosKit[estado];	
+		}else if(_kit.vlrTotalDivida === _kit.vlrTotalPgto){
+			_kit.estado = $scope.estadosKit.PAGO;
+		}
 
+		if(angular.isUndefined(_kit._id)){
+			kitService.post(_kit).then(function(response){
+				$rootScope.go('/kits');
+			}, function(response){
+				// @TODO enviar erro ao gerar kit para view
+				console.log('erro ao gerar kit', response.message);
+			});
+		}else{
+			_kit.put().then(function(response){
+				$rootScope.go('/kits');
+			}, function(response){
+				// @TODO enviar erro ao gerar kit para view
+				console.log('erro ao atualizar kit', response.message);
+			});
+		}
 	};
 
-	//@TODO parametrizar function com estado
-	$scope.entregarKit = function(){
-
-		var _kit = $scope.kit;
-		_kit.estado = $scope.estadosKit.ENTREGUE;
-
-		_kit.put().then(function(response){
-			$rootScope.go('/kits');
-		}, function(response){
-			console.log('erro ao atualizar kit');
-		});
-	};
-
-	//@TODO parametrizar function com estado
-	$scope.fecharKit = function(){
-
-		var _kit = $scope.kit;
-		_kit.estado = $scope.estadosKit.FECHADO;
-
-		_kit.put().then(function(response){
-			$rootScope.go('/kits');
-		}, function(response){
-			console.log('erro ao atualizar kit');
-		});
-	};
-
+	// referente a funcionalidade de focus inputs e enter
 	var referenciaFocus = true;
 	var quantidadeFocus = false;
 	focus('referencia');
-
 	$scope.setFocus = function(pr, next){
 		if(referenciaFocus === true){
 			referenciaFocus = false;
@@ -152,11 +123,8 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 		}
 	}
 
-
 	$scope.inserirItem = function(produto){
-		// console.log("produto: " + produto);
 		var produtoExistente = false;
-
 		angular.forEach($scope.kit.itens, function(item){
 			if(item.produtoCompleto.referencia === produto.referencia){
 				item.qtdeEntregue = parseInt(item.qtdeEntregue) + parseInt(produto.quantidade);
@@ -236,47 +204,94 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 	};
 
 	$scope.somarTotal = function(valor){
-		if(($scope.kit.vlrTotalPgto + valor) < $scope.kit.vlrTotalDivida){
-			$scope.kit.vlrTotalPgto += valor;	
+		if(($scope.kit.vlrTotalPgto + valor) <= $scope.kit.vlrTotalDivida){
+			$scope.kit.vlrTotalPgto += valor;
+			$scope.pagarValor = 0;
+			$scope.errorPagar = false;	
 		}else{
-			console.log("Operação invalida!");
+			$scope.errorPagar = "Operação invalida!";
 		}
 	};
 	
 	$scope.subtrairTotal = function(valor){
-		if($scope.kit.vlrTotalPgto > valor){
+		if($scope.kit.vlrTotalPgto >= valor){
 			$scope.kit.vlrTotalPgto -= valor;
+			$scope.pagarValor = 0;
+			$scope.errorPagar = false;
 		}else{
-			console.log("Operação invalida!");
+			$scope.errorPagar = "Operação invalida!";
 		}
 	};
 	
 	$scope.geraParamentos = function(){
+		$scope.kit.pagamentos = [];
+
 		var _numeroParcelas = parseInt(angular.copy($scope.kit.numeroParcelas));
 		var _valorTotalDivida = angular.copy($scope.kit.vlrTotalDivida);
 		var _dataEntrega = angular.copy($scope.kit.dataEntrega);
-
-		$scope.kit.pagamentos = [];
-
 		var _dataVencimento = new Date(_dataEntrega);
 
 		for (var i = 0; i < _numeroParcelas; i++) {
-
 			if(i === 0){
 				_dataVencimento = new Date(_dataVencimento.addDays(45));
 			}else {
 				_dataVencimento = new Date(_dataVencimento.addDays(30));
 			}
-
 			$scope.kit.pagamentos.push({
 				vlrPgto: _valorTotalDivida / _numeroParcelas,
 				dataVencimento: angular.copy(_dataVencimento),
 				formaPgto: 'Promissória'
 			})
 		};
-
 	};
 
+	$scope.modalEditKit = function(){
+		var modalInstance = $modal.open({
+			animation: true, 
+			templateUrl: 'view/Kit/kit-modal-edit-confirm.html',
+			resolve: {
+        kitForm: function () {
+          return $scope.kitForm;
+        }
+      },
+			controller: function($scope, $modalInstance, kitForm){
+				$scope.edit = function () {
+					$modalInstance.dismiss('cancel');
+			    kitForm('editar');
+			  };
+			  $scope.close = function () {
+			    $modalInstance.dismiss('cancel');
+			  };
+			}
+		});
+	};
+
+	$scope.modalSaveKit = function(){
+		var modalInstance = $modal.open({
+			animation: true, 
+			templateUrl: 'view/Kit/kit-modal-save-confirm.html',
+			resolve: {
+        kitSave: function () {
+          return $scope.kitSave;
+        }
+      },
+			controller: function($scope, $modalInstance, kitSave){
+				$scope.save = function () {
+					$modalInstance.dismiss('cancel');
+			    kitSave();
+			  };
+			  $scope.close = function () {
+			    $modalInstance.dismiss('cancel');
+			  };
+			}
+		});
+	};
+
+	$scope.atualizarEditKit = function(){
+		$scope.kit.vlrTotalKit = calcularValorTotalKitEditando($scope.kit.itens);
+		$scope.kit.vlrTotalDivida = calcularValorTotalDivida($scope.kit.itens);
+		$scope.geraParamentos();
+	};
 
 	var calcularValorTotalDivida = function(itens) {
 		return valorTotalDivida = angular.copy(itens)
@@ -298,23 +313,31 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, Rest
 			}, 0);
 	};
 
-	var addDaysToDate = function(date, days){
-			var _data = new Date(date);
-			return _data.setDate(_data.getDate() + days);
-	}
-
+	// @TODO modificar a logica do produtoCompleto
+	var calcularValorTotalKitEditando = function(itens){
+		return valorTotalKit = angular.copy(itens)
+			.map(function(item){
+				return parseInt(item.qtdeEntregue) * item.produto.vlrCusto;
+			})
+			.reduce(function(soma, vlrTotal){
+				return soma + vlrTotal;
+			}, 0);
+	};
 
 	switch($location.path()){
 		case '/kits':
 			_loadKits();
+			break;
+		case '/editar-kit':
+			_loadPessoas();
+			$scope.kit.numeroParcelas = 3;
 			break;
 		case '/gerar-kit':
 			$scope.produto = {quantidade: 1};
 			break;
 		case '/entregar-kit':
 			var _dataProxRetorno = new Date();
-			_dataProxRetorno.setDate(_dataProxRetorno.getDate() + 25);
-			$scope.kit.dataProxRetorno = _dataProxRetorno;
+			$scope.kit.dataProxRetorno = _dataProxRetorno.addDays(25);
 			$scope.kit.dataEntrega = new Date();
 			_loadPessoas();
 			break;
