@@ -145,7 +145,8 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 				Restangular.one('produto').get({"q":{"referencia":produto.referencia}})
 				.then( function(response){
 					if(response.length > 0){
-						$scope.kit.itens.push(
+						// $scope.kit.itens.push(
+						$scope.kit.itens.unshift(
 							{
 								"produtoCompleto": response[0],
 								"produto": response[0]._id,
@@ -186,7 +187,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 		if(angular.isDefined(produto.referencia)){
 			angular.forEach($scope.kit.itens, function(item){
 				if(item.produto.referencia === produto.referencia){
-					if(produto.quantidade <= item.qtdeEntregue){
+					if((produto.quantidade <= item.qtdeEntregue) && item.qtdeDevolvida !== item.qtdeEntregue){
 						item.qtdeDevolvida = parseInt(item.qtdeDevolvida) + parseInt(produto.quantidade);
 						$scope.errorProdutoMessage = false;
 						$scope.produtoAvailableDescription = false;
@@ -241,7 +242,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 
 		var _numeroParcelas = parseInt(angular.copy($scope.kit.numeroParcelas));
 		var _valorTotalDivida = angular.copy($scope.kit.vlrTotalDivida);
-		var _dataEntrega = angular.copy($scope.kit.dataEntrega);
+		var _dataEntrega = angular.copy($scope.kit.dataDevolucao);
 		var _dataVencimento = new Date(_dataEntrega);
 
 		for (var i = 0; i < _numeroParcelas; i++) {

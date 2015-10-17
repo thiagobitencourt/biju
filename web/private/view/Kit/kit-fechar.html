@@ -73,7 +73,7 @@
 											<div class="col-lg-4 form-group">
 												<label class="col-sm-6 control-label">Data Devolução:</label>
 												<div class="col-sm-6">
-													<input type="text" name="dataDevolucao" class="form-control" ng-model="kit.dataDevolucao" ui-date-mask>
+													<input type="text" name="dataDevolucao" class="form-control" ng-change="geraParamentos()" ng-model="kit.dataDevolucao" ui-date-mask>
 												</div>
 											</div>
 										</div>
