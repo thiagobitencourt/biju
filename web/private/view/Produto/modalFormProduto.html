@@ -6,10 +6,10 @@
 
 	<div class="modal-body">
 
-		  <div class="form-group">
+		<div class="form-group" ng-class="{'has-error': !errorProdutoMessage}">
 			<label class="col-sm-3 control-label">Referencia: *</label>
 			<div class="col-sm-9" ng-class="{'has-error': (form.nome.$error.required && form.$submitted)}">
-			  <input type="text" name="referencia" class="form-control" autofocus ng-model="entity.referencia" required>
+			  <input type="text" name="referencia" class="form-control" autofocus ng-model="entity.referencia" ng-model-options="{ updateOn: 'blur' }" produto-available ng-trim="true" required>
 			</div>
 	 	</div>
 
@@ -52,11 +52,16 @@
 		    <p>{{ errorMessage }}</p>
 	 	</div>
 
-	 	<p class="text-yellow">* Campos obrigatórios</p>
+		<div class="form-group">
+	 		<p class="col-sm-6 text-yellow">* Campos obrigatórios</p>
+			<p class="col-sm-6 form-control-static text-danger" ng-init="errorProdutoMessage = true;" ng-show="!errorProdutoMessage">
+				<strong>Produto Já cadastrado!</strong>
+			</p>
+		</div>
 	</div>
 
 	<div class="modal-footer">
-		<button type="button" class="btn btn-success" ng-click="save(entity)" ng-disabled="form.$invalid">Salvar</button>
+		<button type="button" class="btn btn-success" ng-click="save(entity)" ng-disabled="form.$invalid || !errorProdutoMessage">Salvar</button>
 		<button type="button" class="btn btn-default pull-left" ng-click="close()">Fechar</button>
 	</div>
 </form>
