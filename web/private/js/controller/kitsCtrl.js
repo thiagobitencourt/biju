@@ -46,7 +46,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 
 	$scope.kitsGridOptions.columnDefs = [
     	{ name: 'codigo', displayName: 'Codigo'},
-    	{ name: 'pessoa.nome', displayName: 'Pessoa'},
+    	{ name: 'pessoa.nome', displayName: 'Cliente'},
 	    { name: 'dataProxRetorno', cellFilter:"date:'dd/MM/yyyy'", displayName: 'Data Prox. Retorno'},
 	    { name: 'vlrTotalKit', cellFilter:'currency', displayName: 'Total Kit'},
 	    { name: 'vlrTotalDivida', cellFilter:'currency', displayName: 'Total Dívida'},
