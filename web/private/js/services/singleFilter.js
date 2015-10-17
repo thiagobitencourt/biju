@@ -11,7 +11,7 @@ app.factory('singleFilter', function() {
         return renderableRows;
       }
 
-      var matcher = new RegExp(_filterValue);
+      var matcher = new RegExp(_filterValue.toLowerCase());
       renderableRows.forEach( function( row ) {
         var match = false;
 
@@ -22,14 +22,14 @@ app.factory('singleFilter', function() {
               var obj = row.entity[field];
               for(var attr in obj){
                 if(angular.isDefined(obj[attr]) && typeof obj[attr] == 'string'){
-                  if(obj[attr].match(matcher)){
+                  if(obj[attr].toLowerCase().match(matcher)){
                     match = true;
                     break;
                   }
                 }
               }
             }else if(typeof row.entity[field] == 'string'){
-              if(row.entity[field].match(matcher))
+              if(row.entity[field].toLowerCase().match(matcher))
                 match = true;
             }else if(typeof row.entity[field] == 'number'){
               if(row.entity[field].toString().match(matcher))
@@ -45,7 +45,7 @@ app.factory('singleFilter', function() {
 
       _columns = undefined;
       return renderableRows;
-    }, 
+    },
     values: function(filterValue, columns){
       //Define qual valor deve ser procuaro e em quais colunas
       _filterValue = filterValue;

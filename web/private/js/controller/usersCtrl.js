@@ -63,7 +63,7 @@ var hackerFunction = function(){
 
 	$scope.usersGridOptions = {
 	    paginationPageSizes: [5, 10, 25, 50, 100],
-    	paginationPageSize: 5,
+    	paginationPageSize: 50,
 	    multiSelect: false,
 	    enableRowSelection: true,
 	    enableSelectAll: false,

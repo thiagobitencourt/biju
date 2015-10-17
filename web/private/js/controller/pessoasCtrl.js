@@ -34,15 +34,15 @@ app.controller('pessoasCtrl', function($rootScope, $scope, Restangular, singleFi
 
 	$scope.pessoasGridOptions = {
 	    paginationPageSizes: [10, 10, 25, 50, 100],
-    	paginationPageSize: 10,
+    	paginationPageSize: 50,
     	minRowsToShow: 11,
 	    multiSelect: false,
-	    enableRowSelection: true, 
+	    enableRowSelection: true,
 	    enableSelectAll: false,
 	    enableRowHeaderSelection: false,
 	    selectionRowHeaderWidth: 35,
 	    enableFiltering: false,
-	    onRegisterApi: function(gridApi){ 
+	    onRegisterApi: function(gridApi){
 	      $scope.gridApi = gridApi;
 	      $scope.gridApi.grid.registerRowsProcessor( singleFilter.filter, 200 );
 	    },
@@ -60,7 +60,7 @@ app.controller('pessoasCtrl', function($rootScope, $scope, Restangular, singleFi
 	];
 
 	$scope.filter = function() {
-		singleFilter.values($scope.filterValue, 
+		singleFilter.values($scope.filterValue,
 			[ 'nome', 'telefoneFixo', 'telefoneCelular', 'email', 'pessoaReferencia', 'nome']);
     	$scope.gridApi.grid.refresh();
   	};

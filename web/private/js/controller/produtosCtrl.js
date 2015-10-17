@@ -12,7 +12,7 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleF
 
 	$scope.produtosGridOptions = {
     paginationPageSizes: [10, 10, 25, 50, 100],
-  	paginationPageSize: 10,
+  	paginationPageSize: 50,
   	minRowsToShow: 11,
     multiSelect: false,
     enableRowSelection: true,
