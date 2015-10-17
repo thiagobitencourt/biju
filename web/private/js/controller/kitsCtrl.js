@@ -337,6 +337,17 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 			}, 0);
 	};
 
+	$scope.evalDataRetorno = function(){
+		try{
+			var _dataProxRetorno = new Date();
+			//TODO: Dias para o próximo retorno (30) deverá ser uma variável
+			_dataProxRetorno.setDate($scope.kit.dataEntrega.getDate() + 30);
+			$scope.kit.dataProxRetorno = _dataProxRetorno;
+		}catch(e){
+
+		}
+	}
+
 	switch($location.path()){
 		case '/kits':
 			_loadKits();
@@ -349,9 +360,10 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 			$scope.produto = {quantidade: 1};
 			break;
 		case '/entregar-kit':
-			var _dataProxRetorno = new Date();
-			$scope.kit.dataProxRetorno = _dataProxRetorno.addDays(25);
 			$scope.kit.dataEntrega = new Date();
+			var _dataProxRetorno = new Date();
+			_dataProxRetorno.setDate($scope.kit.dataEntrega.getDate() + 30);
+			$scope.kit.dataProxRetorno = _dataProxRetorno;
 			_loadPessoas();
 			break;
 		case '/fechar-kit':

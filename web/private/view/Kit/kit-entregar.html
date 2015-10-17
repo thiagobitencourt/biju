@@ -44,7 +44,7 @@
 							<div class="col-lg-4 form-group">
 								<label class="col-sm-6 control-label">Data Entrega:</label>
 								<div class="col-sm-6">
-									<input type="text" name="dataEntrega" class="form-control" ng-model="kit.dataEntrega" ui-date-mask>
+									<input type="text" name="dataEntrega" class="form-control" ng-change="evalDataRetorno()" ng-model="kit.dataEntrega" ui-date-mask>
 								</div>
 							</div>
 							<div class="col-lg-4 form-group">
