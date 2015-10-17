@@ -15,7 +15,7 @@
 								<label class="col-sm-4 control-label">Ref.:</label>
 								<div class="col-sm-8">
 									<!-- @TODO corregir case ele encontre pela diretiva nao buscar novamente no inserirItem na Ctrl-->
-									<input type="text" id="referencia" class="form-control" ng-model="produto.referencia" ng-model-options="{ updateOn: 'blur' }" produto-available ng-trim="true" ng-enter="setFocus(produto, inserirItem)">
+									<input type="text" id="referencia" class="form-control" autofocus ng-model="produto.referencia" ng-model-options="{ updateOn: 'blur' }" produto-available ng-trim="true" ng-enter="setFocus(produto, inserirItem)">
 								</div>
 							</div>
 							<div class="col-lg-3 form-group">

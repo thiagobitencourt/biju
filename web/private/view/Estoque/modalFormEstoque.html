@@ -9,7 +9,7 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Referência: *</label>
 			<div class="col-sm-9" ng-class="{'has-error': (form.tipo.$error.required && form.$submitted)}">
-			  <input type="text" name="tipo" ng-disabled="entity.edit" class="form-control" ng-model="entity.produto.referencia" required capitalize>
+			  <input type="text" name="tipo" autofocus ng-disabled="entity.edit" class="form-control" ng-model="entity.produto.referencia" required capitalize>
 			</div>
 	 	</div>
 

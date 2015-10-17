@@ -17,20 +17,6 @@
 		  <p class="form-control-static">{{entity.tipo}}</p>
 		</div>
  	</div>
- 	
- 	<div class="form-group">
-		<label class="col-sm-3 control-label">Descrição:</label>
-		<div class="col-sm-9">
-		  <p class="form-control-static">{{entity.descricao}}</p>
-		</div>
- 	</div>
-
- 	<div class="form-group">
-		<label class="col-sm-3 control-label">Tamanho:</label>
-		<div class="col-sm-9">
-		  <p class="form-control-static">{{entity.tamanho}}</p>
-		</div>
- 	</div>
 
  	<div class="form-group">
 		<label class="col-sm-3 control-label">Valor Custo:</label>
@@ -45,10 +31,25 @@
 		  <p class="form-control-static">{{entity.vlrVenda | currency}}</p>
 		</div>
  	</div>
+
+  <div class="form-group">
+		<label class="col-sm-3 control-label">Tamanho:</label>
+		<div class="col-sm-9">
+		  <p class="form-control-static">{{entity.tamanho}}</p>
+		</div>
+ 	</div>
+
+ 	<div class="form-group">
+		<label class="col-sm-3 control-label">Descrição:</label>
+		<div class="col-sm-9">
+		  <p class="form-control-static">{{entity.descricao}}</p>
+		</div>
+ 	</div>
+  
 </div>
 
 <div class="modal-footer">
 	<button type="button" class="btn btn-default pull-left" ng-click="close()">Fechar</button>
-	<button type="button" class="btn btn-warning" ng-click=" editFromDetail(entity)">Editar</button>
-	<button type="button" class="btn btn-danger" ng-click=" removeFromDetail(entity)">Excluir</button>
+	<button type="button" class="btn btn-warning" ng-click="editFromDetail(entity)">Editar</button>
+	<button type="button" class="btn btn-danger" ng-click="removeFromDetail(entity)">Excluir</button>
 </div>

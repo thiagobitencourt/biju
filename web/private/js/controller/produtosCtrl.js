@@ -4,9 +4,25 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleF
 
 	var produtoService = Restangular.service('produto');
 
+	var _hackerFunction = function(){
+
+			var _put = function(entity){
+				var vlr = parseFloat(entity.vlrCusto);
+				var vlrVnd = ((vlr * 50)/100) + vlr;
+				if(entity.vlrVenda < vlrVnd)
+					entity.vlrVenda = vlrVnd;
+
+				return entity.put();
+			}
+
+			return {
+				myUpdate: _put
+			}
+	}();
+
 	$scope.produtosScopeProvider = {
 		details: function(row){
-			$rootScope.openModal('view/Produto/modalDetailProduto.html', row.entity, 'Produto', 'Detalhe do Produto', _loadProdutos, produtoService);
+			$rootScope.openModal('view/Produto/modalDetailProduto.html', row.entity, 'Produto', 'Detalhe do Produto', _loadProdutos, _hackerFunction);
 		}
 	};
 
