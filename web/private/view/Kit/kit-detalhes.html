@@ -121,8 +121,8 @@
 			                	<td>{{ ::item.produto.descricao }}</td>
 			                	<td>{{ ::item.qtdeEntregue }}</td>
 			                	<td ng-if="kit.estado === 'Fechado'">{{ ::item.qtdeDevolvida }}</td>
-			                	<td>{{ ::item.vlrUnit }}</td>
-			                	<td>{{ ::item.vlrTotal }}</td>
+			                	<td>{{ ::item.vlrUnit | currency}}</td>
+			                	<td>{{ ::item.vlrTotal | currency}}</td>
 			                </tr>
 	                  </table>
 	                </div>

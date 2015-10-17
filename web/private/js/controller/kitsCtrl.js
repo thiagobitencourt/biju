@@ -152,7 +152,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 								"qtdeEntregue" : produto.quantidade,
 								"qtdeDevolvida" : 0,
 								"vlrUnit" : response[0].vlrCusto,
-								"vlrTotal" :produto.quantidade * response[0].vlrCusto
+								"vlrTotal" : parseFloat(response[0].vlrCusto) * produto.quantidade
 							}
 						);
 						$scope.produto = {quantidade: 1};

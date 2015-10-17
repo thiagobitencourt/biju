@@ -64,8 +64,8 @@
 	                    	<td>{{item.produtoCompleto.tipo}}</td>
 	                    	<td>{{item.produtoCompleto.descricao}}</td>
 	                    	<td>{{item.qtdeEntregue}}</td>
-	                    	<td>{{item.vlrUnit}}</td>
-	                    	<td>{{item.vlrTotal}}</td>
+	                    	<td>{{item.vlrUnit | currency}}</td>
+	                    	<td>{{item.vlrTotal | currency}}</td>
 	                    	<td><button class="btn btn-danger btn-sm" title="Excluir" ng-click="removerItem(item.produtoCompleto._id)"><i class="fa fa-times"></i></button> </td>
 	                    </tr>
 	                  </table>

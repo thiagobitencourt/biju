@@ -94,8 +94,8 @@
 					                	<td>{{item.produto.descricao}}</td>
 					                	<td><input type="number" id="qtdeEntregue" class="form-control" ng-model="item.qtdeEntregue" min="0" ng-blur="atualizarEditKit()"></td>
 					                	<td><input type="number" id="qtdeDevolvida" class="form-control" ng-model="item.qtdeDevolvida" min="0" ng-blur="atualizarEditKit()"></td>
-					                	<td>{{item.vlrUnit}}</td>
-					                	<td>{{item.vlrTotal}}</td>
+					                	<td>{{item.vlrUnit | currency }}</td>
+					                	<td>{{item.vlrTotal | currency }}</td>
 					                </tr>
 	                  		</table>
 	                		</div>

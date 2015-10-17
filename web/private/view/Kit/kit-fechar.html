@@ -113,7 +113,7 @@
 												<label class="col-sm-4 control-label">Ref.:</label>
 												<div class="col-sm-8">
 													<!-- @TODO corregir caso ele encontre pela diretiva nao buscar novamente no inserirItem na Ctrl-->
-													<input type="text" id="referencia" class="form-control" ng-model="produto.referencia" ng-model-options="{ updateOn: 'blur' }" produto-available ng-trim="true" ng-enter="setFocus(produto, devolverItem)">
+													<input type="text" id="referencia" class="form-control" autofocus ng-model="produto.referencia" ng-model-options="{ updateOn: 'blur' }" produto-available ng-trim="true" ng-enter="setFocus(produto, devolverItem)">
 												</div>
 											</div>
 											<div class="col-lg-3 form-group">
@@ -148,10 +148,10 @@
 					                	<td>{{item.produto.descricao}}</td>
 					                	<td>{{item.qtdeEntregue}}</td>
 					                	<td>{{item.qtdeDevolvida}} <button class="btn btn-danger btn-sm" title="Zerar" ng-click="zerarQtdDevolvida(item)"><i class="fa fa-trash"></i></button></td>
-					                	<td>{{item.vlrUnit}}</td>
-					                	<td>{{item.vlrTotal}}</td>
+					                	<td>{{item.vlrUnit | currency}}</td>
+					                	<td>{{item.vlrTotal | currency}}</td>
 					                </tr>
-	                  		</table>		
+	                  		</table>
 	                		</div>
 	                	</div>
 	                </div>
