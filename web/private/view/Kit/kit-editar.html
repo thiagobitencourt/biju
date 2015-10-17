@@ -25,7 +25,7 @@
 								<label class="col-sm-6 control-label">Cliente:</label>
 								<div class="col-sm-6">
 									<select class="form-control" ng-model="kit.pessoa" name="pessoa">
-										<option ng-repeat="pessoa in pessoas" value="{{pessoa._id}}">
+										<option ng-repeat="pessoa in pessoas" ng-selected="kit.pessoa === pessoa.nome" value="{{pessoa}}">
 											{{pessoa.nome}}
 										</option>
 									</select>
@@ -158,7 +158,7 @@
           </div>
           <div class="box-footer">
          		<button type="submit" class="btn btn-default" ng-click="go('/kits')">Cancel</button>
-	          <button type="submit" class="btn btn-success pull-right" ng-click="modalSaveKit()">Salvar</button>
+	          <button type="submit" class="btn btn-success pull-right" ng-click="modalSaveKit(kit.estado)">Salvar</button>
           </div>
         </form>
       </div>

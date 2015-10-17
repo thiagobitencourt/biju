@@ -88,6 +88,10 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 			_kit.estado = $scope.estadosKit.PAGO;
 		}
 
+		console.log(_kit.pessoa);
+		_kit.pessoa = angular.fromJson(_kit.pessoa)._id;
+		console.log(_kit.pessoa);
+
 		if(angular.isUndefined(_kit._id)){
 			kitService.post(_kit).then(function(response){
 				$rootScope.go('/kits');
@@ -280,7 +284,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 		});
 	};
 
-	$scope.modalSaveKit = function(){
+	$scope.modalSaveKit = function(estado){
 		var modalInstance = $modal.open({
 			animation: true,
 			templateUrl: 'view/Kit/kit-modal-save-confirm.html',
@@ -292,7 +296,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 			controller: function($scope, $modalInstance, kitSave){
 				$scope.save = function () {
 					$modalInstance.dismiss('cancel');
-			    kitSave();
+			    kitSave(estado.toUpperCase());
 			  };
 			  $scope.close = function () {
 			    $modalInstance.dismiss('cancel');
@@ -355,6 +359,8 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 			break;
 		case '/editar-kit':
 			_loadPessoas();
+			console.log($scope.kit.pessoa);
+			$scope.kit.pessoa = $scope.kit.pessoa.nome;
 			$scope.kit.numeroParcelas = 3;
 			break;
 		case '/gerar-kit':
