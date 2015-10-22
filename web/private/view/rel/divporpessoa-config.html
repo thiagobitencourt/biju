@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-1" align="center">
+  <h3>Relatório de dívidas por pessoa</h3>
+    <div class="box box-primary ">
+      <label>Pessoa:</label>
+      <div class="input-group input-group-sm box-footer">
+        <select class="form-control" ng-model="relDividaPorKitConfig.pessoaId" name="pessoa">
+          <option value="todas" ng-selected="selected">Todas</option>
+          <option ng-repeat="pessoa in pessoas" value="{{pessoa._id}}">
+              {{pessoa.nome}}
+          </option>
+        </select>
+        <span class="input-group-btn">
+          <a class="btn btn-info btn-flat" type="button" ng-click="setConfig()" href="#/rel-divporpessoa-view">Gerar</a>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

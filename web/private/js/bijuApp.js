@@ -100,10 +100,18 @@ app.config(function($routeProvider, RestangularProvider) {
         templateUrl: 'view/Kit/kit-pagar.html',
         controller: 'kitsCtrl'
       }).
+      when('/rel-divporpessoa-config', {
+        templateUrl: 'view/rel/divporpessoa-config.html',
+        controller: 'relCtrl'
+      }).
+      when('/rel-divporpessoa-view', {
+        templateUrl: 'view/rel/divporpessoa-view.html',
+        controller: 'relCtrl'
+      }).
       otherwise({
         redirectTo: '/'
       });
-  
+
 });
 
 //adicionando a funcao addDAys para qualquer instancia de data
@@ -111,4 +119,3 @@ Date.prototype.addDays = function(days) {
   this.setDate(this.getDate() + days);
   return this;
 };
-
