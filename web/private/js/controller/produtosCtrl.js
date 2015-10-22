@@ -3,6 +3,11 @@ var app = angular.module('bijuApp');
 app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleFilter, uiGridConstants){
 
 	var produtoService = Restangular.service('produto');
+	var tipos = [
+		{tipo:"BRACELETE"},
+		{tipo:"COLAR"},
+		{tipo:"BRINCO"},
+		{tipo:"CINTO"}];
 
 	var _hackerFunction = function(){
 
@@ -22,7 +27,8 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleF
 
 	$scope.produtosScopeProvider = {
 		details: function(row){
-			$rootScope.openModal('view/Produto/modalDetailProduto.html', row.entity, 'Produto', 'Detalhe do Produto', _loadProdutos, _hackerFunction);
+			tipos[0].editing = true;
+			$rootScope.openModal('view/Produto/modalDetailProduto.html', row.entity, 'Produto', 'Detalhe do Produto', _loadProdutos, _hackerFunction, tipos);
 		}
 	};
 
@@ -64,7 +70,8 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleF
   };
 
 	$scope.newProduto = function(){
-		$rootScope.openModal('view/Produto/modalFormProduto.html', {}, 'Produto', 'Novo Produto', _loadProdutos, produtoService);
+		tipos[0].editing = false;
+		$rootScope.openModal('view/Produto/modalFormProduto.html', {}, 'Produto', 'Novo Produto', _loadProdutos, produtoService, tipos);
 	};
 
 	var _loadProdutos = function(){

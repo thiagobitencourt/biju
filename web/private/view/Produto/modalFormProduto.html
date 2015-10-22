@@ -5,18 +5,31 @@
 	</div>
 
 	<div class="modal-body">
-
-		<div class="form-group" ng-class="{'has-error': !errorProdutoMessage}">
+		<div class="form-group" ng-class="{'has-error': !errorProdutoMessage && pessoas[0].editing === false}">
 			<label class="col-sm-3 control-label">Referencia: *</label>
 			<div class="col-sm-9" ng-class="{'has-error': (form.nome.$error.required && form.$submitted)}">
-			  <input type="text" name="referencia" class="form-control" autofocus ng-model="entity.referencia" ng-model-options="{ updateOn: 'blur' }" produto-available ng-trim="true" required>
+			  <input type="text" name="referencia" class="form-control" ng-disabled="pessoas[0].editing === true" autofocus ng-model="entity.referencia" ng-model-options="{ updateOn: 'blur' }" produto-available ng-trim="true" required>
 			</div>
 	 	</div>
 
 	 	<div class="form-group">
 			<label class="col-sm-3 control-label">Tipo: *</label>
-			<div class="col-sm-9" ng-class="{'has-error': (form.tipo.$error.required && form.$submitted)}">
+			<div class="col-sm-5" ng-class="{'has-error': (form.tipo.$error.required && form.$submitted)}">
 			  <input type="text" name="tipo" class="form-control" ng-model="entity.tipo" capitalize required>
+			</div>
+			<div class="col-sm-4">
+
+				<select class="form-control" ng-model="entity.tipo" name="tipoOptions">
+					<option></option>
+					<option ng-selected="{{tipo.tipo == entity.tipo}}"
+						ng-repeat="tipo in pessoas" value="{{tipo.tipo}}">
+							{{tipo.tipo}}
+					</option>
+				</select>
+
+				<!-- <select class="form-control" ng-model="entity.tipo" name="tipoOptions">
+					<option value="option"></option>
+				</select> -->
 			</div>
 		</div>
 
@@ -61,7 +74,7 @@
 	</div>
 
 	<div class="modal-footer">
-		<button type="button" class="btn btn-success" ng-click="save(entity)" ng-disabled="form.$invalid || !errorProdutoMessage">Salvar</button>
+		<button type="button" class="btn btn-success" ng-click="save(entity)" ng-disabled="form.$invalid || !errorProdutoMessage && pessoas[0].editing === false">Salvar</button>
 		<button type="button" class="btn btn-default pull-left" ng-click="close()">Fechar</button>
 	</div>
 </form>

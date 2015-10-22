@@ -167,7 +167,7 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 						k = JSON.parse(JSON.stringify(kits[index]));
 						index++;
 
-						if(k.pessoa)
+						if(k.pessoa){
 							k.pessoaId = k.pessoa._id;
 
 							if(k.pessoa.pessoaReferencia){
@@ -185,6 +185,10 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 								final_kits.push(k);
 								nestedPessoa();
 							}
+						}else{
+							final_kits.push(k);
+							nestedPessoa();
+						}
 					}else{
 						cb(null, final_kits);
 					}
