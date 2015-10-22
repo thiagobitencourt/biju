@@ -24,7 +24,7 @@ var RelController = function(){
   var _KitModel = require(__base + 'models/kit');
   var _KitCtrl = require(__base + 'controller/kit');
 
-  var _relDividaPorKit = function(rootCallback){
+  var _relDividaPorKit = function(query, rootCallback){
 
     /*{
       'vlrTotalDividas' : 0.0,
@@ -55,6 +55,14 @@ var RelController = function(){
         }
       ]
     }*/
+    var finalQuery = {
+      estado:'Fechado'
+    };
+
+    if(query.pessoaId){
+      if(query.pessoaId !== 'todas')
+        finalQuery.pessoa = query.pessoaId;
+    }
 
     var report = {};
     report.vlrTotalDividas = 0.0;
@@ -63,9 +71,8 @@ var RelController = function(){
     report.registros = [];
 
     var _registrosMap = {};
-
     _KitModel.find(
-      { estado:'Fechado' },
+      finalQuery,
       {deletedAt:0, itens:0})
       .populate({path:'pessoa', select: 'nome _id'})
       .sort('pessoa.nome')
@@ -112,7 +119,7 @@ var RelController = function(){
   var _buildRel = function(relId, query, callback){
     switch (relId) {
       case 'relDividaPorKit':
-        var result = _relDividaPorKit(callback);
+        var result = _relDividaPorKit(query, callback);
         // callback(result.err, result.report);
         break;
       default:

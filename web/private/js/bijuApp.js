@@ -100,8 +100,12 @@ app.config(function($routeProvider, RestangularProvider) {
         templateUrl: 'view/Kit/kit-pagar.html',
         controller: 'kitsCtrl'
       }).
-      when('/rel', {
-        templateUrl: 'view/rel/rel.html',
+      when('/rel-divporpessoa-config', {
+        templateUrl: 'view/rel/divporpessoa-config.html',
+        controller: 'relCtrl'
+      }).
+      when('/rel-divporpessoa-view', {
+        templateUrl: 'view/rel/divporpessoa-view.html',
         controller: 'relCtrl'
       }).
       otherwise({
