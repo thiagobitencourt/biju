@@ -155,21 +155,42 @@ kitSchema.statics.secureFind = function(kitId, query, cb) {
 
 		query.deletedAt = { $eq: null };
 
-		this.find(query, {deletedAt:0}).populate('itens.produto pessoa').exec( function(err, kits){
+		this.find(query, {deletedAt:0}).populate('itens.produto pessoa').exec(function(err, kits){
 			if(err) return cb(new AppError(err, null, null, 'Kit'), null);
 
-			//TODO fix
-			var final_kits = [];
-			for (var i in kits){
-				var k = JSON.parse(JSON.stringify(kits[i]));
+				//TODO fix
+				var final_kits = [];
 
-				if(k.pessoa)
-					k.pessoaId = k.pessoa._id;
+				var index = 0;
+				var nestedPessoa = function(){
+					if(kits[index]){
+						k = JSON.parse(JSON.stringify(kits[index]));
+						index++;
 
-				final_kits.push(k);
-			}
-			cb(null, final_kits);
-		});
+						if(k.pessoa)
+							k.pessoaId = k.pessoa._id;
+
+							if(k.pessoa.pessoaReferencia){
+								var Pessoa = require(__base + 'models/pessoa');
+								Pessoa.secureFind(k.pessoa.pessoaReferencia, null, function(err, pessoa){
+									if(err) return cb(new AppError(err, null, null, 'Pessoa'), null);
+
+									if(pessoa)
+										k.referencia = pessoa.nome;
+
+									final_kits.push(k);
+									nestedPessoa();
+								});
+							}else{
+								final_kits.push(k);
+								nestedPessoa();
+							}
+					}else{
+						cb(null, final_kits);
+					}
+				}
+				nestedPessoa();
+			});
 	}
 };
 

@@ -45,7 +45,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
  	};
 
 	$scope.kitsGridOptions.columnDefs = [
-    	{ name: 'codigo', displayName: 'Codigo'},
+    	{ name: 'pessoa.codigo', displayName: 'Pasta'},
     	{ name: 'pessoa.nome', displayName: 'Cliente'},
 	    { name: 'dataProxRetorno', cellFilter:"date:'dd/MM/yyyy'", displayName: 'Data Prox. Retorno'},
 	    { name: 'vlrTotalKit', cellFilter:'currency', displayName: 'Total Kit'},
@@ -56,7 +56,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 
 	$scope.filter = function() {
 		singleFilter.values($scope.filterValue,
-			['estado', 'codigo', 'pessoa', 'nome']);
+			['estado', 'codigo', 'pessoa', 'referencia', 'nome', 'codigo']);
   	$scope.gridApi.grid.refresh();
 	};
 
@@ -88,9 +88,21 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 			_kit.estado = $scope.estadosKit.PAGO;
 		}
 
-		console.log(_kit.pessoa);
-		_kit.pessoa = angular.fromJson(_kit.pessoa)._id;
-		console.log(_kit.pessoa);
+		try{
+			console.log(_kit.pessoa);
+			if(angular.isObject(_kit.pessoa)){
+				console.log('isObject');
+				_kit.pessoa = _kit.pessoa._id;
+			}else{
+				try{
+					_kit.pessoa = angular.fromJson(_kit.pessoa)._id;
+				}catch(e){
+					console.log('error Macabro...');
+				}
+			}
+		}catch(e){
+			console.log('error Macabro 2...');
+		}
 
 		if(angular.isUndefined(_kit._id)){
 			kitService.post(_kit).then(function(response){
@@ -360,7 +372,9 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 		case '/editar-kit':
 			_loadPessoas();
 			console.log($scope.kit.pessoa);
-			$scope.kit.pessoa = $scope.kit.pessoa.nome;
+			if($scope.kit.pessoa){
+				$scope.kit.pessoa = $scope.kit.pessoa.nome;
+			}
 			$scope.kit.numeroParcelas = 3;
 			break;
 		case '/gerar-kit':

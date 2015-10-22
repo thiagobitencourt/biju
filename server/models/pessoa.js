@@ -52,6 +52,7 @@ pessoaSchema = new Schema({
 		rua: {type: String, appDescription : "Rua"}
 	},
 	email: {type: String, appDescription : "E-mail"},
+	codigo : {type : Number, required : true, unique : true, appDescription : "Código"},
 	pessoaReferencia: {type:Schema.ObjectId, ref:"Pessoa", appDescription : "Pessoa Referência"},
 	observacao: {type: String, appDescription : "Observação"},
 	status: { type: String, default: "Ativo", appDescription : "Estatus"},

@@ -51,6 +51,7 @@ app.controller('pessoasCtrl', function($rootScope, $scope, Restangular, singleFi
 	 };
 
 	$scope.pessoasGridOptions.columnDefs = [
+				{ name: 'codigo', displayName: 'Pasta'},
 	      { name: 'nome', displayName: 'Nome'},
 	      { name: 'telefoneFixo', cellFilter:'brPhoneNumber', displayName: 'Fixo'},
 	      { name: 'telefoneCelular', cellFilter:'brPhoneNumber', displayName: 'Celular'},
@@ -61,7 +62,7 @@ app.controller('pessoasCtrl', function($rootScope, $scope, Restangular, singleFi
 
 	$scope.filter = function() {
 		singleFilter.values($scope.filterValue,
-			[ 'nome', 'telefoneFixo', 'telefoneCelular', 'email', 'pessoaReferencia', 'nome']);
+			[ 'nome', 'telefoneFixo', 'telefoneCelular', 'email', 'pessoaReferencia', 'nome', 'codigo']);
     	$scope.gridApi.grid.refresh();
   	};
 

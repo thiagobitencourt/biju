@@ -1,5 +1,6 @@
-var AppError = require(__base + 'utils/apperror');
 var logger = require('winston');
+var AppError = require(__base + 'utils/apperror');
+var _Counter = require(__base + 'models/counter');
 
 var pessoaControler = function(){
 
@@ -23,13 +24,19 @@ var pessoaControler = function(){
 
 			}else{
 				//insert
+				delete body.codigo;
 				var p = new _Pessoa(body);
-				p.save(function(err, newPessoa){
-					if(err)
-						return callback(new AppError(err, null, null, 'Pessoa'));
+				_Counter.increment('Pessoa', function (err, result) {
+					if (err)
+						return cb(err);
 
-					return callback(null, newPessoa);
+					p.codigo = result.next;
+					p.save(function(err, newPessoa){
+						if(err)
+							return callback(new AppError(err, null, null, 'Pessoa'));
 
+						return callback(null, newPessoa);
+					});
 				});
 			}
 
