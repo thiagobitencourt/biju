@@ -1,8 +1,8 @@
+
 <div class="box" ng-if="relDividaPorKitReport.registros.length > 0">
   <div class="box-header with-border">
     <h3 class="box-title">RELATÓRIO DE DÍVIDAS AGRUPADAS POR PESSOA E DETALHADAS POR KIT E SEUS PAGAMENTOS</h3>
   </div><!-- /.box-header -->
-  <div class="box-body">
     <table class="table table-bordered">
         <tbody>
           <tr>
@@ -17,7 +17,6 @@
           </tr>
         </tbody>
     </table>
-  </div>
   <div ng-repeat="registro in relDividaPorKitReport.registros">
 
     <div class="box-header with-border">
@@ -88,3 +87,11 @@
   </div>
   <div class="page-break"></div>
 </div>
+
+<style scoped>
+  .th {
+    overflow:visible !important;
+    display:flex;
+    background-color: red !important;
+  }
+</style>
