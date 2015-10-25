@@ -1,26 +1,42 @@
-
 <div class="box" ng-if="relDividaPorKitReport.registros.length > 0">
   <div class="box-header with-border">
-    <h3 class="box-title">RELATÓRIO DE DÍVIDAS AGRUPADAS POR PESSOA E DETALHADAS POR KIT E SEUS PAGAMENTOS</h3>
+    <div class="row no-print">
+      <div class="col-xs-12">
+        <button type="button" class="btn btn-success pull-right" style="margin-right: 5px;" onClick="window.print()">
+          <i class="fa fa-print"></i> Imprimir
+        </button>
+      </div>
+    </div>
+    <div class="col-xs-12">
+      <h2 class="page-header">
+        <i class="fa fa-pie-chart"></i> Relatório de Dívidas por Pessoa
+      </h2>
+    </div>
   </div><!-- /.box-header -->
+  <div ng-if="relDividaPorKitConfig.mostrarResumo">
+    <h2 class="page-header">
+      <i class="fa fa-th"></i> Resumo:
+    </h2>
     <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <th>Valor Total de Dívidas Criadas</th>
-            <th>Valor Total Recebido Sobre as Dívidas </th>
-            <th>Valor Total Ainda à Receber</th>
-          </tr>
-          <tr>
-            <td>{{::relDividaPorKitReport.vlrTotalDividas | currency}}</td>
-            <td>{{::relDividaPorKitReport.vlrTotalPagos | currency}}</td>
-            <td>{{::relDividaPorKitReport.vlrTotalRestante | currency}}</td>
-          </tr>
-        </tbody>
+      <tbody>
+        <tr>
+          <th>Valor Total de Dívidas Criadas</th>
+          <th>Valor Total Recebido Sobre as Dívidas </th>
+          <th>Valor Total Ainda à Receber</th>
+        </tr>
+        <tr>
+          <td>{{::relDividaPorKitReport.vlrTotalDividas | currency}}</td>
+          <td>{{::relDividaPorKitReport.vlrTotalPagos | currency}}</td>
+          <td>{{::relDividaPorKitReport.vlrTotalRestante | currency}}</td>
+        </tr>
+      </tbody>
     </table>
+  </div>
+
   <div ng-repeat="registro in relDividaPorKitReport.registros">
 
     <div class="box-header with-border">
-      <h3 class="box-title">{{::registro.pessoa.nome | uppercase }}</h3>
+      <i class="fa fa-user"></i><h3 class="box-title">{{::registro.pessoa.nome | uppercase }}</h3>
     </div><!-- /.box-header -->
     <div class="box-body">
       <table class="table table-bordered">
@@ -32,7 +48,7 @@
             <th>vlrTotalRestante</th>
           </tr>
           <tr >
-            <td>{{::registro.pessoa._id}}</td>
+            <td>{{::registro.pessoa.codigo}}</td>
             <td>{{::registro.vlrTotalDividas | currency}}</td>
             <td>{{::registro.vlrTotalPagos | currency}}</td>
             <td>{{::registro.vlrTotalRestante | currency}}</td>
@@ -40,7 +56,7 @@
             <div class="box-body">
               <table class="table table-bordered">
                 <div style = "text-align: center;" class="box-header with-border">
-                  <h3 class="box-title">KITS</h3>
+                  <i class="fa fa-diamond"></i><h3 class="box-title">Kits</h3>
                 </div><!-- /.box-header -->
                   <tbody>
                     <tr>
@@ -49,7 +65,7 @@
                       <th>Valor Total Dívida</th>
                       <th>Valor Total Pagamento</th>
                       <th>Valor Total Restante</th>
-                      <th style = "text-align: center;">Pagamentos</th>
+                      <th style = "text-align: center;"><i class="fa fa-calculator"></i>Pagamentos</th>
                     </tr>
                     <tr ng-repeat="kit in registro.kits">
                       <td>{{::kit.dataEntrega | date:'dd/MM/yyyy' }}</td>
@@ -63,15 +79,17 @@
                             <tbody>
                               <tr>
                                 <th>Forma</th>
-                                <th>Pago</th>
+                                <th> ? Parcela</th>
                                 <th>Vencimento</th>
                                 <th>Data Pgto</th>
+                                <th>Pago</th>
                               </tr>
                               <tr ng-repeat="pagamento in kit.pagamentos">
                                 <td>{{::pagamento.formaPgto}}</td>
                                 <td>{{::pagamento.vlrPgto | currency }}</td>
                                 <td>{{::pagamento.dataVencimento | date:'dd/MM/yyyy' }}</td>
                                 <td>{{::pagamento.dataPgto | date:'dd/MM/yyyy' }}</td>
+                                <td>{{::pagamento.vlrPgto | currency }}</td>
                               </tr>
                             </tbody>
                         </table>
@@ -83,15 +101,7 @@
           </tr>
         </tbody>
       </table>
+      <div ng-if="!$last" class="biju-page-break"></div>
     </div><!-- /.box-body -->
   </div>
-  <div class="page-break"></div>
 </div>
-
-<style scoped>
-  .th {
-    overflow:visible !important;
-    display:flex;
-    background-color: red !important;
-  }
-</style>

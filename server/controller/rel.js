@@ -74,7 +74,7 @@ var RelController = function(){
     _KitModel.find(
       finalQuery,
       {deletedAt:0, itens:0})
-      .populate({path:'pessoa', select: 'nome _id'})
+      .populate({path:'pessoa', select: 'nome _id codigo'})
       .sort('pessoa.nome')
       .exec(function(err, kits){
         if(err) return rootCallback(new AppError(err, "Impossível gerar relatório devido a erro interno.", AppError.ERRORS.INTERNAL), null);

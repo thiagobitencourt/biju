@@ -6,7 +6,8 @@ app.controller('relCtrl', function($rootScope, $scope, Restangular, shareData, $
     var pessoaService = Restangular.service('pessoa');
     $scope.pessoas = pessoaService.getList().$object;
     $scope.relDividaPorKitConfig = {
-      pessoaId : 'todas'
+      pessoaId : 'todas',
+      mostrarResumo : true
     }
     $scope.setConfig = function(){
       shareData.set('relDividaPorKitConfig', $scope.relDividaPorKitConfig);
@@ -19,7 +20,7 @@ app.controller('relCtrl', function($rootScope, $scope, Restangular, shareData, $
     }else{
       query.pessoaId = config.pessoaId;
     }
-
+    $scope.relDividaPorKitConfig = config;
     $scope.relDividaPorKitReport = {};
     Restangular.one('rel', 'relDividaPorKit').get({q : query }).then(function(response){
       $scope.relDividaPorKitReport = response;
