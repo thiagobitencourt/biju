@@ -16,7 +16,7 @@ var RelController = function(){
         - Valor total geral de valores pagos
         - Valor total geral restante.
 
-    - Pessoas com kits em mãos
+    - Pessoas com kits em mãos 'kits na praça'
 
 
   */
@@ -81,6 +81,12 @@ var RelController = function(){
 
         for (var kitIndex in kits) {
           var kit = kits[kitIndex];
+
+          if(query.somenteDividaAtiva && kit.vlrTotalPgto >= kit.vlrTotalDivida){
+            // esse kit está pago. será ignorado conforme requisitado pela query.
+            continue;
+          }
+
           var pessoaGroup = _registrosMap[kit.pessoa._id];
           if(!pessoaGroup){
             _registrosMap[kit.pessoa._id] = {};
