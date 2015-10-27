@@ -43,10 +43,7 @@
               </tr>
               <tr ng-repeat="registro in relKitsNaPracaReport.registros">
                 <td>{{registro.pessoa.nome}}</td>
-                <td>
-                  BUGADO
-                </td>
-                <!-- <td>{{registro.pessoa.pessoaReferencia.nome}}</td> -->
+                <td>{{registro.pessoa.pessoaReferencia.nome || ' - '  }}</td>
                 <td>{{registro.vlrTotalKits | currency }}</td>
               </tr>
             </tbody>

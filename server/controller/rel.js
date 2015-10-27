@@ -85,7 +85,6 @@ var RelController = function(){
       finalQuery,
       {deletedAt:0, itens:0})
       .populate([{path : 'pessoa'}])
-      .populate('pessoa.pessoaReferencia')
       .sort('pessoa.nome')
       .exec(function(err, kits){
         if(err) return rootCallback(new AppError(err, "Impossível gerar relatório devido a erro interno.", AppError.ERRORS.INTERNAL), null);
@@ -127,7 +126,7 @@ var RelController = function(){
             pessoaGroup = _registrosMap[kit.pessoa._id];
           }
 
-          kit.pessoa = undefined;
+          // kit.pessoa = undefined;
           kit.__v = undefined;
 
           pessoaGroup.vlrTotalDividas += kit.vlrTotalDivida;
@@ -153,11 +152,50 @@ var RelController = function(){
     });
   };
 
+  var _relKitsNaPraca = function(query, rootCallback){
+    //this function will be the rootCallback of _relDividaPorKit;
+
+    _relDividaPorKit(query, function(err, report){
+
+      if(err)
+        return rootCallback(err);
+
+      _PessoaModel.secureFind(null, {}, function(err, pessoas){
+        if(err)
+          return rootCallback(new AppError(err, "Impossível gerar relatório devido a erro interno.", AppError.ERRORS.INTERNAL));
+
+          var pessoasMap = {};
+          for(var i in pessoas){
+            var pessoa = pessoas[i];
+            pessoasMap[pessoa._id] = pessoa;
+          }
+
+
+          for(var i in report.registros){
+            var registro = report.registros[i];
+            for(var j in registro.kits){
+              var kit = registro.kits[j];
+              if(kit.pessoa.pessoaReferencia){
+                kit.pessoa.pessoaReferencia = pessoasMap[kit.pessoa.pessoaReferencia];
+              }
+            }
+          }
+
+        return rootCallback(null, report);
+      });
+
+    });
+
+  };
+
   var _buildRel = function(relId, query, callback){
     switch (relId) {
       case 'relDividaPorKit':
         var result = _relDividaPorKit(query, callback);
         // callback(result.err, result.report);
+        break;
+      case 'relKitsNaPraca':
+        var result = _relKitsNaPraca(query, callback);
         break;
       default:
         callback(new AppError(null, "Unknown relId", AppError.ERRORS.CLIENT), null);

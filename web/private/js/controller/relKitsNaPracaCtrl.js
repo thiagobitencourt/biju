@@ -36,7 +36,7 @@ app.controller('relKitsNaPracaCtrl', function($rootScope, $scope, Restangular, s
     // });
 
     //reusing the rel.
-    Restangular.one('rel', 'relDividaPorKit').get({q : query }).then(function(response){
+    Restangular.one('rel', 'relKitsNaPraca').get({q : query }).then(function(response){
       $scope.relKitsNaPracaReport = response;
     });
 
