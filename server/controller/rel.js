@@ -4,6 +4,7 @@ var logger = require('winston');
 var RelController = function(){
   /*
     - Dívida atual por pessoa (somente pessoas com dívida).
+    !! boto fé que eh soh fazer o de baixo, com uma opção de resumão.
        - Pasta, Responsável, Valor Total Dívida, Valor Pago, Valor Restante
        - Valor total geral de todas as dívidas
        - Valor total geral de valores pagos
@@ -17,11 +18,18 @@ var RelController = function(){
         - Valor total geral restante.
 
     - Pessoas com kits em mãos 'kits na praça'
+      resumo geral
+      resumo de cada kit agrupado por pessoa.
+
+    - Kit
+      igual o rel de kit do jihad
+
 
 
   */
 
   var _KitModel = require(__base + 'models/kit');
+  var _PessoaModel = require(__base + 'models/pessoa');
   var _KitCtrl = require(__base + 'controller/kit');
 
   var _relDividaPorKit = function(query, rootCallback){
@@ -55,10 +63,11 @@ var RelController = function(){
         }
       ]
     }*/
-    var finalQuery = {
-      estado:'Fechado'
-    };
+    var finalQuery = {};
 
+    if(query.estado){
+      finalQuery.estado = query.estado;
+    }
     if(query.pessoaId){
       if(query.pessoaId !== 'todas')
         finalQuery.pessoa = query.pessoaId;
@@ -68,13 +77,15 @@ var RelController = function(){
     report.vlrTotalDividas = 0.0;
     report.vlrTotalPagos = 0.0;
     report.vlrTotalRestante = 0.0;
+    report.vlrTotalKits = 0.0;
     report.registros = [];
 
     var _registrosMap = {};
     _KitModel.find(
       finalQuery,
       {deletedAt:0, itens:0})
-      .populate({path:'pessoa', select: 'nome _id codigo'})
+      .populate([{path : 'pessoa'}])
+      .populate('pessoa.pessoaReferencia')
       .sort('pessoa.nome')
       .exec(function(err, kits){
         if(err) return rootCallback(new AppError(err, "Impossível gerar relatório devido a erro interno.", AppError.ERRORS.INTERNAL), null);
@@ -82,6 +93,23 @@ var RelController = function(){
         for (var kitIndex in kits) {
           var kit = kits[kitIndex];
 
+          // if(kit.pessoa.pessoaReferencia){
+          //   (function(){
+          //     var _kit = kit;
+          //
+          //     _PessoaModel.populate(kit.pessoa, {path:'pessoaReferencia'}, function(err,pessoa){
+          //       if(err){
+          //         logger.error("populate error : " + err.toString());
+          //         _kit.pessoa.pessoaReferencia = "Não foi possível buscar esta informação.";
+          //         return;
+          //       }
+          //       console.log('deu');
+          //       _kit.pessoa.pessoaReferencia = pessoa;
+          //     });
+          //   })();
+          // }
+
+          // logger.debug(kit.toString());
           if(query.somenteDividaAtiva && kit.vlrTotalPgto >= kit.vlrTotalDivida){
             // esse kit está pago. será ignorado conforme requisitado pela query.
             continue;
@@ -91,6 +119,7 @@ var RelController = function(){
           if(!pessoaGroup){
             _registrosMap[kit.pessoa._id] = {};
             _registrosMap[kit.pessoa._id].pessoa = kit.pessoa;
+            _registrosMap[kit.pessoa._id].vlrTotalKits = 0.0;
             _registrosMap[kit.pessoa._id].vlrTotalDividas = 0.0;
             _registrosMap[kit.pessoa._id].vlrTotalPagos = 0.0;
             _registrosMap[kit.pessoa._id].vlrTotalRestante = 0.0;
@@ -104,6 +133,7 @@ var RelController = function(){
           pessoaGroup.vlrTotalDividas += kit.vlrTotalDivida;
           pessoaGroup.vlrTotalPagos += kit.vlrTotalPgto;
           pessoaGroup.vlrTotalRestante += kit.vlrTotalDivida - kit.vlrTotalPgto;
+          pessoaGroup.vlrTotalKits += kit.vlrTotalKit;
 
           pessoaGroup.kits.push(kit);
 
@@ -115,6 +145,7 @@ var RelController = function(){
           report.vlrTotalDividas += pessoaGroup.vlrTotalDividas;
           report.vlrTotalPagos += pessoaGroup.vlrTotalPagos;
           report.vlrTotalRestante += pessoaGroup.vlrTotalRestante;
+          report.vlrTotalKits += pessoaGroup.vlrTotalKits;
 
           report.registros = report.registros.concat(pessoaGroup);
         }

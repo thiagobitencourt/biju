@@ -1,5 +1,5 @@
 var app = angular.module('bijuApp');
-app.controller('relCtrl', function($rootScope, $scope, Restangular, shareData, $location){
+app.controller('relDivPorPessoaCtrl', function($rootScope, $scope, Restangular, shareData, $location){
   var currentRoute = $location.path();
 
   $scope.relDividaPorKitConfig = {
@@ -21,6 +21,7 @@ app.controller('relCtrl', function($rootScope, $scope, Restangular, shareData, $
       config = $scope.relDividaPorKitConfig;
     }
 
+    query.estado = 'Fechado';
     query.pessoaId = config.pessoaId;
     query.somenteDividaAtiva = config.somenteDividaAtiva;
 
@@ -29,6 +30,8 @@ app.controller('relCtrl', function($rootScope, $scope, Restangular, shareData, $
     Restangular.one('rel', 'relDividaPorKit').get({q : query }).then(function(response){
       $scope.relDividaPorKitReport = response;
     });
+  }else{
+    console.log('pau em relDivPorPessoaCtrl');
   }
 
 });

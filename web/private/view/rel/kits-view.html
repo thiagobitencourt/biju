@@ -1,0 +1,63 @@
+<div class="box" ng-if="relKitsReport.length === 0">
+  Não existem resultados para a configuração de relatório solicitada.
+</div>
+<section class="content">
+  <div ng-if="relKitsReport.length > 0">
+
+    <div class="box box-success">
+      <div class="box-header with-border">
+        <div class="row">
+          <div class="col-xs-6">
+            <h3 class="box-title">Relatório de Kits</h3>
+          </div>
+          <div class="col-xs-6 no-print">
+            <button type="button" class="btn btn-success pull-right" style="margin-right: 5px;" onClick="window.print()">
+              <i class="fa fa-print"></i> Imprimir
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="box-body">
+        <div ng-repeat="kit in relKitsReport | orderBy:'pessoa.nome' ">
+          <div>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <h4>Pessoa: {{kit.pessoa | json}}</h4>
+                </tr>
+                <tr>
+                  <th>Número do Kit</th>
+                  <th>Valor do Kit</th>
+                  <th>Data de Entrega</th>
+                  <th>Previsão de Fechamento</th>
+                </tr>
+                <tr>
+                  <td>{{kit.codigo}}</td>
+                  <td>{{kit.vlrTotalKit | currency}}</td>
+                  <td>{{kit.dataEntrega | date:'dd/MM/yyyy'}}</td>
+                  <td>{{kit.dataProxRetorno | date:'dd/MM/yyyy'}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <h4>Itens</h4>
+                </tr>
+                <tr>
+                  <th>Item</th>
+                </tr>
+                <tr ng-repeat="item in kit.itens">
+                  <td>{{item | json}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div ng-if="!$last" class="biju-page-break"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
