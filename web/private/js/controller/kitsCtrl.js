@@ -80,6 +80,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 
 	$scope.kitSave = function(estado){
 		var _kit = $scope.kit;
+		localStorage.removeItem('tempKit');
 
 		//@TODO corregir logica melhorar condicao quando e pago
 		if(angular.isDefined(estado)){
@@ -89,9 +90,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 		}
 
 		try{
-			console.log(_kit.pessoa);
 			if(angular.isObject(_kit.pessoa)){
-				console.log('isObject');
 				_kit.pessoa = _kit.pessoa._id;
 			}else{
 				try{
@@ -140,12 +139,15 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 		}
 	}
 
+	var save = 0;
 	$scope.inserirItem = function(produto){
+		save++;
 		if(angular.isDefined(produto.referencia)){
 			var produtoExistente = false;
 			angular.forEach($scope.kit.itens, function(item){
 				if(item.produtoCompleto.referencia === produto.referencia){
 					item.qtdeEntregue = parseInt(item.qtdeEntregue) + parseInt(produto.quantidade);
+					item.vlrTotal = parseFloat(item.produtoCompleto.vlrCusto) * parseInt(item.qtdeEntregue);
 					$scope.kit.vlrTotalKit = calcularValorTotalKit($scope.kit.itens);
 					produtoExistente = true;
 					$scope.errorProdutoMessage = false;
@@ -169,7 +171,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 								"qtdeEntregue" : produto.quantidade,
 								"qtdeDevolvida" : 0,
 								"vlrUnit" : response[0].vlrCusto,
-								"vlrTotal" : parseFloat(response[0].vlrCusto) * produto.quantidade
+								"vlrTotal" : parseFloat(response[0].vlrCusto) * parseInt(produto.quantidade)
 							}
 						);
 						$scope.produto = {quantidade: 1};
@@ -183,6 +185,12 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 					$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
 				});
 			}
+
+			if(save % 5 === 0){
+				console.log('salvar...');
+				localStorage.setItem('tempKit', angular.toJson($scope.kit));
+			}
+
 		}else{
 			$scope.errorProdutoMessage = "Referencia Produto Não Existe!";
 		}
@@ -354,6 +362,11 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 			}, 0);
 	};
 
+	$scope.cancel = function(){
+		localStorage.removeItem('tempKit');
+		$rootScope.go('/kits');
+	}
+
 	$scope.evalDataRetorno = function(){
 		try{
 			var _dataProxRetorno = new Date();
@@ -379,6 +392,11 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 			break;
 		case '/gerar-kit':
 			$scope.produto = {quantidade: 1};
+
+			var oldKit = angular.fromJson(localStorage.getItem('tempKit'));
+			if(oldKit)
+				$scope.kit = oldKit;
+
 			break;
 		case '/entregar-kit':
 			$scope.kit.dataEntrega = new Date();

@@ -7,7 +7,8 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleF
 		{tipo:"BRACELETE"},
 		{tipo:"COLAR"},
 		{tipo:"BRINCO"},
-		{tipo:"CINTO"}];
+		{tipo:"CINTO"},
+		{tipo:"BOLSA"}];
 
 	var _hackerFunction = function(){
 
