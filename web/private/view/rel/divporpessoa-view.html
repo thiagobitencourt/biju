@@ -1,31 +1,32 @@
-<section class="content">
-  <div ng-if="relDividaPorKitReport.registros.length > 0">
-    <div class="box box-default">
-      <div class="box-header with-border">
+<div class="box" ng-if="relDividaPorKitReport.length === 0">
+  Não existem resultados para a configuração de relatório solicitada.
+</div>
 
-        <div class="row">
+<section class="content biju-print-font" ng-if="relDividaPorKitReport.registros.length > 0">
 
-          <div class="col-xs-6">
-            <h2 class="page-header pull-left">
-              <i class="fa fa-pie-chart"></i> Relatório de Dívidas por Pessoa
-            </h2>
-          </div>
+  <div class="box">
 
-          <div class="col-xs-6 no-print">
-            <button type="button" class="btn btn-success pull-right" style="margin-right: 5px;" onClick="window.print()">
-              <i class="fa fa-print"></i> Imprimir
-            </button>
-          </div>
-
+    <div class="box-header with-border">
+      <div class="row">
+        <div class="col-xs-6">
+          <h3 class="box-title">Relatório de Dívidas por Pessoa</h3>
         </div>
+        <div class="col-xs-6 no-print">
+          <button type="button" class="btn btn-success pull-right" style="margin-right: 5px;" onClick="window.print()">
+            <i class="fa fa-print"></i> Imprimir
+          </button>
+        </div>
+      </div>
+    </div>
 
-      </div><!-- /.box-header -->
+    <div class="box-body">
+
       <div ng-if="relDividaPorKitConfig.mostrarResumo">
-        <h2 class="page-header">
-          <i class="fa fa-th"></i> Resumo:
-        </h2>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-condensed">
           <tbody>
+            <tr>
+              <td colspan="3"><b>RESUMO GERAL</b></td>
+            </tr>
             <tr>
               <th>Valor Total de Dívidas Criadas</th>
               <th>Valor Total Recebido Sobre as Dívidas </th>
@@ -38,98 +39,83 @@
             </tr>
           </tbody>
         </table>
+        <div class="biju-page-break"></div>
       </div>
 
       <div ng-repeat="registro in relDividaPorKitReport.registros">
-        <div class="box-header with-border">
-          <i class="fa fa-user"></i><h3 class="box-title">{{::registro.pessoa.nome | uppercase }}</h3>
-        </div><!-- /.box-header -->
-        <div class="box-body">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <th>Pasta</th>
-                <th>vlrTotalDividas</th>
-                <th>vlrTotalPagos</th>
-                <th>vlrTotalRestante</th>
-              </tr>
-              <tr >
-                <td>{{::registro.pessoa.codigo}}</td>
-                <td>{{::registro.vlrTotalDividas | currency}}</td>
-                <td>{{::registro.vlrTotalPagos | currency}}</td>
-                <td>{{::registro.vlrTotalRestante | currency}}</td>
-                <!-- kits -->
-                <div class="box-body">
-                  <table class="table table-bordered">
-                    <div style = "text-align: center;" class="box-header with-border">
-                      <i class="fa fa-diamond"></i><h3 class="box-title">Kits</h3>
-                    </div><!-- /.box-header -->
-                      <tbody>
-                        <tr>
-                          <th>Data Entrega</th>
-                          <th>Data Fechamento</th>
-                          <th>Valor Total Dívida</th>
-                          <th>Valor Total Pagamento</th>
-                          <th>Valor Total Restante</th>
-                          <th style = "text-align: center;"><i class="fa fa-calculator"></i>Pagamentos</th>
-                        </tr>
-                        <tr ng-repeat="kit in registro.kits">
-                          <td>{{::kit.dataEntrega | date:'dd/MM/yyyy' }}</td>
-                          <td>{{::kit.dataDevolucao | date:'dd/MM/yyyy' }}</td>
-                          <td>{{::kit.vlrTotalDivida | currency}}</td>
-                          <td>{{::kit.vlrTotalPgto | currency}}</td>
-                          <td>{{:: kit.vlrTotalDivida - kit.vlrTotalPgto | currency}}</td>
-                          <td>
-                            <!-- pagamentos -->
-                            <table class="table table-bordered">
-                                <tbody>
-                                  <tr>
-                                    <th>Forma</th>
-                                    <th> ? Parcela</th>
-                                    <th>Vencimento</th>
-                                    <th>Data Pgto</th>
-                                    <th>Pago</th>
-                                  </tr>
-                                  <tr ng-repeat="pagamento in kit.pagamentos">
-                                    <td>{{::pagamento.formaPgto}}</td>
-                                    <td>{{::pagamento.vlrPgto | currency }}</td>
-                                    <td>{{::pagamento.dataVencimento | date:'dd/MM/yyyy' }}</td>
-                                    <td>{{::pagamento.dataPgto | date:'dd/MM/yyyy' }}</td>
-                                    <td>{{::pagamento.vlrPgto | currency }}</td>
-                                  </tr>
-                                </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                  </table>
-                </div>
-              </tr>
-            </tbody>
-          </table>
-          <div ng-if="!$last" class="biju-page-break"></div>
-        </div><!-- /.box-body -->
+
+        <table class="table table-bordered  table-condensed">
+          <tbody>
+            <tr>
+              <td colspan="4"><b>{{::registro.pessoa.nome | uppercase }}</b></td>
+            </tr>
+            <tr>
+              <th>Pasta</th>
+              <th>Dívida Gerada</th>
+              <th>Total Já Pago</th>
+              <th>Restante</th>
+            </tr>
+            <tr >
+              <td>{{::registro.pessoa.codigo}}</td>
+              <td>{{::registro.vlrTotalDividas | currency}}</td>
+              <td>{{::registro.vlrTotalPagos | currency}}</td>
+              <td>{{::registro.vlrTotalRestante | currency}}</td>
+            </tr>
+            <tr>
+                <td colspan="4"><b>KITS</b></div>
+            </tr>
+            <tr>
+              <td colspan="4">
+                <table class="table table-bordered  table-condensed">
+                    <tbody>
+                      <tr>
+                        <th>Entrega</th>
+                        <th>Fechamento</th>
+                        <th>Gerado</th>
+                        <th>Pago</th>
+                        <th>Restante</th>
+                        <th style = "text-align: center;">Pagamentos</th>
+                      </tr>
+                      <tr ng-repeat="kit in registro.kits">
+                        <td>{{::kit.dataEntrega | date:'dd/MM/yyyy' }}</td>
+                        <td>{{::kit.dataDevolucao | date:'dd/MM/yyyy' }}</td>
+                        <td>{{::kit.vlrTotalDivida | currency}}</td>
+                        <td>{{::kit.vlrTotalPgto | currency}}</td>
+                        <td>{{:: kit.vlrTotalDivida - kit.vlrTotalPgto | currency}}</td>
+                        <td>
+
+                          <table class="table table-bordered  table-condensed">
+                              <tbody>
+                                <tr>
+                                  <th>Forma</th>
+                                  <th>Parcela</th>
+                                  <th>Vencimento</th>
+                                  <th>Data Pgto</th>
+                                </tr>
+                                <tr ng-repeat="pagamento in kit.pagamentos">
+                                  <td>{{::pagamento.formaPgto}}</td>
+                                  <td>{{::pagamento.vlrPgto | currency }}</td>
+                                  <td>{{::pagamento.dataVencimento | date:'dd/MM/yyyy' }}</td>
+                                  <td>{{::pagamento.dataPgto | date:'dd/MM/yyyy' }}</td>
+                                </tr>
+                              </tbody>
+                          </table>
+
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div ng-if="!$last" class="biju-page-break"></div>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
-
-
-
-<!-- <div ng-if="relDividaPorKitReport.registros.length === 0">
-  <div class="box box-default" >
-    <div class="box-header with-border">
-      <i class="fa fa-pie-chart">
-      <h3 class="box-title">Relatório</h3>
-    </div>
-    <div class="box-body">
-      <div class="callout callout-info" >
-        Não existem resultados para a configuração de relatório solicitada.
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<div class="box" ng-if="relDividaPorKitReport.registros.length === 0">
-  Não existem resultados para a configuração de relatório solicitada.
-</div>

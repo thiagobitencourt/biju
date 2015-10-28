@@ -4,8 +4,9 @@ app.controller('relDivPorPessoaCtrl', function($rootScope, $scope, Restangular, 
 
   $scope.relDividaPorKitConfig = {
     pessoaId : 'todas',
-    mostrarResumo : true,
-    somenteDividaAtiva: false
+    mostrarResumo : false,
+    somenteDividaAtiva: false,
+    apenasConsolidado: false
   }
 
   if(currentRoute === '/rel-divporpessoa-config'){

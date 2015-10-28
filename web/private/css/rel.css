@@ -1,3 +1,8 @@
 .biju-page-break {
   page-break-after: always;
 }
+@media print {
+  .biju-print-font {
+    font-size: xx-small;
+  }
+}

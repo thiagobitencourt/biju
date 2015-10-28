@@ -1,10 +1,10 @@
 <div class="box" ng-if="relKitsNaPracaReport.registros.length === 0">
   Não existem resultados para a configuração de relatório solicitada.
 </div>
-<section class="content">
+<section class="content  biju-print-font">
   <div ng-if="relKitsNaPracaReport.registros.length > 0">
 
-    <div class="box box-success">
+    <div class="box">
       <div class="box-header with-border">
         <div class="row">
           <div class="col-xs-6">
@@ -21,21 +21,13 @@
       <div class="box-body">
 
         <div>
-          <table class="table table-bordered">
+          <table class="table table-bordered table-condensed">
             <tbody>
               <tr>
-                <h4>RESUMO</h4>
+                <td>
+                  <b>VALOR TOTAL NA PRAÇA: </b> {{relKitsNaPracaReport.vlrTotalKits | currency}}
+                </td>
               </tr>
-              <tr>
-                <td><b>Valor total em praça: {{relKitsNaPracaReport.vlrTotalKits | currency}}</b></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div>
-          <table class="table table-bordered">
-            <tbody>
               <tr>
                 <th>Pessoa</th>
                 <th>Referência</th>
@@ -52,7 +44,7 @@
 
         <div ng-repeat="registro in relKitsNaPracaReport.registros">
 
-          <table class="table table-bordered">
+          <table class="table table-bordered table-condensed">
             <tbody>
               <tr>
                 <h4>{{registro.pessoa.nome}} - Pasta: {{registro.pessoa.codigo}}</h4>
