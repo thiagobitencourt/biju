@@ -31,7 +31,7 @@ app.controller('relKitsCtrl', function($rootScope, $scope, Restangular, shareDat
     }
 
     if(config.pessoaId !== 'todas')
-      query.pessoaId = config.pessoaId;
+      query.pessoa = config.pessoaId;
 
     if(config.kitId !== 'todos'){
       query._id = config.kitId;
@@ -43,7 +43,11 @@ app.controller('relKitsCtrl', function($rootScope, $scope, Restangular, shareDat
 
     $scope.relKitsConfig = config;
     $scope.relKitsReport = {};
-    Restangular.all('kit').getList({q : query}).then(function(response){
+    // Restangular.all('kit').getList({q : query}).then(function(response){
+    //   $scope.relKitsReport = response;
+    // });
+
+    Restangular.one('rel', 'relKits').get({q : query }).then(function(response){
       $scope.relKitsReport = response;
     });
 

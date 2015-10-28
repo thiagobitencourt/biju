@@ -188,6 +188,36 @@ var RelController = function(){
 
   };
 
+  var _relKits = function(query, rootCallback){
+
+    _KitModel.secureFind(null, query, function(err, kits){
+      if(err)
+        return rootCallback(new AppError(err, "Impossível gerar relatório devido a erro interno.", AppError.ERRORS.INTERNAL));
+
+      _PessoaModel.secureFind(null, {}, function(err, pessoas){
+        if(err)
+          return rootCallback(new AppError(err, "Impossível gerar relatório devido a erro interno.", AppError.ERRORS.INTERNAL));
+
+          var pessoasMap = {};
+          for(var i in pessoas){
+            var pessoa = pessoas[i];
+            pessoasMap[pessoa._id] = pessoa;
+          }
+
+
+          for(var i in kits){
+            var kit = kits[i];
+            if(kit.pessoa && kit.pessoa.pessoaReferencia){
+              kit.pessoa.pessoaReferencia = pessoasMap[kit.pessoa.pessoaReferencia];
+            }
+          }
+
+        return rootCallback(null, kits);
+      });
+    });
+
+  }
+
   var _buildRel = function(relId, query, callback){
     switch (relId) {
       case 'relDividaPorKit':
@@ -196,6 +226,9 @@ var RelController = function(){
         break;
       case 'relKitsNaPraca':
         var result = _relKitsNaPraca(query, callback);
+        break;
+      case 'relKits':
+        var result = _relKits(query, callback);
         break;
       default:
         callback(new AppError(null, "Unknown relId", AppError.ERRORS.CLIENT), null);

@@ -23,20 +23,56 @@
           <div>
             <table class="table table-bordered">
               <tbody>
-                <tr>
-                  <h4>Pessoa: {{kit.pessoa | json}}</h4>
+                <tr align="center">
+                  <td colspan="4"><h4>ROMANEIO SAVELLU'S</h4></td>
                 </tr>
                 <tr>
-                  <th>Número do Kit</th>
-                  <th>Valor do Kit</th>
-                  <th>Data de Entrega</th>
-                  <th>Previsão de Fechamento</th>
-                </tr>
-                <tr>
+                  <td><b>CLIENTE</b></td>
+                  <td>{{kit.pessoa.nome}}</td>
+                  <td><b>KIT N°</b></td>
                   <td>{{kit.codigo}}</td>
-                  <td>{{kit.vlrTotalKit | currency}}</td>
+                </tr>
+                <tr>
+                  <td><b>RUA</b></td>
+                  <td>{{kit.pessoa.endereco.rua}}</td>
+                  <td><b>BAIRRO</b></td>
+                  <td>{{kit.pessoa.endereco.bairro}}</td>
+                </tr>
+                <tr>
+                  <td><b>CIDADE</b></td>
+                  <td>{{kit.pessoa.endereco.cidade}}</td>
+                  <td><b>CNPJ</b></td>
+                  <td>dd</td>
+                </tr>
+                <tr>
+                  <td><b>REPRES.</b></td>
+                  <td></td>
+                  <td><b>FANTASIA</b></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td><b>DATA</b></td>
                   <td>{{kit.dataEntrega | date:'dd/MM/yyyy'}}</td>
-                  <td>{{kit.dataProxRetorno | date:'dd/MM/yyyy'}}</td>
+                  <td><b>FONE FIXO</b></td>
+                  <td>{{kit.pessoa.telefoneFixo}}</td>
+                </tr>
+                <tr>
+                  <td><b>EMAIL</b></td>
+                  <td>{{kit.pessoa.email}}</td>
+                  <td><b>CELULAR</b></td>
+                  <td>{{kit.pessoa.telefoneCelular}}</td>
+                </tr>
+                <tr>
+                  <td><b>P. REF.</b></td>
+                  <td>{{kit.pessoa.pessoaReferencia.nome}}</td>
+                  <td><b>FOR. PAG.</b></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td><b>ESTADO DO KIT </b></td>
+                  <td>{{kit.estado}}</td>
+                  <td><b>OBS</b></td>
+                  <td>{{kit.pessoa.observacao}}</td>
                 </tr>
               </tbody>
             </table>
@@ -44,13 +80,25 @@
             <table class="table table-bordered">
               <tbody>
                 <tr>
-                  <h4>Itens</h4>
-                </tr>
-                <tr>
-                  <th>Item</th>
+                  <th>QTD</th>
+                  <th>REF</th>
+                  <th>DESCRIÇÃO</th>
+                  <th>TAMANHO</th>
+                  <th>PREÇO UNIT.</th>
+                  <th>TOTAL</th>
                 </tr>
                 <tr ng-repeat="item in kit.itens">
-                  <td>{{item | json}}</td>
+                  <td>{{item.qtdeEntregue}}</td>
+                  <td>{{item.produto.referencia}}</td>
+                  <td>{{item.produto.tipo}}</td>
+                  <td>{{item.produto.tamanho}}</td>
+                  <td>{{item.vlrUnit | currency}}</td>
+                  <td>{{item.vlrTotal | currency}}</td>
+
+                </tr>
+                <tr>
+                  <td align="right" colspan="5"><b>TOTAL</b></td>
+                  <td>{{kit.vlrTotalKit | currency}}</td>
                 </tr>
               </tbody>
             </table>
