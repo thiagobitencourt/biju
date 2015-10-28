@@ -6,7 +6,8 @@ app.controller('relDivPorPessoaCtrl', function($rootScope, $scope, Restangular, 
     pessoaId : 'todas',
     mostrarResumo : false,
     somenteDividaAtiva: false,
-    apenasConsolidado: false
+    apenasConsolidadoA: false,
+    apenasConsolidadoB: false
   }
 
   if(currentRoute === '/rel-divporpessoa-config'){
