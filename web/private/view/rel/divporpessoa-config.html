@@ -1,19 +1,67 @@
-<div class="row">
-  <div class="col-md-6 col-md-offset-1" align="center">
-  <h3>Relatório de dívidas por pessoa</h3>
-    <div class="box box-primary ">
-      <label>Pessoa:</label>
-      <div class="input-group input-group-sm box-footer">
-        <select class="form-control" ng-model="relDividaPorKitConfig.pessoaId" name="pessoa">
-          <option value="todas" ng-selected="selected">Todas</option>
-          <option ng-repeat="pessoa in pessoas" value="{{pessoa._id}}">
-              {{pessoa.nome}}
-          </option>
-        </select>
-        <span class="input-group-btn">
-          <a class="btn btn-info btn-flat" type="button" ng-click="setConfig()" href="#/rel-divporpessoa-view">Gerar</a>
-        </span>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Relatório de dívidas por pessoa</h3>
+        </div>
+        <div class="box-body">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Pessoa:</label>
+              <div class="col-sm-10">
+                <select class="form-control" ng-model="relDividaPorKitConfig.pessoaId" name="pessoa">
+                  <option value="todas" ng-selected="selected">Todas</option>
+                  <option ng-repeat="pessoa in pessoas" value="{{pessoa._id}}">
+                      {{pessoa.nome}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Mostrar Resumo Geral:</label>
+              <div class="col-sm-10">
+                <div class="checkbox">
+                  <input type="checkbox" ng-model="relDividaPorKitConfig.mostrarResumo">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Consolidado A:</label>
+              <div class="col-sm-10">
+                <div class="checkbox">
+                  <input type="checkbox" ng-model="relDividaPorKitConfig.apenasConsolidadoA">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Consolidado B:</label>
+              <div class="col-sm-10">
+                <div class="checkbox">
+                  <input type="checkbox" ng-model="relDividaPorKitConfig.apenasConsolidadoB">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Somente Pessoas com Dívida Ativa:</label>
+              <div class="col-sm-10">
+                <div class="checkbox">
+                  <input type="checkbox" ng-model="relDividaPorKitConfig.somenteDividaAtiva">
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer">
+            <a class="btn btn-success" type="button" ng-click="setConfig()" href="#/rel-divporpessoa-view">Gerar</a>
+        </form>
       </div>
+      <!-- /.box-footer -->
     </div>
   </div>
-</div>
+</section>

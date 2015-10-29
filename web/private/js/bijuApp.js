@@ -102,11 +102,27 @@ app.config(function($routeProvider, RestangularProvider) {
       }).
       when('/rel-divporpessoa-config', {
         templateUrl: 'view/rel/divporpessoa-config.html',
-        controller: 'relCtrl'
+        controller: 'relDivPorPessoaCtrl'
       }).
       when('/rel-divporpessoa-view', {
         templateUrl: 'view/rel/divporpessoa-view.html',
-        controller: 'relCtrl'
+        controller: 'relDivPorPessoaCtrl'
+      }).
+      when('/rel-kits-config', {
+        templateUrl: 'view/rel/kits-config.html',
+        controller: 'relKitsCtrl'
+      }).
+      when('/rel-kits-view', {
+        templateUrl: 'view/rel/kits-view.html',
+        controller: 'relKitsCtrl'
+      }).
+      when('/rel-kitsnapraca-config', {
+        templateUrl: 'view/rel/kitsnapraca-config.html',
+        controller: 'relKitsNaPracaCtrl'
+      }).
+      when('/rel-kitsnapraca-view', {
+        templateUrl: 'view/rel/kitsnapraca-view.html',
+        controller: 'relKitsNaPracaCtrl'
       }).
       otherwise({
         redirectTo: '/'

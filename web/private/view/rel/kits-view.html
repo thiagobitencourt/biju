@@ -1,0 +1,111 @@
+<div class="box" ng-if="relKitsReport.length === 0">
+  Não existem resultados para a configuração de relatório solicitada.
+</div>
+<section class="content  biju-print-font ">
+  <div ng-if="relKitsReport.length > 0">
+
+    <div class="box">
+      <div class="box-header with-border no-print">
+        <div class="row">
+          <div class="col-xs-6">
+            <h3 class="box-title">Relatório de Kits</h3>
+          </div>
+          <div class="col-xs-6">
+            <button type="button" class="btn btn-success pull-right" style="margin-right: 5px;" onClick="window.print()">
+              <i class="fa fa-print"></i> Imprimir
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="box-body">
+        <div ng-repeat="kit in relKitsReport | orderBy:'pessoa.nome' ">
+          <div>
+            <table class="table table-bordered table-condensed">
+              <tbody>
+                <tr align="center">
+                  <td colspan="4"><b>ROMANEIO SAVELLU'S</b></td>
+                </tr>
+                <tr>
+                  <td><b>CLIENTE</b></td>
+                  <td>{{::kit.pessoa.nome}}</td>
+                  <td><b>KIT N°</b></td>
+                  <td>{{::kit.codigo}}</td>
+                </tr>
+                <tr>
+                  <td><b>RUA</b></td>
+                  <td>{{::kit.pessoa.endereco.rua}}</td>
+                  <td><b>BAIRRO</b></td>
+                  <td>{{::kit.pessoa.endereco.bairro}}</td>
+                </tr>
+                <tr>
+                  <td><b>CIDADE</b></td>
+                  <td>{{::kit.pessoa.endereco.cidade}}</td>
+                  <td><b>CNPJ</b></td>
+                  <td>dd</td>
+                </tr>
+                <tr>
+                  <td><b>REPRES.</b></td>
+                  <td></td>
+                  <td><b>FANTASIA</b></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td><b>DATA</b></td>
+                  <td>{{::kit.dataEntrega | date:'dd/MM/yyyy'}}</td>
+                  <td><b>FONE FIXO</b></td>
+                  <td>{{::kit.pessoa.telefoneFixo}}</td>
+                </tr>
+                <tr>
+                  <td><b>EMAIL</b></td>
+                  <td>{{::kit.pessoa.email}}</td>
+                  <td><b>CELULAR</b></td>
+                  <td>{{::kit.pessoa.telefoneCelular}}</td>
+                </tr>
+                <tr>
+                  <td><b>P. REF.</b></td>
+                  <td>{{::kit.pessoa.pessoaReferencia.nome}}</td>
+                  <td><b>FOR. PAG.</b></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td><b>ESTADO DO KIT </b></td>
+                  <td>{{::kit.estado}}</td>
+                  <td><b>OBS</b></td>
+                  <td>{{::kit.pessoa.observacao}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table class="table table-bordered table-condensed">
+              <tbody>
+                <tr>
+                  <th>QTD</th>
+                  <th>REF</th>
+                  <th>DESCRIÇÃO</th>
+                  <th>TAMANHO</th>
+                  <th>PREÇO UNIT.</th>
+                  <th>TOTAL</th>
+                </tr>
+                <tr ng-repeat="item in kit.itens">
+                  <td>{{::item.qtdeEntregue}}</td>
+                  <td>{{::item.produto.referencia}}</td>
+                  <td>{{::item.produto.tipo}}</td>
+                  <td>{{::item.produto.tamanho}}</td>
+                  <td>{{::item.vlrUnit | currency}}</td>
+                  <td>{{::item.vlrTotal | currency}}</td>
+
+                </tr>
+                <tr>
+                  <td align="right" colspan="5"><b>TOTAL</b></td>
+                  <td>{{::kit.vlrTotalKit | currency}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div ng-if="!$last" class="biju-page-break"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

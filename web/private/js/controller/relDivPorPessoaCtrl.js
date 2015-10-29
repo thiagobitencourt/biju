@@ -1,13 +1,18 @@
 var app = angular.module('bijuApp');
-app.controller('relCtrl', function($rootScope, $scope, Restangular, shareData, $location){
+app.controller('relDivPorPessoaCtrl', function($rootScope, $scope, Restangular, shareData, $location){
   var currentRoute = $location.path();
+
+  $scope.relDividaPorKitConfig = {
+    pessoaId : 'todas',
+    mostrarResumo : false,
+    somenteDividaAtiva: false,
+    apenasConsolidadoA: false,
+    apenasConsolidadoB: false
+  }
 
   if(currentRoute === '/rel-divporpessoa-config'){
     var pessoaService = Restangular.service('pessoa');
     $scope.pessoas = pessoaService.getList().$object;
-    $scope.relDividaPorKitConfig = {
-      pessoaId : 'todas'
-    }
     $scope.setConfig = function(){
       shareData.set('relDividaPorKitConfig', $scope.relDividaPorKitConfig);
     }
@@ -15,15 +20,20 @@ app.controller('relCtrl', function($rootScope, $scope, Restangular, shareData, $
     var query = {};
     var config = shareData.get('relDividaPorKitConfig');
     if(!config){
-      query.pessoaId = 'todas';
-    }else{
-      query.pessoaId = config.pessoaId;
+      config = $scope.relDividaPorKitConfig;
     }
 
+    query.estado = 'Fechado';
+    query.pessoaId = config.pessoaId;
+    query.somenteDividaAtiva = config.somenteDividaAtiva;
+
+    $scope.relDividaPorKitConfig = config;
     $scope.relDividaPorKitReport = {};
     Restangular.one('rel', 'relDividaPorKit').get({q : query }).then(function(response){
       $scope.relDividaPorKitReport = response;
     });
+  }else{
+    console.log('pau em relDivPorPessoaCtrl');
   }
 
 });
