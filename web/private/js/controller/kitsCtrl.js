@@ -11,6 +11,14 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 	var produtoService = Restangular.service('produto');
 	var pessoaService = Restangular.service('pessoa');
 
+	$scope.setRelKitConfig = function(){
+		shareData.set('relKitsConfig', {
+	    pessoaId : 'todas',
+	    kitId : $scope.kit._id,
+	    estado : 'todos'
+	  });
+	}
+
 	$scope.estadosKit =
 		{NOVO: 'Novo',
 		GERADO:'Gerado',
