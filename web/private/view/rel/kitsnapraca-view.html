@@ -25,7 +25,7 @@
             <tbody>
               <tr>
                 <td>
-                  <b>VALOR TOTAL NA PRAÇA: </b> {{relKitsNaPracaReport.vlrTotalKits | currency}}
+                  <b>VALOR TOTAL NA PRAÇA: </b> {{::relKitsNaPracaReport.vlrTotalKits | currency}}
                 </td>
               </tr>
               <tr>
@@ -34,9 +34,9 @@
                 <th>Valor</th>
               </tr>
               <tr ng-repeat="registro in relKitsNaPracaReport.registros">
-                <td>{{registro.pessoa.nome}}</td>
-                <td>{{registro.pessoa.pessoaReferencia.nome || ' - '  }}</td>
-                <td>{{registro.vlrTotalKits | currency }}</td>
+                <td>{{::registro.pessoa.nome}}</td>
+                <td>{{::registro.pessoa.pessoaReferencia.nome || ' - '  }}</td>
+                <td>{{::registro.vlrTotalKits | currency }}</td>
               </tr>
             </tbody>
           </table>
@@ -47,7 +47,7 @@
           <table class="table table-bordered table-condensed">
             <tbody>
               <tr>
-                <h4>{{registro.pessoa.nome}} - Pasta: {{registro.pessoa.codigo}}</h4>
+                <h4>{{::registro.pessoa.nome}} - Pasta: {{::registro.pessoa.codigo}}</h4>
               </tr>
               <tr>
                 <th>Número do Kit</th>
@@ -56,10 +56,10 @@
                 <th>Previsão de Fechamento</th>
               </tr>
               <tr ng-repeat="kit in registro.kits">
-                <td>{{kit.codigo}}</td>
-                <td>{{kit.vlrTotalKit | currency}}</td>
-                <td>{{kit.dataEntrega | date:'dd/MM/yyyy'}}</td>
-                <td>{{kit.dataProxRetorno | date:'dd/MM/yyyy'}}</td>
+                <td>{{::kit.codigo}}</td>
+                <td>{{::kit.vlrTotalKit | currency}}</td>
+                <td>{{::kit.dataEntrega | date:'dd/MM/yyyy'}}</td>
+                <td>{{::kit.dataProxRetorno | date:'dd/MM/yyyy'}}</td>
               </tr>
             </tbody>
           </table>
