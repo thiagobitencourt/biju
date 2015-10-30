@@ -14,11 +14,7 @@
 
 	 	<div class="form-group">
 			<label class="col-sm-3 control-label">Tipo: *</label>
-			<div class="col-sm-5" ng-class="{'has-error': (form.tipo.$error.required && form.$submitted)}">
-			  <input type="text" name="tipo" class="form-control" ng-model="entity.tipo" capitalize required>
-			</div>
 			<div class="col-sm-4">
-
 				<select class="form-control" ng-model="entity.tipo" name="tipoOptions">
 					<option></option>
 					<option ng-selected="{{tipo.tipo == entity.tipo}}"
@@ -26,17 +22,16 @@
 							{{tipo.tipo}}
 					</option>
 				</select>
-
-				<!-- <select class="form-control" ng-model="entity.tipo" name="tipoOptions">
-					<option value="option"></option>
-				</select> -->
+			</div>
+			<div class="col-sm-4" ng-class="{'has-error': (form.tipo.$error.required && form.$submitted)}">
+			  <input type="text" name="tipo" class="form-control" ng-model="entity.tipo" capitalize required>
 			</div>
 		</div>
 
 	 	<div class="form-group">
 			<label class="col-sm-3 control-label">Valor Custo: *</label>
 			<div class="col-sm-9" ng-class="{'has-error': (form.vlrCusto.$error.required && form.$submitted)}">
-			  <input type="text" class="form-control" name="vlrCusto" ng-model="entity.vlrCusto" ng-blur="entity.vlrVenda = ((entity.vlrCusto * 50)/100) + entity.vlrCusto" ui-money-mask required>
+			  <input type="text" class="form-control" name="vlrCusto" ng-model="entity.vlrCusto" valor-venda="entity.vlrVenda" ui-money-mask required>
 			</div>
 	 	</div>
 

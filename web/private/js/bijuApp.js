@@ -53,8 +53,7 @@ app.config(function($routeProvider, RestangularProvider) {
 
     $routeProvider.
       when('/', {
-        templateUrl: 'view/dashboard.html',
-        controller: 'bijuCtrl'
+        redirectTo: '/kits'
       }).
       when('/pessoas', {
         templateUrl: 'view/Pessoa/pessoas.html',

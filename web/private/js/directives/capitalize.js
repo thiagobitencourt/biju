@@ -9,7 +9,7 @@ app.directive('capitalize', function() {
            if(capitalized !== inputValue) {
               modelCtrl.$setViewValue(capitalized);
               modelCtrl.$render();
-            }         
+            }
             return capitalized;
          }
          modelCtrl.$parsers.push(capitalize);
