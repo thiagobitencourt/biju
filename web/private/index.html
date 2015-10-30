@@ -86,19 +86,19 @@
             <li ng-class="{ active: isActive('/pessoas')}"><a href="#/pessoas"><i class="fa fa-users"></i> <span>Clientes</span></a></li>
             <li ng-class="{ active: isActive('/produtos')}"><a href="#/produtos"><i class="fa fa-cubes"></i> <span>Produtos</span></a></li>
             <li ng-class="{ active: isActive('/kits')}"><a href="#/kits"><i class="fa fa-diamond"></i> <span>Kits</span></a></li>
-            <li ng-class="{ active: isActive('/estoques')}"><a href="#/estoques"><i class="fa fa-cubes"></i> <span>Estoques</span></a></li>
-            <li class="treeview">
+            <li class="hide" ng-class="{ active: isActive('/estoques')}"><a href="#/estoques"><i class="fa fa-cubes"></i> <span>Estoques</span></a></li>
+            <li  class="treeview">
               <a style="cursor:pointer" >
                 <i class="fa fa-pie-chart"></i> <span>Relatórios</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="#/rel-divporpessoa-config"><i class="fa fa-circle-o"></i>Dívidas Por Pessoa</a></li>
-                <li><a href="#/rel-kitsnapraca-config"><i class="fa fa-circle-o"></i>Kits na Praça</a></li>
-                <li><a href="#/rel-kits-config"><i class="fa fa-circle-o"></i>Kits</a></li>
+                <li ng-class="{ active: isActive('/rel-divporpessoa-config')}" ><a href="#/rel-divporpessoa-config"><i class="fa fa-circle-o"></i>Dívidas Por Pessoa</a></li>
+                <li ng-class="{ active: isActive('/rel-kitsnapraca-config')}" ><a href="#/rel-kitsnapraca-config"><i class="fa fa-circle-o"></i>Kits na Praça</a></li>
+                <li ng-class="{ active: isActive('/rel-kits-config')}" ><a href="#/rel-kits-config"><i class="fa fa-circle-o"></i>Kits</a></li>
               </ul>
             </li>
-            <li><a href="#/manual-data-import"><i class="fa fa-code-fork"></i> <span>Importação Manual</span></a></li>
+            <li ng-class="{ active: isActive('/manual-data-import')}" ><a href="#/manual-data-import"><i class="fa fa-upload"></i> <span>Importação Manual</span></a></li>
         </section>
       </aside>
 

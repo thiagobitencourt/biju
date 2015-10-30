@@ -6,3 +6,7 @@
     font-size: xx-small;
   }
 }
+
+td {
+  padding: 1px !important;
+}

@@ -46,6 +46,7 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
   reset();
 
   $scope.parseFile = function($fileContent){
+    reset();
     parsedContent = csvToArray($fileContent);
     parseKit();
   };
@@ -163,7 +164,7 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
           fieldTotal = parseFloat(fieldTotal.replace('R$', '').trim());
 
           $scope.kit.vlrTotalKit += fieldTotal;
-          
+
           var vlrVendaCalc = 0;
           if(fieldPreco){
               vlrVendaCalc = fieldPreco * 1.5;
@@ -192,6 +193,11 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
       }
     }
     $scope.itensCount = totalChecksNeeded;
+
+    if(!itemsSection){
+      $scope.kitError = true;
+      $scope.kitErrorMessage = "Arquivo com formato inválido.";
+    }
   }
 
   var parsePessoa = function(data){

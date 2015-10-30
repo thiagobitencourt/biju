@@ -171,11 +171,13 @@ var RelController = function(){
           }
 
 
+
           for(var i in report.registros){
             var registro = report.registros[i];
             for(var j in registro.kits){
               var kit = registro.kits[j];
-              if(kit.pessoa.pessoaReferencia){
+              logger.debug(kit.codigo);
+              if(kit.pessoa.pessoaReferencia && !kit.pessoa.pessoaReferencia._id){
                 kit.pessoa.pessoaReferencia = pessoasMap[kit.pessoa.pessoaReferencia];
               }
             }
@@ -226,6 +228,7 @@ var RelController = function(){
         break;
       case 'relKitsNaPraca':
         var result = _relKitsNaPraca(query, callback);
+        // _relDividaPorKit(query, callback);
         break;
       case 'relKits':
         var result = _relKits(query, callback);
