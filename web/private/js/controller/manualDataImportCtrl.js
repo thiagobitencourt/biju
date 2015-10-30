@@ -130,6 +130,7 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
       },
       function(error){
         $scope.kitErrorMessage += " Erro ao enviar ao servidor: " + error.data.message;
+        $scope.kitError = true;
         console.log(error);
       }
     );

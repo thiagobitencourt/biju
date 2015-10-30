@@ -147,9 +147,15 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 		}
 	}
 
-	var save = 0;
 	$scope.inserirItem = function(produto){
-		save++;
+
+		if(isNaN(produto.quantidade)){
+			focus('quantidade');
+			$scope.errorProdutoMessage = 'Quantidade deve ser número';
+			return;
+		}
+		$scope.errorProdutoMessage = false;
+
 		if(angular.isDefined(produto.referencia)){
 			var produtoExistente = false;
 			angular.forEach($scope.kit.itens, function(item){
@@ -194,10 +200,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 				});
 			}
 
-			if(save % 5 === 0){
-				console.log('salvar...');
-				localStorage.setItem('tempKit', angular.toJson($scope.kit));
-			}
+		localStorage.setItem('tempKit', angular.toJson($scope.kit));
 
 		}else{
 			$scope.errorProdutoMessage = "Referencia Produto Não Existe!";

@@ -18,6 +18,17 @@
           <label class="col-sm-2 control-label">Arquivo CSV:</label>
           <div class="col-sm-10">
             <input type="file" on-read-file="parseFile($fileContent)"/>
+            <p class="help-block">
+              Os campos do arquivo devem conter <strong>Exatamente</strong> as colunas:
+                <br><strong>QUANT;</strong>
+                <strong>REF;</strong>
+                <strong>DESCRIÇÃO;</strong>
+                <strong>TAM;</strong>
+                <strong>PREÇO UNT;</strong>
+                <strong>TOTAL</strong>
+              <br>
+              As colunas deve ser separadas por <i>;</i> (ponto e vírgula)
+            </p>
           </div>
         </div>
 
@@ -40,8 +51,8 @@
         </div>
 
         <div class="form-group">
-          <div class="col-sm-12" align="center">
-            <button type="button" class="btn btn-success" ng-disabled="kitError || kitSaved" ng-click="importarKit()">Importar</button>
+          <div class="col-sm-12">
+            <button type="button" class="btn btn-success pull-right" ng-disabled="kitError || kitSaved" ng-click="importarKit()">Importar</button>
           </div>
         </div>
 
