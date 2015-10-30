@@ -7,9 +7,9 @@
       <div class="box box-info">
         <div class="box-header with-border">
         	<h3 class="box-title">Código do Kit: {{ ::kit.codigo }}</h3>
-         	<button class="btn btn-info pull-right" ng-if="kit.estado ==='Gerado'" ng-click="kitForm('entregar')">Entregar Kit</button>
-					<button class="btn btn-info pull-right" ng-if="kit.estado ==='Entregue'" ng-click="kitForm('fechar')">Fechar Kit</button>
 					<a class="btn btn-default pull-right" type="button" ng-click="setRelKitConfig()" href="#/rel-kits-view">Impressão</a>
+         	<button style="margin-right: 5px;" class="btn btn-info pull-right" ng-if="kit.estado ==='Gerado'" ng-click="kitForm('entregar')">Entregar Kit</button>
+					<button style="margin-right: 5px;" class="btn btn-info pull-right" ng-if="kit.estado ==='Entregue'" ng-click="kitForm('fechar')">Fechar Kit</button>
 					<button style="margin-right: 5px;" class="btn btn-info pull-right" ng-if="kit.estado ==='Fechado'" ng-click="kitForm('pagar')">Pagar Kit</button>
         </div>
         <form class="form-horizontal">

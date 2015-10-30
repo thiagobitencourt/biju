@@ -46,6 +46,7 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
   reset();
 
   $scope.parseFile = function($fileContent){
+    reset();
     parsedContent = csvToArray($fileContent);
     parseKit();
   };
@@ -60,6 +61,7 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
 
       Restangular.one('produto').get({"q":{"referencia":item.referencia}})
       .then( function(response){
+          console.log(itensBackendCheck[response.reqParams.q.referencia]);
         if(response.length > 0){
           totalChecksDone++;
           $scope.itens[response[0].referencia].importStatus = 'OK';
@@ -71,8 +73,9 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
           produtoService.post(itensBackendCheck[response.reqParams.q.referencia]).then(
             function(postResponse){
               totalChecksDone++;
+              console.log(postResponse);
               $scope.itens[response.reqParams.q.referencia].importStatus = 'OK';
-              $scope.itens[response[0].referencia]._id = postResponse[0]._id;
+              $scope.itens[postResponse.referencia]._id = postResponse._id;
               if(totalChecksDone === totalChecksNeeded)
                 saveKit();
             },
@@ -148,7 +151,8 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
         var fieldTotal = line[5];
 
         if(!itemsSection){
-          if(fieldQuant === 'QUANT' && fieldRef === 'REF'){
+          if(fieldQuant.trim() === 'QUANT' && fieldRef.trim() === 'REF' && fieldDescricao.trim() === 'DESCRIÇÃO'
+          && fieldTam.trim() === 'TAM' && fieldPreco.trim() === 'PREÇO UNT' && fieldTotal.trim() === 'TOTAL'){
               itemsSection = true;
               continue;
           }
@@ -163,11 +167,13 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
           fieldTotal = parseFloat(fieldTotal.replace('R$', '').trim());
 
           $scope.kit.vlrTotalKit += fieldTotal;
-          
+
           var vlrVendaCalc = 0;
           if(fieldPreco){
               vlrVendaCalc = fieldPreco * 1.5;
+              vlrVendaCalc = Math.ceil(vlrVendaCalc);
           }
+
           $scope.itens[fieldRef] = {
             importStatus : ' - ',
             fieldQuant: fieldQuant,
@@ -192,6 +198,11 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
       }
     }
     $scope.itensCount = totalChecksNeeded;
+
+    if(!itemsSection){
+      $scope.kitError = true;
+      $scope.kitErrorMessage = "Arquivo com formato inválido.";
+    }
   }
 
   var parsePessoa = function(data){
