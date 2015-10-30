@@ -66,7 +66,7 @@
 							<div class="col-lg-4 form-group">
 								<label class="col-sm-4 control-label">Pagar:</label>
 								<div class="col-sm-4" ng-init="pagarValor = 0">
-										<input type="number" name="pagar" class="form-control" ng-model="pagarValor" min="0">
+										<input type="text" name="pagar" class="form-control" ng-model="pagarValor" min="0" ui-money-mask>
 								</div>
 								<div class="col-sm-1">
 									<button class="btn btn-success btn-sm" title="Somar" ng-click="somarTotal(pagarValor)"><i class="fa fa-plus"></i></button>
@@ -98,9 +98,11 @@
 									    	<td>{{ ::pagamento.dataVencimento | date:"dd/MM/yyyy" }}</td>
 									    	<td>{{ ::pagamento.formaPgto }}</td>
 									    	<td>
-									    		<input type="text" name="dataPagamento" class="form-control" ng-model="pagamento.dataPgto" ng-hide="pagamento.dataPgto" ui-date-mask>
-									    		<p ng-bind="pagamento.dataPgto | date:'dd/MM/yyyy' " ng-show="pagamento.dataPgto"></p>
-									    		<button class="btn btn-danger btn-sm" title="Zerar Data" ng-click="pagamento.dataPgto = ''" ng-show="pagamento.dataPgto"><i class="fa fa-trash"></i></button>
+													<div class="row">
+									    			<input type="date" name="dataPagamento" class="form-control col-sm-8" ng-model="pagamento.dataPgto" ng-if="!pagamento.dataPgto" >
+									    			<p class="col-sm-8" ng-bind="pagamento.dataPgto | date:'dd/MM/yyyy' " ng-if="pagamento.dataPgto"></p>
+									    			<button class="btn btn-danger btn-sm col-sm-2" title="Zerar Data" ng-click="pagamento.dataPgto = ''" ng-if="pagamento.dataPgto"><i class="fa fa-trash"></i></button>
+													</div>
 									    	</td>
 									    </tr>
 	                  </table>
