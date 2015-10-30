@@ -1,0 +1,97 @@
+<section class="content">
+
+  <div class="box">
+
+    <div class="box-header with-border">
+      <div class="row">
+        <div class="col-xs-6">
+          <h3 class="box-title">Importação de Kit</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="box-body">
+
+      <form class="form-horizontal">
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Arquivo CSV:</label>
+          <div class="col-sm-10">
+            <input type="file" on-read-file="parseFile($fileContent)"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Kit Entregue para:</label>
+          <div class="col-sm-10">
+            <select class="form-control" ng-model="kit.pessoa" name="pessoa">
+              <option ng-repeat="pessoa in pessoas" value="{{pessoa._id}}">
+                  {{pessoa.nome}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Entregue em:</label>
+          <div class="col-sm-10">
+            <input type="date" class="form-control" ng-model="kit.dataEntrega"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-12" align="center">
+            <button type="button" class="btn btn-success" ng-disabled="kitError || kitSaved" ng-click="importarKit()">Importar</button>
+          </div>
+        </div>
+
+      </form>
+
+      <div>
+        <div ng-if="kitSaved" class="callout callout-success">
+          <h4>Sucesso!</h4>
+
+          <p>{{kitSaved}}</p>
+        </div>
+
+        <div ng-if="kitError" class="callout callout-danger">
+          <h4>Erro!</h4>
+
+          <p>{{kitErrorMessage}}</p>
+        </div>
+
+      </div>
+
+      <div ng-if="itensCount > 0">
+        <div class="">
+        <b>Valor Total do Kit:</b> {{kit.vlrTotalKit | currency }}
+        </div>
+        <table class="table table-bordered table-condensed">
+          <tbody>
+            <tr>
+              <th>QTD</th>
+              <th>REF</th>
+              <th>DESCRIÇÃO</th>
+              <th>TAMANHO</th>
+              <th>PREÇO UNIT.</th>
+              <th>TOTAL</th>
+              <th>IMPORT STATUS</th>
+            </tr>
+            <tr ng-repeat="item in itens">
+              <td>{{item.fieldQuant}}</td>
+              <td>{{item.fieldRef}}</td>
+              <td>{{item.fieldDescricao}}</td>
+              <td>{{item.fieldTam}}</td>
+              <td>{{item.fieldPreco | currency }}</td>
+              <td>{{item.fieldTotal | currency }}</td>
+              <td>{{item.importStatus}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

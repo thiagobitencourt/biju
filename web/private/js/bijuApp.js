@@ -124,6 +124,10 @@ app.config(function($routeProvider, RestangularProvider) {
         templateUrl: 'view/rel/kitsnapraca-view.html',
         controller: 'relKitsNaPracaCtrl'
       }).
+      when('/manual-data-import', {
+        templateUrl: 'view/manualdataimport/manual-data-import.html',
+        controller: 'manualDataImportCtrl'
+      }).
       otherwise({
         redirectTo: '/'
       });

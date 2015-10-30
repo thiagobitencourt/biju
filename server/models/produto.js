@@ -41,7 +41,7 @@ MODELO: Produto
 
 produtoSchema = new Schema({
 	/*os campos description serão ignorados pelo mongoose.*/
-  	referencia: { type: String, required: true, unique: true, appDescription : "Referência"},
+  	referencia: { type: String, required: true, appDescription : "Referência"},
   	descricao: { type: String, appDescription : "Descrição"},
   	tipo: { type: String, required: true, appDescription : "Tipo"},
   	tamanho: { type: String, appDescription : "Tamanho"},
