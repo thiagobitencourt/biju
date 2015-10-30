@@ -142,6 +142,7 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
       var line = parsedContent[i];
       var kit = {};
 
+      console.log(line);
       if(line.length === 6 && line[0] !== ''){
 
         var fieldQuant = line[0];
@@ -151,9 +152,10 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
         var fieldPreco = line[4];
         var fieldTotal = line[5];
 
+        // && fieldDescricao.trim() === 'DESCRIÇÃO'
+      // && fieldTam.trim() === 'TAM' && fieldPreco.trim() === 'PREÇO UNT' && fieldTotal.trim() === 'TOTAL'
         if(!itemsSection){
-          if(fieldQuant.trim() === 'QUANT' && fieldRef.trim() === 'REF' && fieldDescricao.trim() === 'DESCRIÇÃO'
-          && fieldTam.trim() === 'TAM' && fieldPreco.trim() === 'PREÇO UNT' && fieldTotal.trim() === 'TOTAL'){
+          if(fieldQuant.trim() === 'QUANT' && fieldRef.trim() === 'REF'){
               itemsSection = true;
               continue;
           }
@@ -163,9 +165,9 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
           fieldRef = fieldRef.trim();
           fieldDescricao = fieldDescricao.trim();
           fieldTam = fieldTam.trim();
-          fieldPreco = parseFloat(fieldPreco.replace('R$', '').trim());
+          fieldPreco = parseFloat((fieldPreco.replace('R$', '').replace(',', '.')).trim());
           fieldQuant = parseInt(fieldQuant.trim());
-          fieldTotal = parseFloat(fieldTotal.replace('R$', '').trim());
+          fieldTotal = parseFloat((fieldTotal.replace('R$', '').replace(',', '.')).trim());
 
           $scope.kit.vlrTotalKit += fieldTotal;
 
@@ -211,7 +213,7 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
   }
 
   var csvToArray = function(data){
-    var lines = data.split('\n');
+    var lines = data.split('\r');
     var result = [];
     for (var i in lines){
       var line = lines[i];
