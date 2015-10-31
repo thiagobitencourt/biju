@@ -213,11 +213,17 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
   }
 
   var csvToArray = function(data){
-    var lines = data.split('\r');
+    var lineSeparator = '\r';
+    var fieldSeparator = ';';
+
+    if(data.indexOf('\n') !== -1)
+      lineSeparator = '\n';
+
+    var lines = data.split(lineSeparator);
     var result = [];
     for (var i in lines){
       var line = lines[i];
-      var fields = line.split(';');
+      var fields = line.split(fieldSeparator);
       result.push(fields);
     }
     return result;
