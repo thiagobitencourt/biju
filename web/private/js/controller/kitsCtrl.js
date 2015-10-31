@@ -11,9 +11,28 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 	var produtoService = Restangular.service('produto');
 	var pessoaService = Restangular.service('pessoa');
 
-	$scope.excluirKit = function(kit){
+	var removeKit = function(kit){
 		kit.remove().then(function(result){
 			$rootScope.go('/kits');
+		});
+	}
+
+	$scope.excluirKit = function(kit){
+		var modalInstance = $modal.open({
+			animation: true,
+			templateUrl: 'view/Kit/kit-modal-remove-confirm.html',
+			resolve: {
+        rm: {remove: removeKit, kit: kit}
+      },
+			controller: function($scope, $modalInstance, rm){
+				$scope.remove = function () {
+					$modalInstance.dismiss('cancel');
+			    rm.remove(rm.kit);
+			  };
+			  $scope.close = function () {
+			    $modalInstance.dismiss('cancel');
+			  };
+			}
 		});
 	}
 
