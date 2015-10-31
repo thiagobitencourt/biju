@@ -11,6 +11,12 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 	var produtoService = Restangular.service('produto');
 	var pessoaService = Restangular.service('pessoa');
 
+	$scope.excluirKit = function(kit){
+		kit.remove().then(function(result){
+			$rootScope.go('/kits');
+		});
+	}
+
 	$scope.setRelKitConfig = function(){
 		shareData.set('relKitsConfig', {
 	    pessoaId : 'todas',
