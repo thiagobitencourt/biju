@@ -51,12 +51,14 @@
               </tr>
               <tr>
                 <th>Número do Kit</th>
+                <th>Pessoa</th>
                 <th>Valor do Kit</th>
                 <th>Data de Entrega</th>
                 <th>Previsão de Fechamento</th>
               </tr>
               <tr ng-repeat="kit in registro.kits">
                 <td>{{::kit.codigo}}</td>
+                <td> {{::kit.pessoa.nome}}</td>
                 <td>{{::kit.vlrTotalKit | currency}}</td>
                 <td>{{::kit.dataEntrega | date:'dd/MM/yyyy'}}</td>
                 <td>{{::kit.dataProxRetorno | date:'dd/MM/yyyy'}}</td>

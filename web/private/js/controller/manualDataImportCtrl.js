@@ -106,7 +106,14 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
     if($scope.kit.pessoa && $scope.kit.pessoa !== '')
       $scope.kit.estado = 'Entregue';
 
-      console.log($scope.itens);
+      console.log($scope.kit.dataEntrega);
+
+    if($scope.kit.dataEntrega){
+      var _dataProxRetorno = new Date();
+      _dataProxRetorno.setDate($scope.kit.dataEntrega.getDate() + 30);
+      $scope.kit.dataProxRetorno = _dataProxRetorno;
+      console.log($scope.kit.dataProxRetorno);
+    }
 
       if($scope.kit.itens.length === 0){
         for (var i in $scope.itens){

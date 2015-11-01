@@ -28,7 +28,7 @@
               <td colspan="3"><b>RESUMO GERAL</b></td>
             </tr>
             <tr>
-              <th>Valor Total de Dívidas Criadas</th>
+              <th>Valor Total de Vendas</th>
               <th>Valor Total Recebido Sobre as Dívidas </th>
               <th>Valor Total Ainda à Receber</th>
             </tr>
@@ -48,9 +48,10 @@
               <tr>
                 <th>Pasta</th>
                 <th>Pessoa</th>
+                <th>Cód. Kit</th>
                 <th>Parcelas</th>
                 <th>Kit</th>
-                <th>Dívida</th>
+                <th>Venda</th>
                 <th>Entrega</th>
                 <th>Fechamento</th>
                 <th>Pago</th>
@@ -61,6 +62,7 @@
               <tr ng-repeat="kit in registro.kits">
                 <td>{{::registro.pessoa.codigo}}</td>
                 <td>{{::registro.pessoa.nome}}</td>
+                <td>{{::kit.codigo}}</td>
                 <td>{{::kit.pagamentos.length}}</td>
                 <td>{{::kit.vlrTotalKit | currency}}</td>
                 <td>{{::kit.vlrTotalDivida | currency}}</td>
@@ -84,8 +86,8 @@
               </tr>
               <tr>
                 <th>Pasta</th>
-                <th>Dívida Gerada</th>
-                <th>Total Já Pago</th>
+                <th>Venda</th>
+                <th>Pago</th>
                 <th>Restante</th>
               </tr>
               <tr >
@@ -105,13 +107,13 @@
                           <th>Código</th>
                           <th>Entrega</th>
                           <th>Fechamento</th>
-                          <th>Gerado</th>
+                          <th>Venda</th>
                           <th>Pago</th>
                           <th>Restante</th>
                           <th ng-if="!relDividaPorKitConfig.apenasConsolidadoA" style = "text-align: center;">Pagamentos</th>
                         </tr>
                         <tr ng-repeat="kit in registro.kits">
-                          <td>{{kit.codigo}}</td>
+                          <td>{{::kit.codigo}}</td>
                           <td>{{::kit.dataEntrega | date:'dd/MM/yyyy' }}</td>
                           <td>{{::kit.dataDevolucao | date:'dd/MM/yyyy' }}</td>
                           <td>{{::kit.vlrTotalDivida | currency}}</td>

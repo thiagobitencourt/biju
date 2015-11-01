@@ -152,6 +152,125 @@ var RelController = function(){
     });
   };
 
+  var _relDividaPorKitPorPessRef = function(query, pessoasMap, rootCallback){
+
+    /*{
+      'vlrTotalDividas' : 0.0,
+      'vlrTotalPagos' : 0.0,
+      'vlrTotalRestante' : 0.0,
+      'registros': [
+        {
+          'pessoaRef' : {},
+          'vlrTotalDividas' : 0.0,
+          'vlrTotalPagos' : 0.0,
+          'vlrTotalRestante' : 0.0,
+          'kits' : [
+            {
+              'codigo' : 1,
+              'pessoa' : {},
+              'dataEntrega': 1,
+              'dataFechamento': 1,
+              'vlrTotalDivida': 1,
+              'vlrTotalPago': 1,
+              'vlrTotalRestante': 1,
+              'pagamentos' : [
+                'formaPgto' : ,
+          			'dataVencimento' : ,
+          			'dataPgto' : ,
+          			'vlrPgto' :
+              ]
+            }
+          ]
+        }
+      ]
+    }*/
+    var finalQuery = {};
+
+    if(query.estado){
+      finalQuery.estado = query.estado;
+    }
+    if(query.pessoaId){
+      if(query.pessoaId !== 'todas')
+        finalQuery.pessoa = query.pessoaId;
+    }
+
+    var populateObj = [{path : 'pessoa'}];
+    if(query.pessoaRefId){
+      if(query.pessoaRefId !== 'todas')
+        populateObj = [{path : 'pessoa', match : { pessoaReferencia : query.pessoaRefId}}];
+    }
+
+    var report = {};
+    report.vlrTotalDividas = 0.0;
+    report.vlrTotalPagos = 0.0;
+    report.vlrTotalRestante = 0.0;
+    report.vlrTotalKits = 0.0;
+    report.registros = [];
+
+    var _registrosMap = {};
+    _KitModel.find(
+      finalQuery,
+      {deletedAt:0, itens:0})
+      .populate(populateObj)
+      .sort('pessoa.nome')
+      .exec(function(err, kits){
+        if(err) return rootCallback(new AppError(err, "Impossível gerar relatório devido a erro interno.", AppError.ERRORS.INTERNAL), null);
+
+        for (var kitIndex in kits) {
+          var kit = kits[kitIndex];
+
+          // logger.debug(kit.toString());
+          if(query.somenteDividaAtiva && kit.vlrTotalPgto >= kit.vlrTotalDivida){
+            // esse kit está pago. será ignorado conforme requisitado pela query.
+            continue;
+          }
+
+          var groupId = kit.pessoa._id;
+          if(kit.pessoa.pessoaReferencia){
+            groupId = kit.pessoa.pessoaReferencia;
+          }
+
+
+          var pessoaGroup = _registrosMap[groupId];
+          if(!pessoaGroup){
+            _registrosMap[groupId] = {};
+            _registrosMap[groupId].pessoa = pessoasMap[groupId];
+            _registrosMap[groupId].vlrTotalKits = 0.0;
+            _registrosMap[groupId].vlrTotalDividas = 0.0;
+            _registrosMap[groupId].vlrTotalPagos = 0.0;
+            _registrosMap[groupId].vlrTotalRestante = 0.0;
+            _registrosMap[groupId].kits = [];
+            //aqui
+            pessoaGroup = _registrosMap[groupId];
+          }
+
+          // kit.pessoa = undefined;
+          kit.pessoa = pessoasMap[kit.pessoa._id];
+          kit.__v = undefined;
+
+          pessoaGroup.vlrTotalDividas += kit.vlrTotalDivida;
+          pessoaGroup.vlrTotalPagos += kit.vlrTotalPgto;
+          pessoaGroup.vlrTotalRestante += kit.vlrTotalDivida - kit.vlrTotalPgto;
+          pessoaGroup.vlrTotalKits += kit.vlrTotalKit;
+
+          pessoaGroup.kits.push(kit);
+
+        }
+
+        for (var pessoaIndex in _registrosMap) {
+          var pessoaGroup = _registrosMap[pessoaIndex];
+
+          report.vlrTotalDividas += pessoaGroup.vlrTotalDividas;
+          report.vlrTotalPagos += pessoaGroup.vlrTotalPagos;
+          report.vlrTotalRestante += pessoaGroup.vlrTotalRestante;
+          report.vlrTotalKits += pessoaGroup.vlrTotalKits;
+
+          report.registros = report.registros.concat(pessoaGroup);
+        }
+        rootCallback(null, report);
+    });
+  };
+
   var _relKitsNaPraca = function(query, rootCallback){
     //this function will be the rootCallback of _relDividaPorKit;
 
@@ -188,6 +307,21 @@ var RelController = function(){
 
     });
 
+  };
+
+  var _relKitsNaPracaPessRef = function(query, rootCallback){
+    _PessoaModel.secureFind(null, {}, function(err, pessoas){
+      if(err)
+        return rootCallback(new AppError(err, "Impossível gerar relatório devido a erro interno.", AppError.ERRORS.INTERNAL));
+
+        var pessoasMap = {};
+        for(var i in pessoas){
+          var pessoa = pessoas[i];
+          pessoasMap[pessoa._id] = pessoa;
+        }
+
+      _relDividaPorKitPorPessRef(query, pessoasMap, rootCallback);
+    });
   };
 
   var _relKits = function(query, rootCallback){
@@ -227,7 +361,8 @@ var RelController = function(){
         // callback(result.err, result.report);
         break;
       case 'relKitsNaPraca':
-        var result = _relKitsNaPraca(query, callback);
+        // var result = _relKitsNaPraca(query, callback);
+        var result = _relKitsNaPracaPessRef(query, callback);
         // _relDividaPorKit(query, callback);
         break;
       case 'relKits':

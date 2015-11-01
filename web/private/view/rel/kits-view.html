@@ -27,10 +27,10 @@
                   <td colspan="4"><b>ROMANEIO SAVELLU'S</b></td>
                 </tr>
                 <tr>
-                  <td><b>CLIENTE</b></td>
-                  <td>{{::kit.pessoa.nome}}</td>
-                  <td><b>KIT N°</b></td>
-                  <td>{{::kit.codigo}}</td>
+                  <td style="width:10%"><b>CLIENTE</b></td>
+                  <td style="width:40%">{{::kit.pessoa.nome}}</td>
+                  <td style="width:10%"><b>KIT N°</b></td>
+                  <td style="width:40%">{{::kit.codigo}}</td>
                 </tr>
                 <tr>
                   <td><b>RUA</b></td>
@@ -42,7 +42,7 @@
                   <td><b>CIDADE</b></td>
                   <td>{{::kit.pessoa.endereco.cidade}}</td>
                   <td><b>CNPJ</b></td>
-                  <td>dd</td>
+                  <td></td>
                 </tr>
                 <tr>
                   <td><b>REPRES.</b></td>
@@ -78,26 +78,24 @@
             </table>
 
             <table class="table table-bordered table-condensed">
-              <tbody>
+              <tbody align="center">
                 <tr>
-                  <th>QTD</th>
-                  <th>REF</th>
-                  <th>DESCRIÇÃO</th>
-                  <th>TAMANHO</th>
-                  <th>PREÇO UNIT.</th>
-                  <th>TOTAL</th>
+                  <th style="width:10%; text-align: center;">QTD</th>
+                  <th style="width:10%; text-align: center;">REF</th>
+                  <th style="width:55%; text-align: center;">DESCRIÇÃO</th>
+                  <th style="width:10%; text-align: center;">PREÇO UNIT.</th>
+                  <th style="width:15%; text-align: center;">TOTAL</th>
                 </tr>
-                <tr ng-repeat="item in kit.itens">
+                <tr ng-repeat="item in kit.itens | orderBy:'produto.tipo' ">
                   <td>{{::item.qtdeEntregue}}</td>
                   <td>{{::item.produto.referencia}}</td>
                   <td>{{::item.produto.tipo}}</td>
-                  <td>{{::item.produto.tamanho}}</td>
                   <td>{{::item.vlrUnit | currency}}</td>
                   <td>{{::item.vlrTotal | currency}}</td>
 
                 </tr>
                 <tr>
-                  <td align="right" colspan="5"><b>TOTAL</b></td>
+                  <td align="right" colspan="4"><b>TOTAL</b></td>
                   <td>{{::kit.vlrTotalKit | currency}}</td>
                 </tr>
               </tbody>
