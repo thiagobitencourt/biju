@@ -196,8 +196,15 @@ var RelController = function(){
 
     var populateObj = [{path : 'pessoa'}];
     if(query.pessoaRefId){
-      if(query.pessoaRefId !== 'todas')
-        populateObj = [{path : 'pessoa', match : { pessoaReferencia : query.pessoaRefId}}];
+      if(query.pessoaRefId !== 'todas'){
+        populateObj = [{path : 'pessoa', match : { pessoaReferencia : query.pessoaRefId }}];
+        if(query.pessoaRefElaMesma){
+          populateObj = [{path : 'pessoa', match : { $or : [ {pessoaReferencia : query.pessoaRefId}, {pessoaReferencia : null}]} }];
+        }
+      }
+        /*
+          Para entender a 'query.pessoaRefId' verifique abaixo a 'CONTINUAÇÃO DA EXPLICAÇÃO 'query.pessoaRefId''
+        */
     }
 
     var report = {};
@@ -219,10 +226,24 @@ var RelController = function(){
         for (var kitIndex in kits) {
           var kit = kits[kitIndex];
 
-          // logger.debug(kit.toString());
-          if(query.somenteDividaAtiva && kit.vlrTotalPgto >= kit.vlrTotalDivida){
-            // esse kit está pago. será ignorado conforme requisitado pela query.
+          if(!kit.pessoa)
             continue;
+
+          if(!kit.pessoa.pessoaReferencia && query.pessoaRefId){
+
+            /*
+             CONTINUAÇÃO DA EXPLICAÇÃO 'query.pessoaRefId'
+
+             A pessoa requisitada deve:
+              - Ou, não tem pessoa referencia, assumindo-se que então, ela mesma é a referencia dela.
+              - Ou, a pessoa referencia é a pessoa requisitada.
+
+              As demais pessoas são ignoradas no próximo if.
+            */
+
+            if(kit.pessoa._id != query.pessoaRefId){ /* !== não funciona aqui, pois sao tipos diferentes. precisa ser != */
+              continue;
+            }
           }
 
           var groupId = kit.pessoa._id;

@@ -24,19 +24,16 @@
           <table class="table table-bordered table-condensed">
             <tbody>
               <tr>
-                <td>
-                  <b>VALOR TOTAL NA PRAÇA: </b> {{::relKitsNaPracaReport.vlrTotalKits | currency}}
-                </td>
-              </tr>
-              <tr>
-                <th>Pessoa</th>
-                <th>Referência</th>
+                <th>Pessoa Referência</th>
                 <th>Valor</th>
               </tr>
               <tr ng-repeat="registro in relKitsNaPracaReport.registros">
                 <td>{{::registro.pessoa.nome}}</td>
-                <td>{{::registro.pessoa.pessoaReferencia.nome || ' - '  }}</td>
                 <td>{{::registro.vlrTotalKits | currency }}</td>
+              </tr>
+              <tr>
+                <td align=right ><b>VALOR TOTAL NA PRAÇA</b></td>
+                <td><b>{{::relKitsNaPracaReport.vlrTotalKits | currency}}</b></td>
               </tr>
             </tbody>
           </table>

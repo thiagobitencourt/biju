@@ -4,7 +4,9 @@ app.controller('relKitsNaPracaCtrl', function($rootScope, $scope, Restangular, s
 
   $scope.relKitsNaPracaConfig = {
     pessoaId : 'todas',
-    apenasConsolidado : false
+    pessoaRefId : 'todas',
+    apenasConsolidado : false,
+    pessoaRefElaMesma : false
   }
 
   if(currentRoute === '/rel-kitsnapraca-config'){
@@ -27,6 +29,11 @@ app.controller('relKitsNaPracaCtrl', function($rootScope, $scope, Restangular, s
 
     if(config.pessoaId !== 'todas')
       query.pessoaId = config.pessoaId;
+
+    if(config.pessoaRefId !== 'todas'){
+      query.pessoaRefId = config.pessoaRefId;
+      query.pessoaRefElaMesma = config.pessoaRefElaMesma;
+    }
 
     $scope.relKitsNaPracaConfig = config;
     $scope.relKitsNaPracaReport = {};
