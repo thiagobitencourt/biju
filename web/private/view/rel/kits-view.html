@@ -29,50 +29,33 @@
                 <tr>
                   <td style="width:10%"><b>CLIENTE</b></td>
                   <td style="width:40%">{{::kit.pessoa.nome}}</td>
-                  <td style="width:10%"><b>KIT N°</b></td>
-                  <td style="width:40%">{{::kit.codigo}}</td>
+                  <td rowspan="5" colspan="1" style="width:50%"><b>OBS:</b></td>
                 </tr>
                 <tr>
-                  <td><b>RUA</b></td>
-                  <td>{{::kit.pessoa.endereco.rua}}</td>
-                  <td><b>BAIRRO</b></td>
-                  <td>{{::kit.pessoa.endereco.bairro}}</td>
+                  <td><b>KIT N°</b></td>
+                  <td>{{::kit.codigo}}</td>
                 </tr>
                 <tr>
-                  <td><b>CIDADE</b></td>
-                  <td>{{::kit.pessoa.endereco.cidade}}</td>
-                  <td><b>CNPJ</b></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td><b>REPRES.</b></td>
-                  <td></td>
-                  <td><b>FANTASIA</b></td>
-                  <td></td>
+                  <td><b>ESTADO</b></td>
+                  <td>{{::kit.estado}}</td>
                 </tr>
                 <tr>
                   <td><b>DATA</b></td>
                   <td>{{::kit.dataEntrega | date:'dd/MM/yyyy'}}</td>
-                  <td><b>FONE FIXO</b></td>
-                  <td>{{::kit.pessoa.telefoneFixo}}</td>
                 </tr>
                 <tr>
-                  <td><b>EMAIL</b></td>
-                  <td>{{::kit.pessoa.email}}</td>
                   <td><b>CELULAR</b></td>
                   <td>{{::kit.pessoa.telefoneCelular}}</td>
                 </tr>
                 <tr>
                   <td><b>P. REF.</b></td>
                   <td>{{::kit.pessoa.pessoaReferencia.nome}}</td>
-                  <td><b>FOR. PAG.</b></td>
-                  <td></td>
+                  <td style="text-align:left !important;" >Nome:</td>
                 </tr>
                 <tr>
-                  <td><b>ESTADO DO KIT </b></td>
-                  <td>{{::kit.estado}}</td>
-                  <td><b>OBS</b></td>
-                  <td>{{::kit.pessoa.observacao}}</td>
+                  <td><b>OBS SIST.</b></td>
+                  <td></td>
+                  <td style="text-align:left !important;" >Data: ______/______/______  Ass:</td>
                 </tr>
               </tbody>
             </table>

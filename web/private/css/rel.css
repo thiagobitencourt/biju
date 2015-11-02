@@ -3,7 +3,7 @@
 }
 @media print {
   .biju-print-font {
-    font-size: 12px;
+    font-size: 11px;
   }
   .table > tbody > tr > td {
     border: 2px solid #000000  !important;
