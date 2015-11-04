@@ -20,8 +20,8 @@
 
       <div class="box-body">
         <div ng-repeat="kit in relKitsReport | orderBy:'pessoa.nome' ">
-          <div>
-            <table class="table table-bordered table-condensed">
+          <div ng-repeat="page in kit.pages">
+            <table ng-if="$first" class="table table-bordered table-condensed">
               <tbody>
                 <tr align="center">
                   <td colspan="4"><b>ROMANEIO SAVELLU'S</b></td>
@@ -32,8 +32,8 @@
                   <td rowspan="5" colspan="1" style="width:50%"><b>OBS:</b></td>
                 </tr>
                 <tr>
-                  <td><b>KIT N°</b></td>
-                  <td>{{::kit.codigoPersonalizado}}</td>
+                  <td><b>CÓD./VLR</b></td>
+                  <td>{{::kit.codigoPersonalizado}} / {{::kit.vlrTotalKit | currency}}</td>
                 </tr>
                 <tr>
                   <td><b>ESTADO</b></td>
@@ -60,29 +60,47 @@
               </tbody>
             </table>
 
+            <table ng-if="!$first" class="table table-bordered table-condensed">
+              <tbody>
+                <tr align="center">
+                  <td colspan="4"><b>ROMANEIO SAVELLU'S</b></td>
+                </tr>
+                <tr>
+                  <td style="width:10%"><b>CLIENTE</b></td>
+                  <td style="width:40%">{{::kit.pessoa.nome}}</td>
+                  <td style="width:10%"><b>CÓD./VLR</b></td>
+                  <td style="width:40%">{{::kit.codigoPersonalizado}} / {{::kit.vlrTotalKit | currency}}</td>
+                </tr>
+              </tbody>
+            </table>
+
             <table class="table table-bordered table-condensed">
               <tbody align="center">
                 <tr>
+                  <th style="width:5%; text-align: center;">#</th>
                   <th style="width:10%; text-align: center;">QTD</th>
                   <th style="width:10%; text-align: center;">REF</th>
-                  <th style="width:55%; text-align: center;">DESCRIÇÃO</th>
+                  <th style="width:50%; text-align: center;">DESCRIÇÃO</th>
                   <th style="width:10%; text-align: center;">PREÇO UNIT.</th>
                   <th style="width:15%; text-align: center;">TOTAL</th>
                 </tr>
-                <tr ng-repeat="item in kit.itens | orderBy:'produto.tipo' ">
-                  <td>{{::item.qtdeEntregue}}</td>
-                  <td>{{::item.produto.referencia}}</td>
-                  <td>{{::item.produto.tipo}}</td>
-                  <td>{{::item.vlrUnit | currency}}</td>
-                  <td>{{::item.vlrTotal | currency}}</td>
-
-                </tr>
-                <tr>
-                  <td align="right" colspan="4"><b>TOTAL</b></td>
+                <tbody>
+                  <tr ng-repeat="item in page | orderBy:'produto.tipo' " >
+                    <td>{{$index +1}}</td>
+                    <td>{{::item.qtdeEntregue}}</td>
+                    <td>{{::item.produto.referencia}}</td>
+                    <td>{{::item.produto.tipo}}</td>
+                    <td>{{::item.vlrUnit | currency}}</td>
+                    <td>{{::item.vlrTotal | currency}}</td>
+                  </tr>
+                </tbody>
+                <tr ng-if="$last">
+                  <td align="right" colspan="5"><b>TOTAL</b></td>
                   <td>{{::kit.vlrTotalKit | currency}}</td>
                 </tr>
               </tbody>
             </table>
+            <div ng-if="!$last" class="biju-page-break"></div>
           </div>
           <div ng-if="!$last" class="biju-page-break"></div>
         </div>

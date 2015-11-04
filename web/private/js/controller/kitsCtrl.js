@@ -82,7 +82,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
     	{ name: 'pessoa.nome', displayName: 'Cliente'},
 	    { name: 'dataProxRetorno', cellFilter:"date:'dd/MM/yyyy'", displayName: 'Data Prox. Retorno'},
 	    { name: 'vlrTotalKit', cellFilter:'currency', displayName: 'Total Kit'},
-	    { name: 'vlrTotalDivida', cellFilter:'currency', displayName: 'Total Dívida'},
+	    { name: 'vlrTotalDivida', cellFilter:'currency', displayName: 'Total Venda'},
 	    { name: 'vlrTotalPgto', cellFilter:'currency', displayName: 'Total Pagamento'},
 	    { name: 'estado', displayName: 'Estado', cellTemplate: 'view/Kit/kit-template-estado.html'}
 	];

@@ -18,6 +18,14 @@
     border: 2px solid #000000  !important;
     text-align: center;
   }
+
+  .table {
+    margin-bottom: 0px;
+  }
+
+  .box {
+    border-top: none;
+  }
 }
 
 td {
