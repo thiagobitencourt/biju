@@ -25,7 +25,7 @@
                 <select class="form-control" ng-model="relKitsConfig.kitId" name="pessoa">
                   <option value="todos" ng-selected="selected">Todos</option>
                   <option ng-repeat="kit in kits" value="{{kit._id}}">
-                      Código: {{kit.codigo}} | Vlr: {{kit.vlrTotalKit}} | Pessoa: {{kit.pessoa.nome || 'Nenhuma'}}
+                      Código: {{kit.codigoPersonalizado}} | Vlr: {{kit.vlrTotalKit}} | Pessoa: {{kit.pessoa.nome || 'Nenhuma'}}
                   </option>
                 </select>
               </div>

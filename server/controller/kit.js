@@ -71,6 +71,9 @@ var kitController = function(){
 						return cb(err);
 
 					p.codigo = result.next;
+					if(!p.codigoPersonalizado){
+						p.codigoPersonalizado = p.codigo;
+					}
 					p.save(function(err, newKit){
 						if(err)
 							return callback(new AppError(err, null, null, 'Kit'));

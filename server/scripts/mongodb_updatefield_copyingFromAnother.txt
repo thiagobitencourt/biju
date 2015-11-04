@@ -1,0 +1,17 @@
+
+// update the kit collection, copying the codigo to codigoPersonalizado, for every doc.
+
+db.kits.find().snapshot().forEach(
+    function (elem) {
+        db.kits.update(
+            {
+                _id: elem._id
+            },
+            {
+                $set: {
+                    codigoPersonalizado: elem.codigo
+                }
+            }
+        );
+    }
+);

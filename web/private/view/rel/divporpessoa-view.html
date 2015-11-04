@@ -62,7 +62,7 @@
               <tr ng-repeat="kit in registro.kits">
                 <td>{{::registro.pessoa.codigo}}</td>
                 <td>{{::registro.pessoa.nome}}</td>
-                <td>{{::kit.codigo}}</td>
+                <td>{{::kit.codigoPersonalizado}}</td>
                 <td>{{::kit.pagamentos.length}}</td>
                 <td>{{::kit.vlrTotalKit | currency}}</td>
                 <td>{{::kit.vlrTotalDivida | currency}}</td>
@@ -113,7 +113,7 @@
                           <th ng-if="!relDividaPorKitConfig.apenasConsolidadoA" style = "text-align: center;">Pagamentos</th>
                         </tr>
                         <tr ng-repeat="kit in registro.kits">
-                          <td>{{::kit.codigo}}</td>
+                          <td>{{::kit.codigoPersonalizado}}</td>
                           <td>{{::kit.dataEntrega | date:'dd/MM/yyyy' }}</td>
                           <td>{{::kit.dataDevolucao | date:'dd/MM/yyyy' }}</td>
                           <td>{{::kit.vlrTotalDivida | currency}}</td>

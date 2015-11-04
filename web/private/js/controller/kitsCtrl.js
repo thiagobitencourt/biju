@@ -89,7 +89,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 
 	$scope.filter = function() {
 		singleFilter.values($scope.filterValue,
-			['estado', 'codigo', 'pessoa', 'referencia', 'nome', 'codigo']);
+			['estado', 'codigo', 'pessoa', 'referencia', 'nome', 'codigoPersonalizado']);
   	$scope.gridApi.grid.refresh();
 	};
 

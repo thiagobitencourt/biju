@@ -98,6 +98,7 @@ MODELO: KIT
 
 kitSchema = new Schema({
 	codigo : {type : Number, required : true, unique : true, appDescription : "Código"},
+	codigoPersonalizado : {type : String, required : true, unique : true, appDescription : "Código"},
 	pessoa: {type:Schema.ObjectId, ref:"Pessoa", appDescription : "Pessoa"},
 	dataEntrega : {type : Date, default: null, appDescription : "Data de Entrega"},
 	dataProxRetorno : {type : Date, default: null, appDescription : "Data do Próximo Retorno"},

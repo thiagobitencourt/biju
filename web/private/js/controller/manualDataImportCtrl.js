@@ -28,7 +28,7 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
     $scope.kitErrorMessage = "Não foi possível importar o kit.";
     $scope.kit = {
        "_id": null,
-       "codigo":16,
+       "codigoPersonalizado" : null,
        "pessoa" : null,
        "estado" : "Gerado",
        "dataDevolucao":null,
@@ -132,7 +132,7 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
 
     kitService.post($scope.kit).then(
       function(response){
-        $scope.kitSaved = "Kit importado com sucesso. Código do kit: " + response.codigo;
+        $scope.kitSaved = "Kit importado com sucesso. Código do kit: " + response.codigoPersonalizado;
         console.log(response);
       },
       function(error){

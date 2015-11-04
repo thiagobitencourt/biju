@@ -6,7 +6,7 @@
 		<div class="col-md-12">
       <div class="box box-info">
         <div class="box-header with-border">
-          <h3 class="box-title">Código do Kit: {{kit.codigo}}</h3>
+          <h3 class="box-title">Código do Kit: {{kit.codigoPersonalizado}}</h3>
         </div>
         <form class="form-horizontal">
           <div class="box-body">
@@ -51,6 +51,14 @@
 								<label class="col-sm-6 control-label">Data Prox. Retorno:</label>
 								<div class="col-sm-6">
 									<input type="text" name="dataProxRetorno" class="form-control" ng-model="kit.dataProxRetorno" ui-date-mask>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4 form-group">
+								<label class="col-sm-6 control-label">Código do Kit:</label>
+								<div class="col-sm-6">
+									<input type="text" name="codkit" class="form-control" ng-model="kit.codigoPersonalizado">
 								</div>
 							</div>
 						</div>
