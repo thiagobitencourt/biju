@@ -67,7 +67,7 @@
 	                      <th>Valor Total</th>
 	                      <th></th>
 	                    </tr>
-	                    <tr ng-repeat="(index, item) in kit.itens">
+	                    <tr ng-repeat="(index, item) in kit.itens | orderBy:'produtoCompleto.tipo'">
 	                    	<td>{{item.produtoCompleto.referencia}}</td>
 	                    	<td>{{item.produtoCompleto.tipo}}</td>
 	                    	<td>{{item.produtoCompleto.descricao}}</td>

@@ -142,7 +142,7 @@
 					                  <th>Valor Unit</th>
 					                  <th>Valor Total</th>
 					                </tr>
-					                <tr ng-repeat="item in kit.itens">
+					                <tr ng-repeat="item in kit.itens | orderBy:'produto.tipo'">
 					                	<td>{{item.produto.referencia}}</td>
 					                	<td>{{item.produto.tipo}}</td>
 					                	<td>{{item.produto.descricao}}</td>
