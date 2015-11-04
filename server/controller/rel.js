@@ -73,6 +73,8 @@ var RelController = function(){
         finalQuery.pessoa = query.pessoaId;
     }
 
+    finalQuery.deletedAt = null;
+
     var report = {};
     report.vlrTotalDividas = 0.0;
     report.vlrTotalPagos = 0.0;
@@ -206,6 +208,8 @@ var RelController = function(){
           Para entender a 'query.pessoaRefId' verifique abaixo a 'CONTINUAÇÃO DA EXPLICAÇÃO 'query.pessoaRefId''
         */
     }
+
+    finalQuery.deletedAt = null;
 
     var report = {};
     report.vlrTotalDividas = 0.0;
