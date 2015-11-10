@@ -32,12 +32,15 @@
 									<input type="number" min="1" step="1" id="quantidade" class="form-control" ng-model="produto.quantidade" onfocus="this.select();" ng-enter="setFocus(produto, inserirItem)">
 								</div>
 							</div>
-							<div class="col-lg-2 form-group">
+							<div class="col-lg-1 form-group">
 								<button type="button" class="btn btn-info" event-focus="click" event-focus-id="referencia" ng-click="inserirItem(produto)">Inserir</button>
 							</div>
-							<div class="col-lg-4 form-group">
+							<div class="col-lg-4">
 								<p class="form-control-static text-danger" ng-show="errorProdutoMessage">{{errorProdutoMessage}}</p>
 								<p class="form-control-static" ng-show="produtoAvailableDescription"><b>Produto:</b> {{produtoAvailableDescription}}</p>
+							</div>
+							<div class="col-lg-1" ng-show="errorProdutoMessage">
+								<a href="#/produtos" style="padding-top:7px;"><small class="label label-success">Cadastrar</small></a>
 							</div>
 						</div>
             <div class="row">

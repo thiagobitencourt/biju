@@ -78,6 +78,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
  	};
 
 	$scope.kitsGridOptions.columnDefs = [
+			{ name: 'codigoPersonalizado', displayName: 'kit'},
     	{ name: 'pessoa.codigo', displayName: 'Pasta'},
     	{ name: 'pessoa.nome', displayName: 'Cliente'},
 	    { name: 'dataProxRetorno', cellFilter:"date:'dd/MM/yyyy'", displayName: 'Data Prox. Retorno'},
