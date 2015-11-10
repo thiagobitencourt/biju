@@ -368,9 +368,28 @@ var RelController = function(){
 
           for(var i in kits){
             var kit = kits[i];
+            //ADD PESSOA REF.
             if(kit.pessoa && kit.pessoa.pessoaReferencia){
               kit.pessoa.pessoaReferencia = pessoasMap[kit.pessoa.pessoaReferencia];
             }
+
+            //SORT ITENS
+            kit.itens = kit.itens.sort(function(a,b){
+              if (a.produto.tipo > b.produto.tipo) {
+                return 1;
+              }
+              if (a.produto.tipo < b.produto.tipo) {
+                return -1;
+              }
+              // a must be equal to b
+              return 0;
+            });
+
+            // SOMA QUANTIDADE DE ITENS
+            kit.qtdeTotalItens = kit.itens.reduce(function(soma, item){
+              return soma + item.qtdeEntregue;
+            }, 0);
+
           }
 
         return rootCallback(null, kits);
