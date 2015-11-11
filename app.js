@@ -74,8 +74,8 @@ mongoose.connect('mongodb://localhost/biju', null, function(err){
 	app.use('*', function(req, res, next){
 		if(!req.secure){
 			var host = req.headers.host.split(':')[0];
-			//TODO On production, remove the :8143 port. Should be 443 (native)
-			return res.redirect('https://' + host + ':8143' +req.url);
+			// return res.redirect('https://' + host + ':8143' + req.url);
+			return res.redirect('https://' + host + req.url);
 		}
 		next();
 	});

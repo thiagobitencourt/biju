@@ -21,7 +21,7 @@ var UserControler = function(){
 			}
 
 			if(!user){
-				return callback(new AppError(null, "User not found or invalid password", AppError.ERRORS.CLIENT), null);
+				return callback(new AppError(null, "Usuário ou senha inválido", AppError.ERRORS.CLIENT), null);
 			}
 
 			user.comparePassword(candidateUser.password, function(err, matchs){
@@ -34,7 +34,7 @@ var UserControler = function(){
 					// return callback(null, {username: user.username}); //Return only the username
 					return callback(null, user); //Return the entire user
 				else{
-					return callback(new AppError(null, "User not found or invalid password", AppError.ERRORS.CLIENT), false);
+					return callback(new AppError(null, "Usuário ou senha inválido", AppError.ERRORS.CLIENT), false);
 				}
 			});
 		});

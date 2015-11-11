@@ -1,9 +1,10 @@
 sudo nano /etc/sysctl.conf;
  -- uncomment this line 'net.ipv4.ip_forward=1';
- 
+
 sudo sysctl net.ipv4.ip_forward=1;
 
 sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8180;
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 8143;
 
 sudo apt-get install iptables-persistent;
  -- During the installation, you will be asked if you would like to save your current rules to be automatically loaded. Say yes to both ipv4 and ipv6.
