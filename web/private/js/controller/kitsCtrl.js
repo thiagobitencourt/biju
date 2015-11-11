@@ -120,7 +120,6 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 	$scope.saveError = null;
 	$scope.kitSave = function(estado){
 		var _kit = $scope.kit;
-		localStorage.removeItem('tempKit');
 
 		//@TODO corregir logica melhorar condicao quando e pago
 		if(angular.isDefined(estado)){
@@ -145,6 +144,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 
 		if(angular.isUndefined(_kit._id)){
 			kitService.post(_kit).then(function(response){
+				localStorage.removeItem('tempKit');
 				$rootScope.go('/kits');
 			}, function(response){
 				// @TODO enviar erro ao gerar kit para view
@@ -154,6 +154,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 			});
 		}else{
 			_kit.put().then(function(response){
+				localStorage.removeItem('tempKit');
 				$rootScope.go('/kits');
 			}, function(response){
 				// @TODO enviar erro ao gerar kit para view
