@@ -1,6 +1,6 @@
 var app = angular.module('bijuApp');
 
-app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleFilter, uiGridConstants){
+app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleFilter, uiGridConstants, shareData){
 
 	var produtoService = Restangular.service('produto');
 	var tipos = [
@@ -54,14 +54,21 @@ app.controller('produtosCtrl', function($rootScope, $scope, Restangular, singleF
     $scope.gridApi.grid.refresh();
   };
 
-	$scope.newProduto = function(){
+	$scope.newProduto = function(ref){
 		tipos[0].editing = false;
-		$rootScope.openModal('view/Produto/modalFormProduto.html', {}, 'Produto', 'Novo Produto', _loadProdutos, produtoService, tipos);
+		var entity = ref? {referencia: ref} : {};
+		$rootScope.openModal('view/Produto/modalFormProduto.html', entity, 'Produto', 'Novo Produto', _loadProdutos, produtoService, tipos);
 	};
 
 	var _loadProdutos = function(){
 		$scope.produtosGridOptions.data = produtoService.getList().$object;
 	};
 
+	var saveRef = 'saveRef';
+	if(shareData.has(saveRef)){
+		var ref = shareData.get(saveRef);
+		shareData.remove(saveRef);
+		$scope.newProduto(ref);
+	}
 	_loadProdutos();
 });

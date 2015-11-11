@@ -17,6 +17,11 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 		});
 	}
 
+	$scope.cadastrarProduto = function(){
+		shareData.set('saveRef', $scope.produto.referencia);
+		$location.path('/produtos');
+	};
+
 	$scope.excluirKit = function(kit){
 		var modalInstance = $modal.open({
 			animation: true,
