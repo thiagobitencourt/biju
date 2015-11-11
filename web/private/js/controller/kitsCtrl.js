@@ -117,6 +117,7 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 		$rootScope.go('/'+action+'-kit');
 	};
 
+	$scope.saveError = null;
 	$scope.kitSave = function(estado){
 		var _kit = $scope.kit;
 		localStorage.removeItem('tempKit');
@@ -147,14 +148,17 @@ app.controller('kitsCtrl', function($rootScope, $scope, $location, $filter, $mod
 				$rootScope.go('/kits');
 			}, function(response){
 				// @TODO enviar erro ao gerar kit para view
-				console.log('erro ao gerar kit', response.message);
+				$scope.saveError = response.data.message;
+				console.log('erro ao gerar kit', response.data.message);
+				console.log(response);
 			});
 		}else{
 			_kit.put().then(function(response){
 				$rootScope.go('/kits');
 			}, function(response){
 				// @TODO enviar erro ao gerar kit para view
-				console.log('erro ao atualizar kit', response.message);
+				$scope.saveError = response.data.message;
+				console.log('erro ao atualizar kit', response.data.message);
 			});
 		}
 	};

@@ -61,7 +61,6 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
 
       Restangular.one('produto').get({"q":{"referencia":item.referencia}})
       .then( function(response){
-          console.log(itensBackendCheck[response.reqParams.q.referencia]);
         if(response.length > 0){
           totalChecksDone++;
           $scope.itens[response[0].referencia].importStatus = 'OK';
@@ -73,7 +72,6 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
           produtoService.post(itensBackendCheck[response.reqParams.q.referencia]).then(
             function(postResponse){
               totalChecksDone++;
-              console.log(postResponse);
               $scope.itens[response.reqParams.q.referencia].importStatus = 'OK';
               $scope.itens[postResponse.referencia]._id = postResponse._id;
               if(totalChecksDone === totalChecksNeeded)
@@ -106,13 +104,10 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
     if($scope.kit.pessoa && $scope.kit.pessoa !== '')
       $scope.kit.estado = 'Entregue';
 
-      console.log($scope.kit.dataEntrega);
-
     if($scope.kit.dataEntrega){
       var _dataProxRetorno = new Date();
       _dataProxRetorno.setDate($scope.kit.dataEntrega.getDate() + 30);
       $scope.kit.dataProxRetorno = _dataProxRetorno;
-      console.log($scope.kit.dataProxRetorno);
     }
 
       if($scope.kit.itens.length === 0){
@@ -128,17 +123,13 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
         }
       }
 
-    console.log($scope.kit);
-
     kitService.post($scope.kit).then(
       function(response){
         $scope.kitSaved = "Kit importado com sucesso. Código do kit: " + response.codigoPersonalizado;
-        console.log(response);
       },
       function(error){
         $scope.kitErrorMessage += " Erro ao enviar ao servidor: " + error.data.message;
         $scope.kitError = true;
-        console.log(error);
       }
     );
   }
@@ -149,7 +140,6 @@ app.controller('manualDataImportCtrl', function($rootScope, $scope, Restangular,
       var line = parsedContent[i];
       var kit = {};
 
-      console.log(line);
       if(line.length === 6 && line[0] !== ''){
 
         var fieldQuant = line[0];
