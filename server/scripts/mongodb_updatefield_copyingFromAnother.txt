@@ -1,5 +1,30 @@
 
-// update the kit collection, copying the codigo to codigoPersonalizado, for every doc.
+
+/*Esse script corrige o erro do script abaixo. O script de baixo, copiou os códigos, mas como INTEGER e precisava
+ser STRING. Este script procura por codigoPersonalizado que não seja string e converte para string.
+O script de baixo poderia ter sido feito incialmente usando 'codigoPersonalizado: elem.codigo.toString()'
+ao inves de apenas 'codigoPersonalizado: elem.codigo'; */
+
+db.kits.find().snapshot().forEach(
+    function (elem) {
+      if(typeof elem.codigoPersonalizado !== "string"){
+        var value = elem.codigoPersonalizado.toString();
+        db.kits.update(
+            {
+                _id: elem._id
+            },
+            {
+                $set: {
+                    codigoPersonalizado: value
+                }
+            }
+        );
+      }
+
+    }
+);
+
+// copia um campo criado outro com o mesmo valor.
 
 db.kits.find().snapshot().forEach(
     function (elem) {
